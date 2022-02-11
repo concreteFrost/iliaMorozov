@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Ilia Morozov" />
+    <meta name="description" content="Testing Ajax/php/curl/json" />
+    <link rel="stylesheet" href="./libraries/css/style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <main>
+      <table>
+        <tr>
+          <thead>
+            <th>API name</th>
+            <th>API description</th>
+            <th>Submit</th>
+          </thead>
+        </tr>
+        <tr>
+          <tbody>
+            <td>City Facts</td>
+            <td>
+              <p>Select the Country:</p>
+              <select id="selCity" class="custom-select">
+                <option value="london">London</option>
+                <option value="nepal">Nepal</option>
+                <option value="yerevan">Yerevan</option>
+                <option value="ankara">Ankara</option>
+              </select>
+            </td>
+            <td><button id="btnCityFact">Submit</button></td>
+          </tbody>
+        </tr>
+        <tr>
+          <tbody>
+            <td>Check your city name by postcode</td>
+            <td>Please type in your postcode:
+              <form action='./libraries/php/getCityNameByPostcode.php' method="get" id="postcodeForm">
+                <input type="text" name ='postcode' id="postcode">
+              </td>
+              <td>
+                <button type="button" value="submit" id="btnPostcode">Submit</button>
+              </td>
+              </form>
+            
+          </tbody>
+        </tr>
+        <tr>
+          <tbody>
+            <td>Another Api</td>
+            <td>Select the Country</td>
+            <td><button>Submit</button></td>
+          </tbody>
+        </tr>
+        <tr>
+          <tfoot>
+            <td colspan="3">
+              <h3>Result:</h3>
+              <div id="cityFact"></div>
+              <div id="cityName"></div>
+            </td>
+          </tfoot>
+        </tr>
+      </table>
+    </main>
+
+    <script
+      type="application/javascript"
+      src="./libraries/js/jquery-2.2.3.min.js"
+    ></script>
+    <script
+      type="application/javascript"
+      src="./libraries/js/script.js"
+    ></script>
+  </body>
+</html>

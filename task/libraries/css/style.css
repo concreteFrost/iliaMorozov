@@ -1,0 +1,34 @@
+
+
+table {
+  border: 1px solid black;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 500px;
+}
+
+table td,
+table th {
+  border: 1px solid black;
+  padding: 5px;
+  font-size: 0.8em;
+}
+
+table tfoot {
+  text-align: center;
+}
+
+.custom-select {
+  position: relative;
+  top: 100%;
+  left: 0;
+  right: 0;
+  font-size: 0.8em;
+
+}
+
+button{
+    border-radius: 3px;
+    background-color: rgb(217, 217, 238);
+}
