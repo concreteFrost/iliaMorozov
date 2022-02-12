@@ -14,8 +14,8 @@ $("#btnCityFact").on("click", () => {
         let temp = "";
 
         let finalRender = oneSentence(render, temp);
-
-        $("#cityFact").html(finalRender.concat("."));
+        $("#cityFact").html("Fact: ");
+        $("#cityFact").append(finalRender.concat("."));
       }
     },
 
@@ -65,7 +65,8 @@ $("#btnPostcode").on("click", () => {
 
     success: function (result) {
       if (result.status.name == "ok") {
-        $("#cityName").html(result["data"][0]["placeName"]);
+        $("#cityName").html("City name:");
+        $("#cityName").append(result["data"][0]["placeName"]);
       }
     },
 
