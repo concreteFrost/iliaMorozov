@@ -25,32 +25,59 @@ $("#btnCityFact").on("click", () => {
   });
 });
 
-
-$('#postcodeForm').submit(()=>{
-
-
+//Get Temperature by City
+$("#btnICAO").on("click", () => {
   $.ajax({
-    url: "libraries/php/getCityNameByPostcode.php",
-    type: "GET",
+    url: "libraries/php/getTemperature.php",
+    type: "POST",
     dataType: "json",
     data: {
-      countryCode: $("#postcodeForm").val(),
+      ICAO: $("#selICAO").val(),
     },
 
     success: function (result) {
       if (result.status.name == "ok") {
-      
-        $("#cityName").html(result[data][0]['countryCode']);
+        var currTemp =
+          "Current temperature in " +
+          result["data"]["stationName"] +
+          " is: " +
+          result["data"]["temperature"] + '°C';
+        $("#cityTemp").html(currTemp);
       }
     },
 
     error: function (jqXHR, status, err) {
       console.log(err);
     },
-    
   });
+});
 
-})
+//Postcode button
+$("#btnPostcode").on("click", () => {
+
+  $.ajax({
+    url: "libraries/php/getCityNameByPostcode.php",
+    type: "POST",
+    dataType: "json",
+    data: {
+      postcode: $("#postcode").val(),
+    },
+
+    success: function (result) {
+      if (result.status.name == "ok") {
+        alert('ok')
+        $("#cityName").html(result['data'][0]['placeName']);
+      }
+    },
+
+    error: function (jqXHR, status, err) {
+      console.log(err);
+    },
+  });
+  
+});
+
+
 
 //Convert to one sentence
 function oneSentence(value, result) {

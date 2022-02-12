@@ -8,7 +8,7 @@
 	$executionStartTime = microtime(true);
 
 
-    $url = 'http://api.geonames.org/findNearbyPostalCodesJSON?postalcode='.$_GET['postcode'].'&country=GB&radius=10&username=frostyj';
+    $url = 'http://api.geonames.org/findNearbyPostalCodesJSON?postalcode='.$_REQUEST['postcode'].'&country=GB&radius=10&username=frostyj';
    
 
 	$ch = curl_init();
@@ -30,4 +30,4 @@
 	$output['data'] = $decode['postalCodes'];
 	
 	header('Content-Type: application/json; charset=UTF-8');
-
+	echo json_encode($output); 
