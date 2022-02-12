@@ -41,7 +41,8 @@ $("#btnICAO").on("click", () => {
           "Current temperature in " +
           result["data"]["stationName"] +
           " is: " +
-          result["data"]["temperature"] + '°C';
+          result["data"]["temperature"] +
+          "°C";
         $("#cityTemp").html(currTemp);
       }
     },
@@ -54,7 +55,6 @@ $("#btnICAO").on("click", () => {
 
 //Postcode button
 $("#btnPostcode").on("click", () => {
-
   $.ajax({
     url: "libraries/php/getCityNameByPostcode.php",
     type: "POST",
@@ -65,8 +65,7 @@ $("#btnPostcode").on("click", () => {
 
     success: function (result) {
       if (result.status.name == "ok") {
-        alert('ok')
-        $("#cityName").html(result['data'][0]['placeName']);
+        $("#cityName").html(result["data"][0]["placeName"]);
       }
     },
 
@@ -74,9 +73,7 @@ $("#btnPostcode").on("click", () => {
       console.log(err);
     },
   });
-  
 });
-
 
 
 //Convert to one sentence
