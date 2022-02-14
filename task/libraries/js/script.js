@@ -14,8 +14,8 @@ $("#btnCityFact").on("click", () => {
         let temp = "";
 
         let finalRender = oneSentence(render, temp);
-        $("#cityFact").html("Fact: ");
-        $("#cityFact").append(finalRender.concat("."));
+        $("#result").html("Fact: ");
+        $("#result").append(finalRender.concat("."));
       }
     },
 
@@ -43,7 +43,7 @@ $("#btnICAO").on("click", () => {
           " is: " +
           result["data"]["temperature"] +
           "°C";
-        $("#cityTemp").html(currTemp);
+        $("#result").html(currTemp);
       }
     },
 
@@ -65,8 +65,8 @@ $("#btnPostcode").on("click", () => {
 
     success: function (result) {
       if (result.status.name == "ok") {
-        $("#cityName").html("City name:");
-        $("#cityName").append(result["data"][0]["placeName"]);
+        $("#result").html("City name:");
+        $("#result").append(result["data"][0]["placeName"]);
       }
     },
 
