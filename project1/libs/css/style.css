@@ -67,7 +67,7 @@ main{
 }
 
 #map {
-    height: 100vh;
+   height: 416px; 
 }
 
 @media screen and (max-width: 828px) {
