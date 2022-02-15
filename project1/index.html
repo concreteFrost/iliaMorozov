@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./libs/css/style.css" />
-    <script src="./libs/js/jquery-2.2.3.min.js"></script>
+    <link rel="stylesheet" href="./node_modules/leaflet/dist/leaflet.css" />
     <title>Gazetteer</title>
   </head>
   <body>
@@ -24,6 +24,10 @@
         <button id="helpButton">?</button>
       </div>
     </nav>
-    <main></main>
+    <main><div id="map"></div></main>
+
+    <script src="./node_modules/leaflet/dist/leaflet.js"></script>
+    <script src="./libs/js/jquery-2.2.3.min.js"></script>
+    <script src="./libs/js/script.js"></script>
   </body>
 </html>

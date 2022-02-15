@@ -35,34 +35,39 @@ nav h2 {
   text-align: center;
 }
 .selectCountrySection option {
-    width: 100%;
-  }
+  width: 100%;
+}
 
 .helpButtonClass {
   flex: 0.5;
   order: 3;
-  align-self:center;
+  align-self: center;
   margin-right: 10px;
 }
 
-.helpButtonClass button{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    border: 0px;
-    border-radius: 50%;
-    text-align: center;
-    height:35px;
-    width: 35px;
-    background-color: white;
-    
+.helpButtonClass button {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border: 0px;
+  border-radius: 50%;
+  text-align: center;
+  height: 35px;
+  width: 35px;
+  background-color: white;
 }
 
-.helpButtonClass button:hover{
-   
- 
-    transition: 0.15s;
-    background-color: rgb(96, 200, 205);
+.helpButtonClass button:hover {
+  transition: 0.15s;
+  background-color: rgb(96, 200, 205);
+}
+
+main{
+    grid-area: main;
+}
+
+#map {
+    height: 100vh;
 }
 
 @media screen and (max-width: 828px) {
@@ -89,12 +94,11 @@ nav h2 {
     text-align: center;
     color: white;
   }
-  
-  .selectCountrySection select {
 
+  .selectCountrySection select {
     text-align: center;
   }
-  
+
   #helpButton {
     flex: 2;
     order: 3;
