@@ -1,0 +1,103 @@
+body {
+  grid-template-areas:
+    "nav nav"
+    "main main";
+}
+
+nav {
+  grid-area: nav;
+  display: flex;
+  background-image: linear-gradient(rgb(86, 218, 233), rgb(0, 123, 255));
+  border-radius: 3px;
+  height: 70px;
+}
+
+nav h2 {
+  font-size: 2.5em;
+  color: rgb(255, 255, 255);
+  padding-top: 10px;
+  margin: auto;
+  text-align: center;
+  flex: 3;
+  order: 2;
+}
+
+.selectCountrySection {
+  flex: 0.5;
+  order: 1;
+  align-self: center;
+  margin-left: 5px;
+  text-align: center;
+  color: white;
+}
+
+.selectCountrySection select {
+  text-align: center;
+}
+.selectCountrySection option {
+    width: 100%;
+  }
+
+.helpButtonClass {
+  flex: 0.5;
+  order: 3;
+  align-self:center;
+  margin-right: 10px;
+}
+
+.helpButtonClass button{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: 0px;
+    border-radius: 50%;
+    text-align: center;
+    height:35px;
+    width: 35px;
+    background-color: white;
+    
+}
+
+.helpButtonClass button:hover{
+   
+ 
+    transition: 0.15s;
+    background-color: rgb(96, 200, 205);
+}
+
+@media screen and (max-width: 828px) {
+  nav {
+    grid-area: nav;
+    display: flex;
+    height: 50px;
+  }
+
+  nav h2 {
+    flex: 3;
+    order: 1;
+    text-align: left;
+    font-size: 5vw;
+    padding-left: 5px;
+    letter-spacing: 1px;
+    margin: auto;
+  }
+
+  .selectCountrySection {
+    flex: 2;
+    order: 2;
+    align-self: center;
+    text-align: center;
+    color: white;
+  }
+  
+  .selectCountrySection select {
+
+    text-align: center;
+  }
+  
+  #helpButton {
+    flex: 2;
+    order: 3;
+    align-self: flex-end;
+  }
+}
