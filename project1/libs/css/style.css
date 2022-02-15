@@ -2,6 +2,11 @@ body {
   grid-template-areas:
     "nav nav"
     "main main";
+
+}
+
+body::-webkit-scrollbar {
+    display: none;
 }
 
 nav {
@@ -64,10 +69,14 @@ nav h2 {
 
 main{
     grid-area: main;
+    margin: 0;
+   
 }
 
 #map {
-   height: 416px; 
+   height: 100vh;
+   overflow: none;
+
 }
 
 @media screen and (max-width: 828px) {
@@ -105,7 +114,5 @@ main{
     align-self: flex-end;
   }
 
-  #map{
-      height:82vh;
-  }
+
 }
