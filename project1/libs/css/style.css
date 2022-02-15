@@ -104,4 +104,8 @@ main{
     order: 3;
     align-self: flex-end;
   }
+
+  #map{
+      height:82vh;
+  }
 }
