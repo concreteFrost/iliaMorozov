@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./libs/css/style.css" />
-    <link rel="stylesheet" href="./libs/css/leaflet.css"/>
-
+    <link rel="stylesheet" href="./libs/vendors/leaflet/leaflet.css"/>
+    <link rel="stylesheet" href="./libs/vendors/leaflet/MarkerCluster.css">
     <title>Gazetteer</title>
   </head>
   <body>
@@ -24,9 +24,9 @@
     </nav>
     <main><div id="map"></div></main>
 
-    <script src='./libs/js/leaflet.js'></script>
+    <script src='./libs/vendors/leaflet/leaflet.js'></script>
+    <script src ='./libs/vendors/leaflet/leaflet.markercluster.js'></script>
     <script src="./libs/js/jquery-2.2.3.min.js"></script>
     <script src="./libs/js/script.js"></script>
-    <script src ='./libs/php/getCountryList.php'></script>
   </body>
 </html>
