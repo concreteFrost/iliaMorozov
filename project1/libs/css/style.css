@@ -2,6 +2,7 @@ body {
   grid-template-areas:
     "nav nav"
     "main main";
+  margin: 0;
 
 }
 
@@ -15,6 +16,10 @@ nav {
   background-image: linear-gradient(rgb(86, 218, 233), rgb(0, 123, 255));
   border-radius: 3px;
   height: 70px;
+  width: 100%;
+  position: absolute;
+  z-index: 500;
+
 
 }
 
@@ -65,7 +70,7 @@ nav h2 {
 
 .helpButtonClass button:hover {
   transition: 0.15s;
-  background-color: rgb(255, 0, 0);
+  background-color: rgb(255, 179, 0);
 }
 
 main{
@@ -75,9 +80,29 @@ main{
 }
 
 #map {
-   height: 100vh;
+   height:100vh;
    overflow: none;
 
+}
+
+#overlay{
+  z-index: 1000;
+  background-color: rgb(255, 255, 255);
+
+  width: 300px;
+  height: 300px;
+  position: absolute;
+  top: 25%;
+  left: 38%;
+  display: none;
+}
+
+#overlay h4, #overlay h3{
+  text-align: center;
+}
+
+#currentFlag img{
+  width: 20px;
 }
 
 @media screen and (max-width: 828px) {
@@ -113,6 +138,11 @@ main{
     flex: 2;
     order: 3;
     align-self: flex-end;
+  }
+
+  #overlay{
+   left: 50%;
+   top: 50%;
   }
 
 

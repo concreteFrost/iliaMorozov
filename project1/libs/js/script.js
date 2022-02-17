@@ -9,8 +9,7 @@ const OpenStreetMap_Mapnik = L.tileLayer(
   }
 ).addTo(map);
 
-
-
+//Fill up country list
 $(document).ready(() => {
   $.ajax({
     url: "libs/php/getCountryList.php",
@@ -49,19 +48,89 @@ $("#selectCountry").change(() => {
       console.log(err);
     },
   });
-});
-
-//Get Country Info
-L.easyButton( '<span>&#8505;</span>', function(){
+  //Get Capital
   $.ajax({
-    url: "libs/php/getFlag.php",
+    url: "libs/php/getCapital.php",
+    dataType: "json",
+    data: {
+      iso: $("#selectCountry").val(),
+    },
     success: function (res) {
-   
-      console.log(res['data'][0]['flag']);
+      const result = res["data"];
+      for (let i = 0; i < result.length; i++) {
+        if ($("#selectCountry").val() == result[i]["iso2"]) {
+          $("#currentCapital").html("Capital: " + result[i]["capital"]);
+          console.log(result[i]["capital"]);
+          break;
+        } else {
+          console.log($("#selectCountry").val());
+        }
+      }
+    },
+    error: function (err) {
+      console.log("err");
+    },
+  });
+  //Get Country And Flag
+  $.ajax({
+    url: "libs/php/getCountryAndFlag.php",
+    dataType: "json",
+    data: {
+      iso: $("#selectCountry").val(),
+    },
+    success: function (res) {
+      const result = res["data"];
+      for (let i = 0; i < result.length; i++) {
+        if ($("#selectCountry").val() == result[i]["iso2"]) {
+          $("#currentCountry").html(result[i]["name"]);
+          $("#currentFlag").html(
+            `Country flag: <img src=${result[i]["flag"]} alt='no image'/>`
+          );
+          break;
+        }
+      }
     },
     error: function (err) {
       console.log(err);
     },
   });
-}).addTo(map);
+  //Get Population
+  $.ajax({
+    url: "libs/php/getCurrency.php",
+    dataType: "json",
+    data: {
+      iso: $("#selectCountry").val(),
+    },
+    success: function (res) {
+      for (let i = 0; i < res["data"].length; i++) {
 
+        if ($("#selectCountry").val() == res["data"][i]["iso2"]) {
+        
+          $("#currentCurrency").html("Currency: " + res['data'][i]["currency"]);
+          console.log("hher");
+          break;
+        }
+        //console.log(pop[pop.length-1]['value'])
+        //console.log(result[0]['populationCounts']['populationCounts']['value'])
+      }
+    },
+    error: function (err) {
+      console.log("err");
+    },
+  });
+});
+
+//Show/Hide Info Pannel
+let switched = false;
+function toggleSwitch() {
+  if (!switched) {
+    $("#overlay").show();
+  } else {
+    $("#overlay").hide();
+  }
+  switched = !switched;
+}
+
+L.easyButton("<span>&#8505;</span>", function () {
+  toggleSwitch();
+}).addTo(map);
