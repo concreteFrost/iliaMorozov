@@ -15,6 +15,7 @@ nav {
   background-image: linear-gradient(rgb(86, 218, 233), rgb(0, 123, 255));
   border-radius: 3px;
   height: 70px;
+
 }
 
 nav h2 {
@@ -59,12 +60,12 @@ nav h2 {
   text-align: center;
   height: 35px;
   width: 35px;
-  background-color: white;
+  background-color: rgb(229, 229, 229);
 }
 
 .helpButtonClass button:hover {
   transition: 0.15s;
-  background-color: rgb(96, 200, 205);
+  background-color: rgb(255, 0, 0);
 }
 
 main{

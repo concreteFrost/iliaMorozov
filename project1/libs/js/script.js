@@ -1,18 +1,16 @@
-const map = L.map("map").setView([51.505, -0.09], 2);
+const map = L.map("map").setView([51.505, -0.09], 13);
 const OpenStreetMap_Mapnik = L.tileLayer(
   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   {
-    maxZoom: 19,
+    maxZoom: 15,
+    minZoom: 2,
     attribution:
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }
 ).addTo(map);
 
-// var markers = L.markerClusterGroup();
-// markers.addLayer(L.marker([0,200]));
-// map.addLayer(markers);
 
-//L.marker([0,200]).addTo(map).bindPopup("You Are Here").openPopup();
+
 $(document).ready(() => {
   $.ajax({
     url: "libs/php/getCountryList.php",
@@ -27,6 +25,8 @@ $(document).ready(() => {
     },
   });
 });
+
+//Get Country Shape
 let countryShape;
 $("#selectCountry").change(() => {
   $.ajax({
@@ -34,21 +34,34 @@ $("#selectCountry").change(() => {
     success: function (res) {
       for (let i = 0; i < res["data"].length; i++) {
         if ($("#selectCountry").val() == res["data"][i]["iso"]) {
-          if(map.hasLayer(countryShape)){
+          if (map.hasLayer(countryShape)) {
             map.removeLayer(countryShape);
           }
-           let currentBound = res["data"][i]['bounds'];
-           countryShape = L.geoJSON(currentBound).addTo(map);
-           map.addLayer(countryShape);
-           map.fitBounds(countryShape.getBounds());
+          let currentBound = res["data"][i]["bounds"];
+          countryShape = L.geoJSON(currentBound).addTo(map);
+          map.addLayer(countryShape);
+          map.fitBounds(countryShape.getBounds());
           break;
         }
-        
       }
-   
     },
     error: function (err) {
       console.log(err);
     },
   });
 });
+
+//Get Country Info
+L.easyButton( '<span>&#8505;</span>', function(){
+  $.ajax({
+    url: "libs/php/getFlag.php",
+    success: function (res) {
+   
+      console.log(res['data'][0]['flag']);
+    },
+    error: function (err) {
+      console.log(err);
+    },
+  });
+}).addTo(map);
+
