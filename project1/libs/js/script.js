@@ -9,8 +9,8 @@ const OpenStreetMap_Mapnik = L.tileLayer(
   }
 ).addTo(map);
 
-
 var marker;
+
 //Get user position
 $(document).ready(() => {
   navigator.geolocation.getCurrentPosition((pos) => {
@@ -25,10 +25,13 @@ $(document).ready(() => {
       success: function (res) {
         console.log(res["data"]);
         map.setView([pos.coords.latitude, pos.coords.longitude], 13);
-        
-        $("#currentCountry").html(res["data"]["countryName"])
-        marker=L.marker([pos.coords.latitude, pos.coords.longitude]).addTo(map);
-        marker.bindPopup('You are here');
+
+        $("#selectCountry").val(res["data"]["countryCode"]).change();
+
+        marker = L.marker([pos.coords.latitude, pos.coords.longitude]).addTo(
+          map
+        );
+        marker.bindPopup("You are here");
       },
       error: function (err) {
         console.log(err);
@@ -147,16 +150,52 @@ $("#selectCountry").change(() => {
 });
 
 //Show/Hide Info Pannel
-let switched = false;
-function toggleSwitch() {
-  if (!switched) {
-    $("#overlay").show();
-  } else {
-    $("#overlay").hide();
-  }
-  switched = !switched;
-}
+var showHide = L.easyButton({
+  states: [
+    {
+      stateName: "hideBar",
+      icon: '<img src="libs/vendors/leaflet/images/icons/info_on.png " width=18 />',
+      title: "hide info",
+      onClick: function (control) {
+        $("#overlay").hide();
+        control.state("showBar");
+      },
+    },
+    {
+      stateName: "showBar",
+      icon: '<img src="libs/vendors/leaflet/images/icons/info_off.png" width=18 />',
+      title: "show info",
+      onClick: function (control) {
+        $("#overlay").show();
+        control.state("hideBar");
+      },
+    },
+  ],
+});
+showHide.addTo(map);
 
-L.easyButton("<span>&#8505;</span>", function () {
-  toggleSwitch();
-}).addTo(map);
+//Show user position
+var showHide = L.easyButton({
+  states: [
+    {
+      stateName: "hideBar",
+      icon: '<img src="libs/vendors/leaflet/images/icons/position_on.png " width=18 />',
+      title: "hide info",
+      onClick: function (control) {
+        map.removeLayer(marker);
+        control.state("showBar");
+      },
+    },
+    {
+      stateName: "showBar",
+      icon: '<img src="libs/vendors/leaflet/images/icons/position_off.png" width=18 />',
+      title: "show info",
+      onClick: function (control) {
+        map.addLayer(marker);
+        map.setView(marker.getLatLng(),5);
+        control.state("hideBar");
+      },
+    },
+  ],
+});
+showHide.addTo(map);

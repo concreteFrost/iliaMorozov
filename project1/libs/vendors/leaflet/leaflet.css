@@ -131,9 +131,9 @@
 	z-index: 1000;
 	pointer-events: none;
 	}
-.leaflet-top {
+/* .leaflet-top {
 	top: 136px;
-	}
+	} */
 .leaflet-right {
 	right: 0;
 	}

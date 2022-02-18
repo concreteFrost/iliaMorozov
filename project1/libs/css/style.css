@@ -88,22 +88,30 @@ main{
 #overlay{
   z-index: 1000;
   background-color: rgb(255, 255, 255);
-
+  border: 2px solid rgb(195, 195, 195);
+  border-radius: 5px;
   width: 300px;
-  height: 300px;
+  height: 200px;
   position: absolute;
-  top: 25%;
+  top: 35%;
   left: 38%;
-  display: none;
+  /* display: none; */
 }
 
 #overlay h4, #overlay h3{
   text-align: center;
 }
+#overlay p{
+  padding-left: 10px;
+}
 
 #currentFlag img{
-  width: 20px;
+  width: 30px;
 }
+
+.leaflet-top {
+	top: 136px;
+	}
 
 @media screen and (max-width: 828px) {
   nav {
@@ -142,8 +150,22 @@ main{
 
 
   #overlay{
-    top: 60%;
-    left: 38%;
+    width: 40%;
+    height: 45%;
+    top: 55%;
+    left: 65%;
   }
+
+  #overlay h4, #overlay h3{
+    text-align: left;
+    padding-left: 10px;
+    margin-bottom: 5px;
+
+  }
+
+  .leaflet-top {
+    top: 50px;
+    
+    }
 
 }
