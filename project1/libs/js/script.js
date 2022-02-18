@@ -1,4 +1,4 @@
-const map = L.map("map").setView([51.505, -0.09], 13);
+const map = L.map("map").setView([0, -0.09], 13);
 const OpenStreetMap_Mapnik = L.tileLayer(
   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   {
@@ -8,6 +8,34 @@ const OpenStreetMap_Mapnik = L.tileLayer(
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }
 ).addTo(map);
+
+
+var marker;
+//Get user position
+$(document).ready(() => {
+  navigator.geolocation.getCurrentPosition((pos) => {
+    //Get CurrentPosition
+    $.ajax({
+      url: "libs/php/getUserPosition.php",
+      dataType: "json",
+      data: {
+        lat: pos.coords.latitude,
+        lon: pos.coords.longitude,
+      },
+      success: function (res) {
+        console.log(res["data"]);
+        map.setView([pos.coords.latitude, pos.coords.longitude], 13);
+        
+        $("#currentCountry").html(res["data"]["countryName"])
+        marker=L.marker([pos.coords.latitude, pos.coords.longitude]).addTo(map);
+        marker.bindPopup('You are here');
+      },
+      error: function (err) {
+        console.log(err);
+      },
+    });
+  });
+});
 
 //Fill up country list
 $(document).ready(() => {
@@ -103,10 +131,8 @@ $("#selectCountry").change(() => {
     },
     success: function (res) {
       for (let i = 0; i < res["data"].length; i++) {
-
         if ($("#selectCountry").val() == res["data"][i]["iso2"]) {
-        
-          $("#currentCurrency").html("Currency: " + res['data'][i]["currency"]);
+          $("#currentCurrency").html("Currency: " + res["data"][i]["currency"]);
           console.log("hher");
           break;
         }
