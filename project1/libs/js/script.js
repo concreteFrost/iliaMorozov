@@ -23,7 +23,6 @@ $(document).ready(() => {
         lon: pos.coords.longitude,
       },
       success: function (res) {
-        console.log(res["data"]);
         map.setView([pos.coords.latitude, pos.coords.longitude], 13);
 
         $("#selectCountry").val(res["data"]["countryCode"]).change();
@@ -91,10 +90,9 @@ $("#selectCountry").change(() => {
       for (let i = 0; i < result.length; i++) {
         if ($("#selectCountry").val() == result[i]["iso2"]) {
           $("#currentCapital").html("Capital: " + result[i]["capital"]);
-          console.log(result[i]["capital"]);
+
           break;
         } else {
-          console.log($("#selectCountry").val());
         }
       }
     },
@@ -136,17 +134,77 @@ $("#selectCountry").change(() => {
       for (let i = 0; i < res["data"].length; i++) {
         if ($("#selectCountry").val() == res["data"][i]["iso2"]) {
           $("#currentCurrency").html("Currency: " + res["data"][i]["currency"]);
-          console.log("hher");
+
           break;
         }
-        //console.log(pop[pop.length-1]['value'])
-        //console.log(result[0]['populationCounts']['populationCounts']['value'])
       }
     },
     error: function (err) {
       console.log("err");
     },
   });
+});
+
+//Get Airports
+let airportMarkers;
+$("#selectCountry").change(() => {
+  $.ajax({
+    url: "libs/php/getAirports.php",
+    data: {
+      iso: $("#selectCountry").val(),
+    },
+    success: function (res) {
+      const result = res["data"];
+      if (airportMarkers) {
+        map.removeLayer(airportMarkers);
+    }
+   
+      airportMarkers =L.markerClusterGroup();
+      for (let i = 0; i < result.length; i++) {
+        let airportMarker = L.marker([
+          result[i]["latitudeAirport"],
+          result[i]["longitudeAirport"],
+        ]);
+        let airName = airportMarker.bindPopup(result[i]["nameAirport"]);
+        if (
+          result[i]["latitudeAirport"] == null ||
+          result[i]["longitudeAirport"] == null ||
+          result[i]["nameAirport"].includes("Station")
+        ) {
+          continue;
+        } else {
+          airportMarkers.addLayer(airName);
+        }
+      }
+      
+
+      map.addLayer(airportMarkers);
+    },
+    error: function (err) {
+      console.log("wtf");
+    },
+  });
+});
+
+//Get Population
+$.ajax({
+  url: "libs/php/getCurrency.php",
+  dataType: "json",
+  data: {
+    iso: $("#selectCountry").val(),
+  },
+  success: function (res) {
+    for (let i = 0; i < res["data"].length; i++) {
+      if ($("#selectCountry").val() == res["data"][i]["iso2"]) {
+        $("#currentCurrency").html("Currency: " + res["data"][i]["currency"]);
+
+        break;
+      }
+    }
+  },
+  error: function (err) {
+    console.log("err");
+  },
 });
 
 //Show/Hide Info Pannel
@@ -192,7 +250,7 @@ var showHide = L.easyButton({
       title: "show info",
       onClick: function (control) {
         map.addLayer(marker);
-        map.setView(marker.getLatLng(),5);
+        map.setView(marker.getLatLng(), 5);
         control.state("hideBar");
       },
     },

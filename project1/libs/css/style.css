@@ -95,7 +95,7 @@ main{
   position: absolute;
   top: 35%;
   left: 38%;
-  /* display: none; */
+  display: none;
 }
 
 #overlay h4, #overlay h3{
