@@ -55,7 +55,7 @@ $(document).ready(() => {
   });
 });
 
-//Get Country Shape
+//Get Country Shape and Info
 let countryShape;
 $("#selectCountry").change(() => {
   $.ajax({
@@ -78,6 +78,31 @@ $("#selectCountry").change(() => {
       console.log(err);
     },
   });
+
+  //Get Cities
+  $.ajax({
+    url: "libs/php/getCities.php",
+    data:{
+      iso : $("#currentCountry").html()
+    },
+    success: function (res) {
+      res['data'].forEach((e)=>{
+        if($("#currentCountry").html()==e['country']){
+          e['cities'].forEach(c=>{
+            $('#selectCity').append(`<option value=${c}>
+            ${c}</option>`);
+          })
+        }
+      })
+  
+      
+     
+    },
+    error: function () {
+      console.log("error");
+    
+    },
+  });
   //Get Capital
   $.ajax({
     url: "libs/php/getCapital.php",
@@ -89,7 +114,7 @@ $("#selectCountry").change(() => {
       const result = res["data"];
       for (let i = 0; i < result.length; i++) {
         if ($("#selectCountry").val() == result[i]["iso2"]) {
-          $("#currentCapital").html("Capital: " + result[i]["capital"]);
+          $("#currentCapital").html(result[i]["capital"]);
 
           break;
         } else {
@@ -123,7 +148,7 @@ $("#selectCountry").change(() => {
       console.log(err);
     },
   });
-  //Get Population
+  //Get Currency
   $.ajax({
     url: "libs/php/getCurrency.php",
     dataType: "json",
@@ -145,6 +170,58 @@ $("#selectCountry").change(() => {
   });
 });
 
+let hotelMarkers;
+//Get hotels
+$("#selectCity").change(()=>{
+  $.ajax({
+    url:'libs/php/getHotels.php',
+    data:{
+      city: $("#selectCity").val()
+    },
+    success:function(result){
+      if (hotelMarkers) {
+        map.removeLayer(hotelMarkers);
+      }
+
+      hotelMarkers = L.markerClusterGroup({
+        iconCreateFunction: function (cluster) {
+          return L.divIcon({
+            html:
+              "<b>" +
+              '<img src="libs/vendors/leaflet/images/icons/hotel_on.png" width=32/>' +
+              cluster.getChildCount() +
+              "</b>",
+            className: "my-div-icons",
+          });
+        },
+        showCoverageOnHover: false,
+      });
+
+
+      const r = result['data']
+      for(let i=0;i<r.length;i++){
+        let hMarker = L.marker([
+          r[i]["lat"],
+          r[i]["lon"],
+          
+        ]);
+        let hName = hMarker.bindPopup(r[i]['itemName'])
+        hotelMarkers.addLayer(hName);
+        if(hotelShow){
+          map.addLayer(hotelMarkers)
+        }
+      }
+   
+     
+      console.log(r)
+    },
+    error:function(err){
+      console.log(err);
+    }
+  })
+})
+
+
 //Get Airports
 let airportMarkers;
 $("#selectCountry").change(() => {
@@ -157,9 +234,21 @@ $("#selectCountry").change(() => {
       const result = res["data"];
       if (airportMarkers) {
         map.removeLayer(airportMarkers);
-    }
-   
-      airportMarkers =L.markerClusterGroup();
+      }
+
+      airportMarkers = L.markerClusterGroup({
+        iconCreateFunction: function (cluster) {
+          return L.divIcon({
+            html:
+              "<b>" +
+              '<img src="libs/vendors/leaflet/images/icons/airportOnMap.png" width=32/>' +
+              cluster.getChildCount() +
+              "</b>",
+            className: "my-div-icons",
+          });
+        },
+        showCoverageOnHover: false,
+      });
       for (let i = 0; i < result.length; i++) {
         let airportMarker = L.marker([
           result[i]["latitudeAirport"],
@@ -174,11 +263,13 @@ $("#selectCountry").change(() => {
           continue;
         } else {
           airportMarkers.addLayer(airName);
+          if(airShow){
+            map.addLayer(airportMarker)
+          }
         }
       }
-      
 
-      map.addLayer(airportMarkers);
+     // map.addLayer(airportMarkers);
     },
     error: function (err) {
       console.log("wtf");
@@ -186,29 +277,8 @@ $("#selectCountry").change(() => {
   });
 });
 
-//Get Population
-$.ajax({
-  url: "libs/php/getCurrency.php",
-  dataType: "json",
-  data: {
-    iso: $("#selectCountry").val(),
-  },
-  success: function (res) {
-    for (let i = 0; i < res["data"].length; i++) {
-      if ($("#selectCountry").val() == res["data"][i]["iso2"]) {
-        $("#currentCurrency").html("Currency: " + res["data"][i]["currency"]);
-
-        break;
-      }
-    }
-  },
-  error: function (err) {
-    console.log("err");
-  },
-});
-
 //Show/Hide Info Pannel
-var showHide = L.easyButton({
+var infoShowHide = L.easyButton({
   states: [
     {
       stateName: "hideBar",
@@ -230,10 +300,10 @@ var showHide = L.easyButton({
     },
   ],
 });
-showHide.addTo(map);
+infoShowHide.addTo(map);
 
 //Show user position
-var showHide = L.easyButton({
+var positionShowHide = L.easyButton({
   states: [
     {
       stateName: "hideBar",
@@ -256,4 +326,58 @@ var showHide = L.easyButton({
     },
   ],
 });
-showHide.addTo(map);
+positionShowHide.addTo(map);
+
+var airShow;
+var airportShowHide = L.easyButton({
+  states: [
+    {
+      stateName: "hideBar",
+      icon: '<img src="libs/vendors/leaflet/images/icons/airport_on.png " width=18 />',
+      title: "hide info",
+      onClick: function (control) {
+        map.addLayer(airportMarkers);
+        airShow = true;
+        control.state("showBar");
+      },
+    },
+    {
+      stateName: "showBar",
+      icon: '<img src="libs/vendors/leaflet/images/icons/airport_off.png" width=18 />',
+      title: "show info",
+      onClick: function (control) {
+        map.removeLayer(airportMarkers);
+        airShow=false;
+        control.state("hideBar");
+      },
+    },
+  ],
+});
+airportShowHide.addTo(map)
+
+let hotelShow;
+var hotelShowHide = L.easyButton({
+  states: [
+    {
+      stateName: "hideBar",
+      icon: '<img src="libs/vendors/leaflet/images/icons/hotel_on.png " width=18 />',
+      title: "hide info",
+      onClick: function (control) {
+        map.addLayer(hotelMarkers);
+        hotelShow=true;
+        control.state("showBar");
+      },
+    },
+    {
+      stateName: "showBar",
+      icon: '<img src="libs/vendors/leaflet/images/icons/hotel_off.png" width=18 />',
+      title: "show info",
+      onClick: function (control) {
+        map.removeLayer(hotelMarkers);
+        hotelShow = false;
+        control.state("hideBar");
+      },
+    },
+  ],
+});
+hotelShowHide.addTo(map);

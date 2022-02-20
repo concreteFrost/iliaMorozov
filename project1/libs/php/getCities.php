@@ -1,7 +1,7 @@
 <?php
 
 
-    $url = 'https://countriesnow.space/api/v0.1/countries/capital?iso2='.$_REQUEST['iso'];
+    $url = 'https://countriesnow.space/api/v0.1/countries?country='.$_REQUEST['iso'];
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -19,7 +19,7 @@
 	$output['status']['name'] = "ok";
 	$output['status']['description'] = "success";
 
-	$output['data'] = $decode;
+	$output['data'] = $decode['data'];
 	
 	header('Content-Type: application/json; charset=UTF-8');
 

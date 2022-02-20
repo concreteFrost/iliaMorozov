@@ -34,7 +34,7 @@ nav h2 {
 }
 
 .selectCountrySection {
-  flex: 0.5;
+  flex: 1;
   order: 1;
   align-self: center;
   margin-left: 5px;
@@ -49,28 +49,20 @@ nav h2 {
   width: 100%;
 }
 
-.helpButtonClass {
-  flex: 0.5;
-  order: 3;
+.selectCitySection {
+  flex:1 ;
+  order: 1;
   align-self: center;
-  margin-right: 10px;
-}
-
-.helpButtonClass button {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  border: 0px;
-  border-radius: 50%;
+  margin-left: 5px;
   text-align: center;
-  height: 35px;
-  width: 35px;
-  background-color: rgb(229, 229, 229);
+  color: white;
 }
 
-.helpButtonClass button:hover {
-  transition: 0.15s;
-  background-color: rgb(255, 179, 0);
+.selectCitySection select {
+  text-align: center;
+}
+.selectCitySection option {
+  width: 100%;
 }
 
 main{
