@@ -8,9 +8,7 @@ const OpenStreetMap_Mapnik = L.tileLayer(
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }
 ).addTo(map);
-
 var marker;
-
 //Get user position
 $(document).ready(() => {
   navigator.geolocation.getCurrentPosition((pos) => {
@@ -24,9 +22,7 @@ $(document).ready(() => {
       },
       success: function (res) {
         map.setView([pos.coords.latitude, pos.coords.longitude], 13);
-
         $("#selectCountry").val(res["data"]["countryCode"]).change();
-
         marker = L.marker([pos.coords.latitude, pos.coords.longitude]).addTo(
           map
         );
@@ -38,7 +34,6 @@ $(document).ready(() => {
     });
   });
 });
-
 //Fill up country list
 $(document).ready(() => {
   $.ajax({
@@ -54,13 +49,14 @@ $(document).ready(() => {
     },
   });
 });
-
 //Get Country Shape and Info
 let countryShape;
 $("#selectCountry").change(() => {
+  //Get Shape
   $.ajax({
     url: "libs/php/getCountryBounds.php",
     success: function (res) {
+      $("#selectCity").find("option").remove().end();
       for (let i = 0; i < res["data"].length; i++) {
         if ($("#selectCountry").val() == res["data"][i]["iso"]) {
           if (map.hasLayer(countryShape)) {
@@ -78,29 +74,24 @@ $("#selectCountry").change(() => {
       console.log(err);
     },
   });
-
   //Get Cities
   $.ajax({
     url: "libs/php/getCities.php",
-    data:{
-      iso : $("#currentCountry").html()
+    data: {
+      iso: $("#currentCountry").html(),
     },
     success: function (res) {
-      res['data'].forEach((e)=>{
-        if($("#currentCountry").html()==e['country']){
-          e['cities'].forEach(c=>{
-            $('#selectCity').append(`<option value=${c}>
+      res["data"].forEach((e) => {
+        if ($("#currentCountry").html() == e["country"]) {
+          e["cities"].forEach((c) => {
+            $("#selectCity").append(`<option value=${c}>
             ${c}</option>`);
-          })
+          });
         }
-      })
-  
-      
-     
+      });
     },
     error: function () {
       console.log("error");
-    
     },
   });
   //Get Capital
@@ -115,7 +106,6 @@ $("#selectCountry").change(() => {
       for (let i = 0; i < result.length; i++) {
         if ($("#selectCountry").val() == result[i]["iso2"]) {
           $("#currentCapital").html(result[i]["capital"]);
-
           break;
         } else {
         }
@@ -170,19 +160,28 @@ $("#selectCountry").change(() => {
   });
 });
 
+$("#selectCountry").change(() => {
+  hotelShowHide.state("hideBar");
+});
+
+/////////////MARKERS/////////////////////////
+
+//Show/Hide Info Pannel
+
+
 let hotelMarkers;
 //Get hotels
-$("#selectCity").change(()=>{
+$("#selectCity").change(() => {
   $.ajax({
-    url:'libs/php/getHotels.php',
-    data:{
-      city: $("#selectCity").val()
+    url: "libs/php/getHotels.php",
+    data: {
+      city: $("#selectCity").val(),
     },
-    success:function(result){
-      if (hotelMarkers) {
-        map.removeLayer(hotelMarkers);
+    success: function (result) {
+      if(hotelMarkers){
+        map.removeLayer(hotelMarkers)
       }
-
+      hotelShowHide.state('showBar')
       hotelMarkers = L.markerClusterGroup({
         iconCreateFunction: function (cluster) {
           return L.divIcon({
@@ -194,33 +193,27 @@ $("#selectCity").change(()=>{
             className: "my-div-icons",
           });
         },
-        showCoverageOnHover: false,
       });
-
-
-      const r = result['data']
-      for(let i=0;i<r.length;i++){
-        let hMarker = L.marker([
-          r[i]["lat"],
-          r[i]["lon"],
-          
-        ]);
-        let hName = hMarker.bindPopup(r[i]['itemName'])
+      const r = result["data"];
+      for (let i = 0; i < r.length; i++) {
+        let hMarker = L.marker([r[i]["lat"], r[i]["lon"]]);
+        let rank = Math.ceil(r[i]['rank'])
+        let hName = hMarker.bindPopup(r[i]["itemName"] +'<br>' + 'hotel rank :' + rank);
         hotelMarkers.addLayer(hName);
-        if(hotelShow){
-          map.addLayer(hotelMarkers)
-        }
       }
-   
-     
-      console.log(r)
+      map.addLayer(hotelMarkers)
     },
-    error:function(err){
+    error: function (err) {
       console.log(err);
-    }
-  })
-})
+    },
+  });
+});
 
+$("#selectCountry").change(()=>{
+  if(hotelMarkers){map.removeLayer(hotelMarkers)}
+  
+  hotelShowHide.state('hideBar')
+})
 
 //Get Airports
 let airportMarkers;
@@ -231,10 +224,10 @@ $("#selectCountry").change(() => {
       iso: $("#selectCountry").val(),
     },
     success: function (res) {
-      const result = res["data"];
       if (airportMarkers) {
         map.removeLayer(airportMarkers);
       }
+      airportShowHide.state("hideBar");
 
       airportMarkers = L.markerClusterGroup({
         iconCreateFunction: function (cluster) {
@@ -247,14 +240,14 @@ $("#selectCountry").change(() => {
             className: "my-div-icons",
           });
         },
-        showCoverageOnHover: false,
       });
+      const result = res["data"];
       for (let i = 0; i < result.length; i++) {
         let airportMarker = L.marker([
           result[i]["latitudeAirport"],
           result[i]["longitudeAirport"],
-        ]);
-        let airName = airportMarker.bindPopup(result[i]["nameAirport"]);
+        ]).bindPopup(result[i]["nameAirport"]);
+
         if (
           result[i]["latitudeAirport"] == null ||
           result[i]["longitudeAirport"] == null ||
@@ -262,14 +255,9 @@ $("#selectCountry").change(() => {
         ) {
           continue;
         } else {
-          airportMarkers.addLayer(airName);
-          if(airShow){
-            map.addLayer(airportMarker)
-          }
+          airportMarkers.addLayer(airportMarker);
         }
       }
-
-     // map.addLayer(airportMarkers);
     },
     error: function (err) {
       console.log("wtf");
@@ -277,7 +265,7 @@ $("#selectCountry").change(() => {
   });
 });
 
-//Show/Hide Info Pannel
+/////////ButtonS!!!/////////////////////
 var infoShowHide = L.easyButton({
   states: [
     {
@@ -302,7 +290,6 @@ var infoShowHide = L.easyButton({
 });
 infoShowHide.addTo(map);
 
-//Show user position
 var positionShowHide = L.easyButton({
   states: [
     {
@@ -328,7 +315,7 @@ var positionShowHide = L.easyButton({
 });
 positionShowHide.addTo(map);
 
-var airShow;
+
 var airportShowHide = L.easyButton({
   states: [
     {
@@ -337,7 +324,6 @@ var airportShowHide = L.easyButton({
       title: "hide info",
       onClick: function (control) {
         map.addLayer(airportMarkers);
-        airShow = true;
         control.state("showBar");
       },
     },
@@ -347,15 +333,14 @@ var airportShowHide = L.easyButton({
       title: "show info",
       onClick: function (control) {
         map.removeLayer(airportMarkers);
-        airShow=false;
         control.state("hideBar");
       },
     },
   ],
 });
-airportShowHide.addTo(map)
+airportShowHide.addTo(map);
 
-let hotelShow;
+
 var hotelShowHide = L.easyButton({
   states: [
     {
@@ -364,7 +349,7 @@ var hotelShowHide = L.easyButton({
       title: "hide info",
       onClick: function (control) {
         map.addLayer(hotelMarkers);
-        hotelShow=true;
+   
         control.state("showBar");
       },
     },
@@ -374,7 +359,7 @@ var hotelShowHide = L.easyButton({
       title: "show info",
       onClick: function (control) {
         map.removeLayer(hotelMarkers);
-        hotelShow = false;
+       
         control.state("hideBar");
       },
     },
