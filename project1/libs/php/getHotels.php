@@ -3,13 +3,14 @@
 $curl = curl_init();
 
 curl_setopt_array($curl, [
-	CURLOPT_URL => "https://priceline-com-provider.p.rapidapi.com/v1/hotels/locations?search_type=HOTEL&name=".$_REQUEST['city'],
+	CURLOPT_URL => 'https://test.ezconnect.link/v1/static/hotels?skip=600&limit=10&order=desc&destinationId=5c431ec518524947e1f0197a&countryISO2='.$_REQUEST['iso'].'&createdUpdated=2018-12-19',
+	
     CURLOPT_SSL_VERIFYPEER => false,
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => "",
 	CURLOPT_HTTPHEADER => [
-		"x-rapidapi-host: priceline-com-provider.p.rapidapi.com",
-		"x-rapidapi-key: c0979b1d79mshd8a80cb8e2a7fa9p17a4b6jsn2c9e96fcb8e1"
+		'Authorization: 5bf69c8a9343440687c8c873.8eb80e100a00b35456921cb8fd04e5',
+		'Content-Type: application/json'
 	],
 ]);
 
@@ -17,13 +18,14 @@ $response = curl_exec($curl);
 
 curl_close($curl);
 
-$decode = json_decode($response,true);	
+echo $response;
 
-$output['status']['code'] = "200";
-$output['status']['name'] = "ok";
-$output['status']['description'] = "success";
-$output['data'] = $decode;
+// $decode = json_decode($response,true);	
 
-header('Content-Type: application/json; charset=UTF-8');
-echo json_encode($output);
+// $output['status']['code'] = "200";
+// $output['status']['name'] = "ok";
+// $output['status']['description'] = "success";
+// $output['data'] = $decode;
 
+// header('Content-Type: application/json; charset=UTF-8');
+// echo json_encode($output);

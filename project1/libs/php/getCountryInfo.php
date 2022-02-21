@@ -1,7 +1,7 @@
 <?php
 
 
-    $url = 'https://countriesnow.space/api/v0.1/countries/capital?iso2='.$_REQUEST['iso'];
+    $url = 'https://restcountries.com/v2/alpha/'.$_REQUEST['iso'];
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

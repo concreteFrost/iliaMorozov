@@ -1,3 +1,19 @@
+
+@font-face {
+  font-family: Hatcher;
+  src: url('../fonts/Hatcher.otf');
+}
+
+@font-face {
+  font-family: Dubiel;
+  src: url('../fonts/Cabin-Regular-TTF.ttf');
+}
+
+*{
+  font-family: Dubiel,Times, serif;
+}
+
+
 body {
   grid-template-areas:
     "nav nav"
@@ -5,7 +21,6 @@ body {
   margin: 0;
 
 }
-
 body::-webkit-scrollbar {
     display: none;
 }
@@ -24,9 +39,10 @@ nav {
 }
 
 nav h2 {
+  font-family: Hatcher,Times,serif;
   font-size: 2.5em;
   color: rgb(255, 255, 255);
-  padding-top: 10px;
+
   margin: auto;
   padding-left: 10px;
   text-align: left;
@@ -85,7 +101,7 @@ main{
   border: 2px solid rgb(195, 195, 195);
   border-radius: 5px;
   width: 300px;
-  height: 200px;
+  height: 300px;
   position: absolute;
   top: 35%;
   left: 38%;
@@ -97,10 +113,6 @@ main{
 }
 #overlay p{
   padding-left: 10px;
-}
-
-#currentFlag img{
-  width: 30px;
 }
 
 .leaflet-top {
@@ -148,7 +160,7 @@ main{
 
 
   #overlay{
-    width: 40%;
+    width: 50%;
     height: 45%;
     top: 55%;
     left: 58%;

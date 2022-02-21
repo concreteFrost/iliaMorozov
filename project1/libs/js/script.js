@@ -49,7 +49,7 @@ $(document).ready(() => {
     },
   });
 });
-//Get Country Shape and Info
+//Get Country Shape
 let countryShape;
 $("#selectCountry").change(() => {
   //Get Shape
@@ -74,100 +74,57 @@ $("#selectCountry").change(() => {
       console.log(err);
     },
   });
-  //Get Cities
-  $.ajax({
-    url: "libs/php/getCities.php",
-    data: {
-      iso: $("#currentCountry").html(),
-    },
-    success: function (res) {
-      res["data"].forEach((e) => {
-        if ($("#currentCountry").html() == e["country"]) {
-          e["cities"].forEach((c) => {
-            $("#selectCity").append(`<option value=${c}>
-            ${c}</option>`);
-          });
-        }
-      });
-    },
-    error: function () {
-      console.log("error");
-    },
-  });
-  //Get Capital
-  $.ajax({
-    url: "libs/php/getCapital.php",
-    dataType: "json",
-    data: {
-      iso: $("#selectCountry").val(),
-    },
-    success: function (res) {
-      const result = res["data"];
-      for (let i = 0; i < result.length; i++) {
-        if ($("#selectCountry").val() == result[i]["iso2"]) {
-          $("#currentCapital").html(result[i]["capital"]);
-          break;
-        } else {
-        }
-      }
-    },
-    error: function (err) {
-      console.log("err");
-    },
-  });
-  //Get Country And Flag
-  $.ajax({
-    url: "libs/php/getCountryAndFlag.php",
-    dataType: "json",
-    data: {
-      iso: $("#selectCountry").val(),
-    },
-    success: function (res) {
-      const result = res["data"];
-      for (let i = 0; i < result.length; i++) {
-        if ($("#selectCountry").val() == result[i]["iso2"]) {
-          $("#currentCountry").html(result[i]["name"]);
-          $("#currentFlag").html(
-            `Country flag: <img src=${result[i]["flag"]} alt='no image'/>`
-          );
-          break;
-        }
-      }
-    },
-    error: function (err) {
-      console.log(err);
-    },
-  });
-  //Get Currency
-  $.ajax({
-    url: "libs/php/getCurrency.php",
-    dataType: "json",
-    data: {
-      iso: $("#selectCountry").val(),
-    },
-    success: function (res) {
-      for (let i = 0; i < res["data"].length; i++) {
-        if ($("#selectCountry").val() == res["data"][i]["iso2"]) {
-          $("#currentCurrency").html("Currency: " + res["data"][i]["currency"]);
-
-          break;
-        }
-      }
-    },
-    error: function (err) {
-      console.log("err");
-    },
-  });
 });
-
+//Get Capital/Flag/Currency
 $("#selectCountry").change(() => {
-  hotelShowHide.state("hideBar");
+  $.ajax({
+    url: "libs/php/getCountryInfo.php",
+    dataType: "json",
+    data: {
+      iso: $("#selectCountry").val(),
+    },
+    success: function (res) {
+      const result = res["data"];
+
+     
+      console.log(result["nativeName"]);
+
+      $("#currentCountry").html(result["nativeName"]);
+      $("#currentCapital").html("Capital: " + result["capital"]);
+      $("#currentFlag").html(
+        `Country flag: <img src=${result["flag"]} alt='no image' style='width : 30px'/>`
+      );
+      $("#currentCurrency").html(
+        "Currency: " + result["currencies"][0]["name"]
+      );
+      $("#currentPopulation").html("Population: " + result["population"]);
+    },
+    error: function (err) {
+      console.log("err");
+    },
+  });
 });
+
+$('#currentCountry').on('DOMSubtreeModified',()=>{
+  $.ajax({
+    url:'libs/php/getWiki.php',
+    data:{
+      country: $('#currentCountry').html().replace(' ','_').toLowerCase()
+    },
+    success(res){
+      console.log(res['data']);
+      console.log(res['data']['geonames'][0]['wikipediaUrl']);
+      $("#wikiPage").html(`<a href="https://${res['data']['geonames'][0]['wikipediaUrl']}" target='_blank'>Wikipedia</a>`)
+    },
+    error(err){
+      console.log('error')
+    }
+  })
+})
 
 /////////////MARKERS/////////////////////////
 
 //Show/Hide Info Pannel
-
 
 let hotelMarkers;
 //Get hotels
@@ -178,10 +135,9 @@ $("#selectCity").change(() => {
       city: $("#selectCity").val(),
     },
     success: function (result) {
-      if(hotelMarkers){
-        map.removeLayer(hotelMarkers)
+      if (hotelMarkers) {
+        map.removeLayer(hotelMarkers);
       }
-      hotelShowHide.state('showBar')
       hotelMarkers = L.markerClusterGroup({
         iconCreateFunction: function (cluster) {
           return L.divIcon({
@@ -197,11 +153,13 @@ $("#selectCity").change(() => {
       const r = result["data"];
       for (let i = 0; i < r.length; i++) {
         let hMarker = L.marker([r[i]["lat"], r[i]["lon"]]);
-        let rank = Math.ceil(r[i]['rank'])
-        let hName = hMarker.bindPopup(r[i]["itemName"] +'<br>' + 'hotel rank :' + rank);
+        let rank = Math.ceil(r[i]["rank"]);
+        let hName = hMarker.bindPopup(
+          r[i]["itemName"] + "<br>" + "hotel rank :" + rank
+        );
         hotelMarkers.addLayer(hName);
       }
-      map.addLayer(hotelMarkers)
+      map.addLayer(hotelMarkers);
     },
     error: function (err) {
       console.log(err);
@@ -209,11 +167,13 @@ $("#selectCity").change(() => {
   });
 });
 
-$("#selectCountry").change(()=>{
-  if(hotelMarkers){map.removeLayer(hotelMarkers)}
-  
-  hotelShowHide.state('hideBar')
-})
+$("#selectCountry").change(() => {
+  if (hotelMarkers) {
+    map.removeLayer(hotelMarkers);
+  }
+
+  hotelShowHide.state("hideBar");
+});
 
 //Get Airports
 let airportMarkers;
@@ -227,7 +187,6 @@ $("#selectCountry").change(() => {
       if (airportMarkers) {
         map.removeLayer(airportMarkers);
       }
-      airportShowHide.state("hideBar");
 
       airportMarkers = L.markerClusterGroup({
         iconCreateFunction: function (cluster) {
@@ -257,6 +216,7 @@ $("#selectCountry").change(() => {
         } else {
           airportMarkers.addLayer(airportMarker);
         }
+        map.addLayer(airportMarkers);
       }
     },
     error: function (err) {
@@ -315,7 +275,6 @@ var positionShowHide = L.easyButton({
 });
 positionShowHide.addTo(map);
 
-
 var airportShowHide = L.easyButton({
   states: [
     {
@@ -340,7 +299,6 @@ var airportShowHide = L.easyButton({
 });
 airportShowHide.addTo(map);
 
-
 var hotelShowHide = L.easyButton({
   states: [
     {
@@ -349,7 +307,7 @@ var hotelShowHide = L.easyButton({
       title: "hide info",
       onClick: function (control) {
         map.addLayer(hotelMarkers);
-   
+
         control.state("showBar");
       },
     },
@@ -359,7 +317,7 @@ var hotelShowHide = L.easyButton({
       title: "show info",
       onClick: function (control) {
         map.removeLayer(hotelMarkers);
-       
+
         control.state("hideBar");
       },
     },

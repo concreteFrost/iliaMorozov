@@ -1,5 +1,7 @@
 <?php
-    $url = 'https://countriesnow.space/api/v0.1/countries/flag/images?'.$_REQUEST['iso'];
+
+
+    $url = 'http://api.geonames.org/wikipediaSearchJSON?q='.$_REQUEST['country'].'&maxRows=10&username=frostyj';
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -17,8 +19,8 @@
 	$output['status']['name'] = "ok";
 	$output['status']['description'] = "success";
 
-	$output['data'] = $decode['data'];
+	$output['data'] = $decode;
 	
 	header('Content-Type: application/json; charset=UTF-8');
 
-	echo json_encode($output);
+	echo json_encode($output); 
