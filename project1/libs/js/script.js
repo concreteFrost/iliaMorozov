@@ -261,7 +261,8 @@ var infoShowHide = L.easyButton({
       icon: '<img src="libs/vendors/leaflet/images/icons/info_on.png " width=18 />',
       title: "hide info",
       onClick: function (control) {
-        $("#overlay").hide();
+        $("#overlay").show();
+     
         control.state("showBar");
       },
     },
@@ -270,7 +271,7 @@ var infoShowHide = L.easyButton({
       icon: '<img src="libs/vendors/leaflet/images/icons/info_off.png" width=18 />',
       title: "show info",
       onClick: function (control) {
-        $("#overlay").show();
+        $("#overlay").hide();
         control.state("hideBar");
       },
     },
@@ -337,7 +338,7 @@ var hotelShowHide = L.easyButton({
       icon: '<img src="libs/vendors/leaflet/images/icons/hotel_on.png " width=18 />',
       title: "hide info",
       onClick: function (control) {
-        map.addLayer(museumMarkers);
+        map.removeLayer(museumMarkers);
 
         control.state("showBar");
       },
@@ -347,8 +348,8 @@ var hotelShowHide = L.easyButton({
       icon: '<img src="libs/vendors/leaflet/images/icons/hotel_off.png" width=18 />',
       title: "show info",
       onClick: function (control) {
-        map.removeLayer(museumMarkers);
-
+       
+        map.addLayer(museumMarkers);
         control.state("hideBar");
       },
     },
@@ -364,8 +365,8 @@ var covidShowHide = L.easyButton({
       icon: '<img src="libs/vendors/leaflet/images/icons/covid_on.png " width=18 />',
       title: "hide info",
       onClick: function (control) {
-        $("#covidOverlay").hide();
-
+        
+        $("#covidOverlay").show();
         control.state("showBar");
       },
     },
@@ -374,8 +375,8 @@ var covidShowHide = L.easyButton({
       icon: '<img src="libs/vendors/leaflet/images/icons/covid_off.png" width=18 />',
       title: "show info",
       onClick: function (control) {
-        $("#covidOverlay").show();
-
+       
+        $("#covidOverlay").hide();
         control.state("hideBar");
       },
     },
