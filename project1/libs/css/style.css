@@ -125,7 +125,6 @@ main{
   position: absolute;
   top: 26.3%;
   left: 50px;
-
 }
 
 #covidOverlay h4{
@@ -185,6 +184,7 @@ main{
     height: 45%;
     top: 55%;
     left: 58%;
+    display: none;
   }
 
   #overlay h4, #overlay h3{
