@@ -115,6 +115,27 @@ main{
   padding-left: 10px;
 }
 
+#covidOverlay{
+  z-index: 1000;
+  background-color: rgb(255, 255, 255);
+  border: 2px solid rgb(195, 195, 195);
+  border-radius: 5px;
+  width: 170px;
+  height: 237px;
+  position: absolute;
+  top: 26.3%;
+  left: 50px;
+
+}
+
+#covidOverlay h4{
+  padding-left: 10px;
+}
+#covidOverlay p{
+  padding-left: 10px;
+}
+
+
 .leaflet-top {
 	top: 136px;
 	}
@@ -130,10 +151,10 @@ main{
     flex: 2;
     order: 1;
     text-align: left;
-    font-size: 5vw;
+    font-size: 30px;
     padding-left: 5px;
     letter-spacing: 1px;
-    margin: auto;
+    
   }
 
   .selectCountrySection {
@@ -171,6 +192,21 @@ main{
     padding-left: 10px;
     margin-bottom: 5px;
 
+  }
+
+  #covidOverlay{
+    z-index: 1000;
+    position: absolute;
+    top: 11%;
+    left: 50px;
+  
+  }
+  
+  #covidOverlay h4{
+    padding-left: 10px;
+  }
+  #covidOverlay p{
+    padding-left: 10px;
   }
 
   .leaflet-top {

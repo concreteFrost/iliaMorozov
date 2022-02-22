@@ -1,26 +1,26 @@
 <?php
 
 
-    $url = 'https://restcountries.com/v2/alpha/'.$_REQUEST['iso'];
+$url = 'https://restcountries.com/v2/alpha/' . $_REQUEST['iso'];
 
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_URL,$url);
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_URL, $url);
 
-	$result=curl_exec($ch);
-    
-	curl_close($ch);
-    
-	$decode = json_decode($result,true);	
- 
+$result = curl_exec($ch);
 
-	$output['status']['code'] = "200";
-	$output['status']['name'] = "ok";
-	$output['status']['description'] = "success";
+curl_close($ch);
 
-	$output['data'] = $decode;
-	
-	header('Content-Type: application/json; charset=UTF-8');
+$decode = json_decode($result, true);
 
-	echo json_encode($output); 
+
+$output['status']['code'] = "200";
+$output['status']['name'] = "ok";
+$output['status']['description'] = "success";
+
+$output['data'] = $decode;
+
+header('Content-Type: application/json; charset=UTF-8');
+
+echo json_encode($output);

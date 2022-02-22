@@ -86,8 +86,6 @@ $("#selectCountry").change(() => {
     success: function (res) {
       const result = res["data"];
 
-     
-      console.log(result["nativeName"]);
 
       $("#currentCountry").html(result["nativeName"]);
       $("#currentCapital").html("Capital: " + result["capital"]);
@@ -105,6 +103,26 @@ $("#selectCountry").change(() => {
   });
 });
 
+//Get Covid
+$("#selectCountry").change(()=>{
+  $.ajax({
+    url:'libs/php/getCovid.php',
+    data:{
+      iso: $("#selectCountry").val()
+    },
+    success:function(res){
+      r = res['data'];
+      $("#confirmed").html("Confirmed: " + r['confirmed'])
+      $("#deaths").html("Deaths: " + r['deaths'])
+      $("#recovered").html("Recovered: " + r['recovered'])
+      $("#active").html("Active: " + r['active'])
+    },
+    error: function(er){
+      console.log(err);
+    }
+  })
+})
+
 $('#currentCountry').on('DOMSubtreeModified',()=>{
   $.ajax({
     url:'libs/php/getWiki.php',
@@ -112,8 +130,7 @@ $('#currentCountry').on('DOMSubtreeModified',()=>{
       country: $('#currentCountry').html().replace(' ','_').toLowerCase()
     },
     success(res){
-      console.log(res['data']);
-      console.log(res['data']['geonames'][0]['wikipediaUrl']);
+    
       $("#wikiPage").html(`<a href="https://${res['data']['geonames'][0]['wikipediaUrl']}" target='_blank'>Wikipedia</a>`)
     },
     error(err){
@@ -225,7 +242,7 @@ $("#selectCountry").change(() => {
   });
 });
 
-/////////ButtonS!!!/////////////////////
+/////////Buttons!!!/////////////////////
 var infoShowHide = L.easyButton({
   states: [
     {
@@ -250,6 +267,7 @@ var infoShowHide = L.easyButton({
 });
 infoShowHide.addTo(map);
 
+//Show Position Button
 var positionShowHide = L.easyButton({
   states: [
     {
@@ -275,6 +293,7 @@ var positionShowHide = L.easyButton({
 });
 positionShowHide.addTo(map);
 
+//Show Airports Button
 var airportShowHide = L.easyButton({
   states: [
     {
@@ -282,7 +301,7 @@ var airportShowHide = L.easyButton({
       icon: '<img src="libs/vendors/leaflet/images/icons/airport_on.png " width=18 />',
       title: "hide info",
       onClick: function (control) {
-        map.addLayer(airportMarkers);
+        map.removeLayer(airportMarkers);
         control.state("showBar");
       },
     },
@@ -291,7 +310,7 @@ var airportShowHide = L.easyButton({
       icon: '<img src="libs/vendors/leaflet/images/icons/airport_off.png" width=18 />',
       title: "show info",
       onClick: function (control) {
-        map.removeLayer(airportMarkers);
+        map.addLayer(airportMarkers);
         control.state("hideBar");
       },
     },
@@ -299,6 +318,7 @@ var airportShowHide = L.easyButton({
 });
 airportShowHide.addTo(map);
 
+//Show Hotels Button
 var hotelShowHide = L.easyButton({
   states: [
     {
@@ -324,3 +344,30 @@ var hotelShowHide = L.easyButton({
   ],
 });
 hotelShowHide.addTo(map);
+
+//Show Covid Button
+var covidShowHide = L.easyButton({
+  states: [
+    {
+      stateName: "hideBar",
+      icon: '<img src="libs/vendors/leaflet/images/icons/covid_on.png " width=18 />',
+      title: "hide info",
+      onClick: function (control) {
+        $("#covidOverlay").hide()
+
+        control.state("showBar");
+      },
+    },
+    {
+      stateName: "showBar",
+      icon: '<img src="libs/vendors/leaflet/images/icons/covid_off.png" width=18 />',
+      title: "show info",
+      onClick: function (control) {
+        $("#covidOverlay").show()
+
+        control.state("hideBar");
+      },
+    },
+  ],
+});
+covidShowHide.addTo(map);
