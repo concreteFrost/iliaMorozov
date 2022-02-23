@@ -254,7 +254,7 @@ main {
   #overlay {
     width: 50%;
     height: 45%;
-    top: 250px;
+    top: 380px;
     left: 47%;
   }
 
@@ -270,7 +270,7 @@ main {
   #covidOverlay {
     z-index: 1000;
     position: absolute;
-    top: 300px;
+    top: 560px;
     left: 47%;
     width: 50%;
   }
@@ -285,7 +285,7 @@ main {
   .weatherOverlay {
     width: 55%;
     height: 50%;
-    top: 100px;
+    top: 350px;
     left: 43%;
   }
 
