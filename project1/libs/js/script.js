@@ -40,58 +40,6 @@ $(document).ready(() => {
 $(document).ready(() => {
   navigator.geolocation.getCurrentPosition((pos) => {
     //Get CurrentPosition
-    $.ajax({
-      url: "libs/php/getWeather.php",
-      dataType: "json",
-      data: {
-        lat: pos.coords.latitude,
-        lon: pos.coords.longitude,
-      },
-      success: function (r) {
-        var options = {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        };
-        var today = new Date(r["data"][0]["date"]);
-        let todayDate = today.toLocaleDateString('en-US',options) ;
-        let todayIcon = r["data"][0]["day"]["condition"]["icon"];
-        let todayTemp = r["data"][0]["day"]["avgtemp_c"];
-        let todayWindSpeed = r["data"][0]["day"]["maxwind_kph"];
-        let todayCondition = r["data"][0]["day"]["condition"]["text"];
-        let sunrise = r["data"][0]["astro"]['sunrise']
-        let sunset = r["data"][0]["astro"]['sunset']
-
-        $("#todayDate").html(todayDate);
-        $("#todayWeatherIcon").html(`<img src="https://${todayIcon}" />`);
-        $("#currentTemperature").html("<b>Temperature: </b>" + todayTemp + "°");
-        $("#windSpeed").html("<b>Wind Speed: </b>" + todayWindSpeed + ' ms');
-        $("#todayCondition").html(todayCondition);
-
-        $("#sunrise").html("<b>Sunrise: </b>" + sunrise);
-        $("#sunset").html("<b>Sunset: </b>" + sunset);
-
-        let tomorrowIcon = r["data"][1]["day"]["condition"]["icon"];
-        let tomorrowTemp = r["data"][1]["day"]["avgtemp_c"];
-       
-        $("#tomorrowDate").html(r["data"][1]["date"]);
-        $("#tomorrowWeatherIcon").html(`<img src="https://${tomorrowIcon}" />`);
-        $("#tomorrowWeatherTemperature").html("<b>Temperature: </b>" + tomorrowTemp + "°");
-
-        let dayAfterIcon = r["data"][2]["day"]["condition"]["icon"];
-        let dayAfterTemp = r["data"][2]["day"]["avgtemp_c"];
-        
-        $("#afterTomorrowDate").html(r["data"][2]["date"]);
-        $("#afterTomorrowWeatherIcon").html(`<img src="https://${dayAfterIcon}" />`);
-        $("#afterTomorrowWeatherTemperature").html("<b>Temperature: </b>" + dayAfterTemp + "°");
-
-    
-      },
-      error: function (err) {
-        console.log(err);
-      },
-    });
   });
 });
 //Fill up country list
@@ -145,8 +93,12 @@ $("#selectCountry").change(() => {
   });
 });
 
+//weather location array
 var latLon = [];
-//Get Capital/Flag/Currency
+
+//cities location iso2 code
+let iso2;
+//Get Capital/Flag/Currency/Covid/Weather
 $("#selectCountry").change(() => {
   $.ajax({
     url: "libs/php/getCountryInfo.php",
@@ -160,6 +112,14 @@ $("#selectCountry").change(() => {
       latLon.push(result["latlng"][1]);
       latLon.push(result["latlng"][0]);
 
+      //Change value to UK if iso2=GB
+      if (result["alpha2Code"] == "GB") {
+        iso2 = "UK";
+      } else {
+        iso2 = result["alpha2Code"];
+      }
+      console.log(iso2);
+
       $("#currentCountry").html(result["nativeName"]);
       $("#currentCapital").html("Capital: " + result["capital"]);
       $("#currentFlag").html(
@@ -169,16 +129,73 @@ $("#selectCountry").change(() => {
         "Currency: " + result["currencies"][0]["name"]
       );
       $("#currentPopulation").html("Population: " + result["population"]);
+      // Get Weather
+      $.ajax({
+        url: "libs/php/getWeather.php",
+        dataType: "json",
+        data: {
+          lat: latLon[1],
+          lon: latLon[0],
+        },
+        success: function (r) {
+          var options = {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          };
+          var today = new Date(r["data"][0]["date"]);
+          let todayDate = today.toLocaleDateString("en-US", options);
+          let todayIcon = r["data"][0]["day"]["condition"]["icon"];
+          let todayTemp = r["data"][0]["day"]["avgtemp_c"];
+          let todayWindSpeed = r["data"][0]["day"]["maxwind_kph"];
+          let todayCondition = r["data"][0]["day"]["condition"]["text"];
+          let sunrise = r["data"][0]["astro"]["sunrise"];
+          let sunset = r["data"][0]["astro"]["sunset"];
+
+          $("#todayDate").html(todayDate);
+          $("#todayWeatherIcon").html(`<img src="https://${todayIcon}" />`);
+          $("#currentTemperature").html(
+            "<b>Temperature: </b>" + todayTemp + "°"
+          );
+          $("#windSpeed").html("<b>Wind Speed: </b>" + todayWindSpeed + " ms");
+          $("#todayCondition").html(todayCondition);
+
+          $("#sunrise").html("<b>Sunrise: </b>" + sunrise);
+          $("#sunset").html("<b>Sunset: </b>" + sunset);
+
+          let tomorrowIcon = r["data"][1]["day"]["condition"]["icon"];
+          let tomorrowTemp = r["data"][1]["day"]["avgtemp_c"];
+
+          $("#tomorrowDate").html(r["data"][1]["date"]);
+          $("#tomorrowWeatherIcon").html(
+            `<img src="https://${tomorrowIcon}" />`
+          );
+          $("#tomorrowWeatherTemperature").html(
+            "<b>Temperature: </b>" + tomorrowTemp + "°"
+          );
+
+          let dayAfterIcon = r["data"][2]["day"]["condition"]["icon"];
+          let dayAfterTemp = r["data"][2]["day"]["avgtemp_c"];
+
+          $("#afterTomorrowDate").html(r["data"][2]["date"]);
+          $("#afterTomorrowWeatherIcon").html(
+            `<img src="https://${dayAfterIcon}" />`
+          );
+          $("#afterTomorrowWeatherTemperature").html(
+            "<b>Temperature: </b>" + dayAfterTemp + "°"
+          );
+        },
+        error: function (err) {
+          console.log(err);
+        },
+      });
     },
     error: function (err) {
       console.log("err");
     },
   });
-});
-
-// //Get Covid////////////////////////
-
-$("#selectCountry").change(() => {
+  //Get Covid
   $.ajax({
     url: "libs/php/getCovid.php",
     data: {
@@ -186,10 +203,11 @@ $("#selectCountry").change(() => {
     },
     success: function (res) {
       r = res["data"];
-      $("#confirmed").html("Confirmed: " + r["confirmed"]);
-      $("#deaths").html("Deaths: " + r["deaths"]);
-      $("#recovered").html("Recovered: " + r["recovered"]);
-      $("#active").html("Active: " + r["active"]);
+      $("#covidCountry").html(r["country"]);
+      $("#confirmed").html(r["confirmed"]);
+      $("#deaths").html(r["deaths"]);
+      $("#recovered").html(r["recovered"]);
+      $("#active").html(r["active"]);
     },
     error: function (er) {
       console.log(err);
@@ -220,113 +238,44 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
 
 //Show/Hide Info Pannel
 
-let museumMarkers;
+let cityMarkers;
+let parks;
 //Get Museums/////////////////
 $("#currentCountry").on("DOMSubtreeModified", () => {
   $.ajax({
-    url: "libs/php/getCafes.php",
+    url: "libs/php/getCitiesAndParks.php",
     data: {
-      lon: latLon[0],
-      lat: latLon[1],
+      iso: iso2,
     },
     success: function (result) {
-      if (museumMarkers) {
-        map.removeLayer(museumMarkers);
+      if (cityMarkers) {
+        map.removeLayer(cityMarkers);
       }
-      museumMarkers = L.markerClusterGroup({
-        iconCreateFunction: function (cluster) {
-          return L.divIcon({
-            html:
-              "<b>" +
-              '<img src="libs/vendors/leaflet/images/icons/hotel_on.png" width=32/>' +
-              cluster.getChildCount() +
-              "</b>",
-            className: "my-div-icons",
-          });
-        },
+      cityMarkers = L.markerClusterGroup();
+      const cityIcon = L.icon({
+        iconUrl: "libs/vendors/leaflet/images/icons/hotel_on.png",
+        iconSize: [30, 30],
       });
-      console.log(latLon);
-      const r = result["data"];
-      console.log(result);
+      const r = result["data"]["results"];
       for (let i = 0; i < r.length; i++) {
-        let mMarker = L.marker([
-          r[i]["location"]["lat"],
-          r[i]["location"]["lng"],
-        ]);
-        let web = r[i]["website"];
-        let name =
-          "<p> Name: " +
-          r[i]["name"] +
-          "</p>" +
-          "<p> Address: " +
-          r[i]["address"] +
-          "</p>" +
-          "<p> Phone number: " +
-          r[i]["phone_number"] +
-          "</p>" +
-          `<a href="https://${web}">${web}</a>`;
-        let mName = mMarker.bindPopup(name);
-
-        museumMarkers.addLayer(mName);
+        const img = r[i]['images'][0]['sizes']['thumbnail']['url']
+        const cityName =r[i]['name']
+        const snippet = r[i]['snippet']
+        console.log(img)
+        let city = L.marker(
+          [r[i]["coordinates"]["latitude"], r[i]["coordinates"]["longitude"]],
+          { icon: cityIcon }
+        ).bindPopup(`<img src='${img}' class='popupCenter'/>` + `<h3 style='text-align:center;'>${cityName}</h3>` + `<p>${snippet}</p>`)
+        cityMarkers.addLayer(city);
       }
-      map.addLayer(museumMarkers);
+
+      map.addLayer(cityMarkers);
     },
     error: function (err) {
-      console.log(err);
+      console.log("no iso code found");
     },
   });
 });
-
-//Get Airports
-let airportMarkers;
-$("#selectCountry").change(() => {
-  $.ajax({
-    url: "libs/php/getAirports.php",
-    data: {
-      iso: $("#selectCountry").val(),
-    },
-    success: function (res) {
-      if (airportMarkers) {
-        map.removeLayer(airportMarkers);
-      }
-
-      airportMarkers = L.markerClusterGroup({
-        iconCreateFunction: function (cluster) {
-          return L.divIcon({
-            html:
-              "<b>" +
-              '<img src="libs/vendors/leaflet/images/icons/airportOnMap.png" width=32/>' +
-              cluster.getChildCount() +
-              "</b>",
-            className: "my-div-icons",
-          });
-        },
-      });
-      const result = res["data"];
-      for (let i = 0; i < result.length; i++) {
-        let airportMarker = L.marker([
-          result[i]["latitudeAirport"],
-          result[i]["longitudeAirport"],
-        ]).bindPopup(result[i]["nameAirport"]);
-
-        if (
-          result[i]["latitudeAirport"] == null ||
-          result[i]["longitudeAirport"] == null ||
-          result[i]["nameAirport"].includes("Station")
-        ) {
-          continue;
-        } else {
-          airportMarkers.addLayer(airportMarker);
-        }
-        map.addLayer(airportMarkers);
-      }
-    },
-    error: function (err) {
-      console.log("wtf");
-    },
-  });
-});
-
 //Show Position Button
 var positionShowHide = L.easyButton({
   states: [
@@ -363,8 +312,8 @@ var infoShowHide = L.easyButton({
       onClick: function (control) {
         $("#overlay").show();
         control.state("showBar");
-        weatherShowHide.state('hideBar');
-        covidShowHide.state('hideBar');
+        weatherShowHide.state("hideBar");
+        covidShowHide.state("hideBar");
         $("#covidOverlay").hide();
         $(".weatherOverlay").hide();
       },
@@ -382,8 +331,6 @@ var infoShowHide = L.easyButton({
 });
 infoShowHide.addTo(map);
 
-
-
 //Show Covid Button
 var covidShowHide = L.easyButton({
   states: [
@@ -394,8 +341,8 @@ var covidShowHide = L.easyButton({
       onClick: function (control) {
         $("#covidOverlay").show();
         control.state("showBar");
-        weatherShowHide.state('hideBar');
-        infoShowHide.state('hideBar');
+        weatherShowHide.state("hideBar");
+        infoShowHide.state("hideBar");
         $(".weatherOverlay").hide();
         $("#overlay").hide();
       },
@@ -407,7 +354,6 @@ var covidShowHide = L.easyButton({
       onClick: function (control) {
         $("#covidOverlay").hide();
         control.state("hideBar");
-       
       },
     },
   ],
@@ -423,8 +369,8 @@ var weatherShowHide = L.easyButton({
       onClick: function (control) {
         $(".weatherOverlay").show();
         control.state("showBar");
-        covidShowHide.state('hideBar');
-        infoShowHide.state('hideBar');
+        covidShowHide.state("hideBar");
+        infoShowHide.state("hideBar");
         $("#covidOverlay").hide();
         $("#overlay").hide();
       },
@@ -442,41 +388,15 @@ var weatherShowHide = L.easyButton({
 });
 weatherShowHide.addTo(map);
 
-
-//Show Airports Button
-var airportShowHide = L.easyButton({
-  states: [
-    {
-      stateName: "hideBar",
-      icon: '<img src="libs/vendors/leaflet/images/icons/airport_on.png " width=18 />',
-      title: "hide info",
-      onClick: function (control) {
-        map.removeLayer(airportMarkers);
-        control.state("showBar");
-      },
-    },
-    {
-      stateName: "showBar",
-      icon: '<img src="libs/vendors/leaflet/images/icons/airport_off.png" width=18 />',
-      title: "show info",
-      onClick: function (control) {
-        map.addLayer(airportMarkers);
-        control.state("hideBar");
-      },
-    },
-  ],
-});
-airportShowHide.addTo(map);
-
-//Show Hotels Button
-var hotelShowHide = L.easyButton({
+//Show Cities Button
+var cityMarkerShowHide = L.easyButton({
   states: [
     {
       stateName: "hideBar",
       icon: '<img src="libs/vendors/leaflet/images/icons/hotel_on.png " width=18 />',
       title: "hide info",
       onClick: function (control) {
-        map.removeLayer(museumMarkers);
+        map.removeLayer(cityMarkers);
 
         control.state("showBar");
       },
@@ -486,11 +406,10 @@ var hotelShowHide = L.easyButton({
       icon: '<img src="libs/vendors/leaflet/images/icons/hotel_off.png" width=18 />',
       title: "show info",
       onClick: function (control) {
-        map.addLayer(museumMarkers);
+        map.addLayer(cityMarkers);
         control.state("hideBar");
       },
     },
   ],
 });
-hotelShowHide.addTo(map);
-
+cityMarkerShowHide.addTo(map);

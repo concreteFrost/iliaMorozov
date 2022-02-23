@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./libs/css/style.css" />
     <link rel="stylesheet" href="./libs/vendors/leaflet/leaflet.css" />
-    <link rel="stylesheet" href="./libs/vendors/leaflet/MarkerCluster.css" />
+    <link rel="stylesheet" href="./libs/vendors/leaflet/MarkerCluster.Default.css" />
     <link rel="stylesheet" href="./libs/vendors/leaflet/easy-button.css" />
     <link rel="icon" type="image/png" href="./libs/fav-icon/fav-icon.png" />
     <title>Gazetteer</title>
   </head>
   <body>
     <nav>
+  
       <h2>GAZETTEER</h2>
       <div class="selectCountrySection">
         <label for="selectCountry">Select country</label>
@@ -31,11 +32,11 @@
         <p id="wikiPage"></p>
       </div>
       <div id="covidOverlay">
-        <h4>Covid stats</h4>
-        <p id="confirmed"></p>
-        <p id="deaths"></p>
-        <p id="recovered"></p>
-        <p id="active"></p>
+        <h4 id="covidHeader">Covid stats for <span id='covidCountry'></span></h4>
+        <p>Confirmed  <span id="confirmed"></span></p>
+        <p>Deaths<span id="deaths"></span></p>
+        <p>Recovered<span id="recovered"></span></p>
+        <p>Active<span id="active"></span></p>
       </div>
 
       <div class="weatherOverlay">
@@ -80,5 +81,6 @@
     <script src="./libs/vendors/leaflet/easy-button.js"></script>
     <script src="./libs/js/jquery-2.2.3.min.js"></script>
     <script src="./libs/js/script.js"></script>
+    <script src="https://kit.fontawesome.com/a01e78b140.js" crossorigin="anonymous"></script>
   </body>
 </html>

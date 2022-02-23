@@ -1,6 +1,5 @@
 <?php
-
-$url = 'http://aviation-edge.com/v2/public/autocomplete?key=eab98a-168941&city='.$_REQUEST['city'];
+$url = 'https://www.triposo.com/api/20220104/location.json?countrycode='.$_REQUEST['iso'].'&token=8y2yrtv66bawcwgajp03ouu9r2xmw3dg&account=ZKT1O97R';
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
