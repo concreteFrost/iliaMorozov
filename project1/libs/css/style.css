@@ -1,28 +1,25 @@
-
 @font-face {
   font-family: Hatcher;
-  src: url('../fonts/Hatcher.otf');
+  src: url("../fonts/Hatcher.otf");
 }
 
 @font-face {
   font-family: Dubiel;
-  src: url('../fonts/Cabin-Regular-TTF.ttf');
+  src: url("../fonts/Cabin-Regular-TTF.ttf");
 }
 
-*{
-  font-family: Dubiel,Times, serif;
+* {
+  font-family: Dubiel, Times, serif;
 }
-
 
 body {
   grid-template-areas:
     "nav nav"
     "main main";
   margin: 0;
-
 }
 body::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 nav {
@@ -34,12 +31,10 @@ nav {
   width: 100%;
   position: absolute;
   z-index: 500;
-
-
 }
 
 nav h2 {
-  font-family: Hatcher,Times,serif;
+  font-family: Hatcher, Times, serif;
   font-size: 2.5em;
   color: rgb(255, 255, 255);
 
@@ -67,7 +62,7 @@ nav h2 {
 }
 
 .selectCitySection {
-  flex:1 ;
+  flex: 1;
   order: 3;
   align-self: center;
   margin-left: 5px;
@@ -83,19 +78,17 @@ nav h2 {
   width: 100%;
 }
 
-main{
-    grid-area: main;
-    margin: 0;
-   
+main {
+  grid-area: main;
+  margin: 0;
 }
 
 #map {
-   height:100vh;
-   overflow: none;
-
+  height: 100vh;
+  overflow: none;
 }
 
-#overlay{
+#overlay {
   z-index: 1000;
   background-color: rgb(255, 255, 255);
   border: 2px solid rgb(195, 195, 195);
@@ -106,20 +99,22 @@ main{
   top: 30%;
   left: 38%;
   display: none;
-
 }
-
-#overlay h4, #overlay h3{
+#overlay h4,
+#overlay h3 {
   margin-top: 20px;
   text-align: center;
   line-height: 0px;
 }
-#overlay p{
+#overlay p {
   padding-left: 10px;
-  line-height: 15px;
+  line-height: 10px;
 }
 
-#covidOverlay{
+#currentFlag {
+  text-align: center;
+}
+#covidOverlay {
   z-index: 1000;
   background-color: rgb(255, 255, 255);
   border: 2px solid rgb(195, 195, 195);
@@ -127,25 +122,96 @@ main{
   width: 250px;
   height: 150px;
   position: absolute;
-  top: 390px;
+  top: 35%;
   left: 38%;
   line-height: 10px;
   display: none;
 }
 
-#covidOverlay h4{
+#covidOverlay h4 {
   padding-left: 10px;
   text-align: center;
 }
-#covidOverlay p{
+#covidOverlay p {
   padding-left: 10px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  margin-bottom: 0;
+  margin-top: 0;
   font-size: 12px;
 }
 
+#covidOverlay p:nth-child(even) {
+  background: rgb(102, 196, 255);
+}
+
+.weatherOverlay {
+  z-index: 1000;
+  background-color: rgb(255, 255, 255);
+  border: 2px solid rgb(195, 195, 195);
+  border-radius: 5px;
+  width: 300px;
+  height: 330px;
+  position: absolute;
+  top: 30%;
+  left: 37%;
+  display: none;
+}
+.weatherOverlay hr {
+  margin-bottom: 0;
+}
+.weatherToday {
+  display: flex;
+}
+
+#todayWeatherGeneral {
+  flex: 1.2;
+  order: 1;
+  padding-right: 10px;
+}
+#todayCondition {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 0;
+}
+#todayWeatherAside {
+  flex: 1.5;
+  order: 2;
+}
+
+.weatherOverlay h4,
+.weatherOverlay h3 {
+  font-size: 1em;
+  margin-top: 20px;
+  text-align: center;
+  line-height: 0px;
+}
+.weatherOverlay p {
+  padding-left: 10px;
+  line-height: 10px;
+  font-size: 0.9em;
+}
+
+.weatherOtherDays {
+  display: flex;
+  background-color: rgb(158, 210, 243);
+  margin-top: 0;
+  border-top: 1px solid rgb(159, 159, 159);
+}
+
+#tomorrowWeather {
+  flex: 1;
+  order: 1;
+  border-right: 1px solid rgb(154, 154, 154);
+}
+#afterTomorrowWeather {
+  flex: 1;
+  order: 2;
+}
 
 .leaflet-top {
-	top: 136px;
-	}
+  top: 100px;
+}
 
 @media screen and (max-width: 828px) {
   nav {
@@ -161,7 +227,6 @@ main{
     font-size: 30px;
     padding-left: 5px;
     letter-spacing: 1px;
-    
   }
 
   .selectCountrySection {
@@ -176,7 +241,7 @@ main{
     text-align: center;
   }
 
-  .selectCitySection select{
+  .selectCitySection select {
     width: 90%;
   }
 
@@ -186,40 +251,51 @@ main{
     align-self: flex-end;
   }
 
-
-  #overlay{
+  #overlay {
     width: 50%;
     height: 45%;
-    top: 300px;
-    left: 58%;
-
+    top: 250px;
+    left: 47%;
   }
 
-  #overlay h4, #overlay h3{
+  #overlay h4,
+  #overlay h3,
+  #overlay p {
     text-align: left;
     padding-left: 10px;
     margin-bottom: 5px;
-
+    font-size: 0.9em;
   }
 
-  #covidOverlay{
+  #covidOverlay {
     z-index: 1000;
     position: absolute;
-    top: 150px;
-    left: 58%;
-  
+    top: 300px;
+    left: 47%;
+    width: 50%;
   }
-  
-  #covidOverlay h4{
+
+  #covidOverlay h4 {
     padding-left: 10px;
   }
-  #covidOverlay p{
+  #covidOverlay p {
     padding-left: 10px;
+  }
+
+  .weatherOverlay {
+    width: 55%;
+    height: 50%;
+    top: 100px;
+    left: 43%;
+  }
+
+  .weatherOverlay p,
+  .weatherOverlay h2,
+  .weatherOverlay h3 {
+    font-size: 0.8em;
   }
 
   .leaflet-top {
     top: 50px;
-    
-    }
-
+  }
 }

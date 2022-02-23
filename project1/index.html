@@ -8,9 +8,7 @@
     <link rel="stylesheet" href="./libs/vendors/leaflet/leaflet.css" />
     <link rel="stylesheet" href="./libs/vendors/leaflet/MarkerCluster.css" />
     <link rel="stylesheet" href="./libs/vendors/leaflet/easy-button.css" />
-    <link rel="icon" 
-    type="image/png" 
-    href="./libs/fav-icon/fav-icon.png">
+    <link rel="icon" type="image/png" href="./libs/fav-icon/fav-icon.png" />
     <title>Gazetteer</title>
   </head>
   <body>
@@ -21,29 +19,62 @@
         <select name="selectCountry" id="selectCountry"></select>
       </div>
     </nav>
-    <main><div id="map">
-    </div>
-    <div id="overlay">
-      <h3>Selected Country:</h3>
-      <h4 id="currentCountry"></h4>
-      <p id="currentCapital"></p>
-      <p id="currentFlag"></p>
-      <p id="currentCurrency"></p>
-      <p id="currentPopulation"></p>
-      <p id="wikiPage"></p>   
-   
-    </div>
-    <div id="covidOverlay">
-  
-      <h4>Covid stats</h4>
-      <p id="confirmed"></p>
-      <p id="deaths"></p>
-      <p id="recovered"></p>
-      <p id="active"></p>
-      
-    </div>
-    </main>
+    <main>
+      <div id="map"></div>
+      <div id="overlay">
+        <p id="currentFlag"></p>
+        <h3>Selected Country:</h3>
+        <h4 id="currentCountry"></h4>
+        <p id="currentCapital"></p>
+        <p id="currentCurrency"></p>
+        <p id="currentPopulation"></p>
+        <p id="wikiPage"></p>
+      </div>
+      <div id="covidOverlay">
+        <h4>Covid stats</h4>
+        <p id="confirmed"></p>
+        <p id="deaths"></p>
+        <p id="recovered"></p>
+        <p id="active"></p>
+      </div>
+
+      <div class="weatherOverlay">
+        <h4>Weather Forecast</h4>
+        <hr />
+        <h3 id="todayDate"></h3>
+        <div class="weatherToday">
+          
+          <div id="todayWeatherGeneral">
+            <p id="todayWeatherIcon"></p>
+            <p id="currentTemperature"></p>
+          </div>
+
+          <div id="todayWeatherAside">
+          
+            <p id="windSpeed"></p>     
+            <p id="sunrise"></p>
+            <p id="sunset"></p>
+            <p id="todayCondition"></p>
+          </div>
+        </div>
  
+        <div class="weatherOtherDays">
+        <div id="tomorrowWeather">
+          <p id="tomorrowDate"></p>
+          <p id="tomorrowWeatherIcon"></p>
+          <p id="tomorrowWeatherTemperature"></p>
+        </div>
+
+        <div id="afterTomorrowWeather">
+          <p id="afterTomorrowDate"></p>
+          <p id="afterTomorrowWeatherIcon"></p>
+          <p id="afterTomorrowWeatherTemperature"></p>
+        </div>
+        </div>
+        
+      </div>
+    </main>
+
     <script src="./libs/vendors/leaflet/leaflet.js"></script>
     <script src="./libs/vendors/leaflet/leaflet.markercluster.js"></script>
     <script src="./libs/vendors/leaflet/easy-button.js"></script>
