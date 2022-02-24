@@ -288,8 +288,8 @@ main {
   #covidOverlay {
     z-index: 1000;
     position: absolute;
-    top: 560px;
-    left: 47%;
+    top: 425px;
+    left: 48%;
     width: 50%;
   }
 
