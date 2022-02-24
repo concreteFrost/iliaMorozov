@@ -30,18 +30,16 @@ nav {
   width: 100%;
   position: absolute;
   z-index: 500;
-	overlay:none;
+  overlay: none;
 }
 
 nav h2 {
-
   font-family: Hatcher, Times, serif;
   font-size: 2.5em;
   color: rgb(255, 255, 255);
   margin: auto;
   padding-left: 10px;
   text-align: left;
-
 }
 
 .selectCountrySection {
@@ -51,7 +49,6 @@ nav h2 {
   top: 30px;
   color: white;
   text-align: center;
-
 }
 
 main {
@@ -96,48 +93,72 @@ main {
   border: 2px solid rgb(195, 195, 195);
   border-radius: 5px;
   width: 250px;
-  height: 170px;
+  height: 280px;
   position: absolute;
   top: 35%;
   left: 38%;
   line-height: 10px;
   display: none;
-  background-image: url('../vendors/leaflet/images/icons/covid_big3.png');
-  background-size: 120px,100px;
-  background-position: 70px 30px;
+  background-image: url("../vendors/leaflet/images/icons/covid_big3.png");
+  background-size: 100px, 100px;
+  background-position: 75px 170px;
   background-repeat: no-repeat;
 }
 
 
+
+@keyframes fadeIn { 
+  from { opacity: 0; } 
+}
+
+#covidOverlay img{
+  animation: fadeIn 1s infinite alternate;
+}
+
 #covidOverlay h4 {
   padding-left: 10px;
   text-align: center;
-  
-  
+  background-color: beige;
+  border-bottom: 2px dotted rgb(195, 195, 195);
+}
+
+#covidOverlay img {
+  padding-right: 10px;
+  text-align: center;
 }
 #covidOverlay p {
+  font-weight: 300;
   padding-left: 10px;
   padding-bottom: 5px;
   padding-top: 5px;
   margin-bottom: 0;
   margin-top: 0;
   font-size: 13px;
-  font-weight: 200;
 }
 
+#covidOverlay p:nth-child(odd){
+  background-color: rgb(221, 221, 221);
+  border-top: 2px dotted rgb(195, 195, 195);
+  border-bottom: 2px dotted rgb(195, 195, 195);
+}
 
-#covidHeader{
-  
+#covidOverlay span {
+  padding-top: 6px;
+}
+
+#covidHeader {
   margin: auto;
   padding-bottom: 15px;
   padding-top: 15px;
-
 }
 
-#recovered,#confirmed,#deaths,#active{
+#recovered,
+#confirmed,
+#deaths,
+#active {
   float: right;
   padding-right: 10px;
-  font-style:oblique;
+  font-style: oblique;
 }
 
 .weatherOverlay {
@@ -208,7 +229,7 @@ main {
   top: 100px;
 }
 
-.popupCenter{
+.popupCenter {
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -238,11 +259,9 @@ main {
     align-self: center;
     text-align: center;
     color: white;
-    left:250px;
+    left: 250px;
     top: 8px;
   }
-
-
 
   #helpButton {
     flex: 2;

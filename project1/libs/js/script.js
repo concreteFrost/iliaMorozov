@@ -239,11 +239,11 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
 //Show/Hide Info Pannel
 
 let cityMarkers;
-let parks;
-//Get Museums/////////////////
+let parksMarkers;
+//Get Cities/////////////////
 $("#currentCountry").on("DOMSubtreeModified", () => {
   $.ajax({
-    url: "libs/php/getCitiesAndParks.php",
+    url: "libs/php/getCities.php",
     data: {
       iso: iso2,
     },
@@ -268,8 +268,41 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
         ).bindPopup(`<img src='${img}' class='popupCenter'/>` + `<h3 style='text-align:center;'>${cityName}</h3>` + `<p>${snippet}</p>`)
         cityMarkers.addLayer(city);
       }
-
       map.addLayer(cityMarkers);
+    },
+    error: function (err) {
+      console.log("no iso code found");
+    },
+  });
+
+  $.ajax({
+    url: "libs/php/getParks.php",
+    data: {
+      iso: iso2,
+    },
+    success: function (result) {
+     
+      if (parksMarkers) {
+        map.removeLayer(parksMarkers);
+      }
+      parksMarkers = L.markerClusterGroup();
+      const cityIcon = L.icon({
+        iconUrl: "libs/vendors/leaflet/images/icons/park_on.png",
+        iconSize: [30, 30],
+      });
+      const r = result["data"]["results"];
+      for (let i = 0; i < r.length; i++) {
+        const img = r[i]['images'][0]['sizes']['thumbnail']['url']
+        const parkName =r[i]['name']
+        const snippet = r[i]['snippet']
+       
+        let park = L.marker(
+          [r[i]["coordinates"]["latitude"], r[i]["coordinates"]["longitude"]],
+          { icon: cityIcon }
+        ).bindPopup(`<img src='${img}' class='popupCenter'/>` + `<h3 style='text-align:center;'>${parkName}</h3>` + `<p>${snippet}</p>`)
+        parksMarkers.addLayer(park);
+      }
+      map.addLayer(parksMarkers);
     },
     error: function (err) {
       console.log("no iso code found");
@@ -301,6 +334,11 @@ var positionShowHide = L.easyButton({
   ],
 });
 positionShowHide.addTo(map);
+
+$("#selectCountry").change(()=>{
+  parkMarkersShowHide.state('hideBar')
+  cityMarkerShowHide.state('hideBar')
+})
 
 /////////Buttons!!!/////////////////////
 var infoShowHide = L.easyButton({
@@ -413,3 +451,27 @@ var cityMarkerShowHide = L.easyButton({
   ],
 });
 cityMarkerShowHide.addTo(map);
+
+var parkMarkersShowHide = L.easyButton({
+  states: [
+    {
+      stateName: "hideBar",
+      icon: '<img src="libs/vendors/leaflet/images/icons/park_on.png " width=18 />',
+      title: "hide info",
+      onClick: function (control) {
+        map.removeLayer(parksMarkers);
+        control.state("showBar");
+      },
+    },
+    {
+      stateName: "showBar",
+      icon: '<img src="libs/vendors/leaflet/images/icons/park_off.png" width=18 />',
+      title: "show info",
+      onClick: function (control) {
+        map.addLayer(parksMarkers);
+        control.state("hideBar");
+      },
+    },
+  ],
+});
+parkMarkersShowHide.addTo(map);
