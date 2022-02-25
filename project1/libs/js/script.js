@@ -35,13 +35,8 @@ $(document).ready(() => {
     });
   });
 });
-
 //Get Weather
-$(document).ready(() => {
-  navigator.geolocation.getCurrentPosition((pos) => {
-    //Get CurrentPosition
-  });
-});
+
 //Fill up country list
 $(document).ready(() => {
   $.ajax({
@@ -92,10 +87,8 @@ $("#selectCountry").change(() => {
     },
   });
 });
-
 //weather location array
 var latLon = [];
-
 //cities location iso2 code
 let iso2;
 //Get Capital/Flag/Currency/Covid/Weather
@@ -212,7 +205,6 @@ $("#selectCountry").change(() => {
     },
   });
 });
-
 //Get Wiki
 $("#currentCountry").on("DOMSubtreeModified", () => {
   $.ajax({
@@ -235,7 +227,6 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
 /////////////MARKERS/////////////////////////
 
 //Show/Hide Info Pannel
-
 let cityMarkers;
 let parksMarkers;
 let poiMarkers;
@@ -257,14 +248,18 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
       });
       const r = result["data"]["results"];
       for (let i = 0; i < r.length; i++) {
-        const img = r[i]['images'][0]['sizes']['thumbnail']['url']
-        const cityName =r[i]['name']
-        const snippet = r[i]['snippet']
-    
+        const img = r[i]["images"][0]["sizes"]["thumbnail"]["url"];
+        const cityName = r[i]["name"];
+        const snippet = r[i]["snippet"];
+
         let city = L.marker(
           [r[i]["coordinates"]["latitude"], r[i]["coordinates"]["longitude"]],
           { icon: cityIcon }
-        ).bindPopup(`<img src='${img}' class='popupCenter'/>` + `<h3 style='text-align:center;'>${cityName}</h3>` + `<p>${snippet}</p>`)
+        ).bindPopup(
+          `<img src='${img}' class='popupCenter'/>` +
+            `<h3 style='text-align:center;'>${cityName}</h3>` +
+            `<p>${snippet}</p>`
+        );
         cityMarkers.addLayer(city);
       }
       map.addLayer(cityMarkers);
@@ -280,7 +275,6 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
       iso: iso2,
     },
     success: function (result) {
-     
       if (parksMarkers) {
         map.removeLayer(parksMarkers);
       }
@@ -291,14 +285,18 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
       });
       const r = result["data"]["results"];
       for (let i = 0; i < r.length; i++) {
-        const img = r[i]['images'][0]['sizes']['thumbnail']['url']
-        const parkName =r[i]['name']
-        const snippet = r[i]['snippet']
-       
+        const img = r[i]["images"][0]["sizes"]["thumbnail"]["url"];
+        const parkName = r[i]["name"];
+        const snippet = r[i]["snippet"];
+
         let park = L.marker(
           [r[i]["coordinates"]["latitude"], r[i]["coordinates"]["longitude"]],
           { icon: cityIcon }
-        ).bindPopup(`<img src='${img}' class='popupCenter'/>` + `<h3 style='text-align:center;'>${parkName}</h3>` + `<p>${snippet}</p>`)
+        ).bindPopup(
+          `<img src='${img}' class='popupCenter'/>` +
+            `<h3 style='text-align:center;'>${parkName}</h3>` +
+            `<p>${snippet}</p>`
+        );
         parksMarkers.addLayer(park);
       }
       map.addLayer(parksMarkers);
@@ -314,7 +312,6 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
       iso: iso2.toLowerCase(),
     },
     success: function (result) {
-      
       if (poiMarkers) {
         map.removeLayer(poiMarkers);
       }
@@ -323,18 +320,22 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
         iconUrl: "libs/vendors/leaflet/images/icons/poi_on.png",
         iconSize: [30, 30],
       });
-      console.log(iso2)
-      console.log(result)
+      console.log(iso2);
+      console.log(result);
       const r = result["data"]["results"];
       for (let i = 0; i < r.length; i++) {
-        const img = r[i]['images'][0]['sizes']['thumbnail']['url']
-        const parkName =r[i]['name']
-        const snippet = r[i]['snippet']
-       
+        const img = r[i]["images"][0]["sizes"]["thumbnail"]["url"];
+        const parkName = r[i]["name"];
+        const snippet = r[i]["snippet"];
+
         let poi = L.marker(
           [r[i]["coordinates"]["latitude"], r[i]["coordinates"]["longitude"]],
           { icon: poiIcon }
-        ).bindPopup(`<img src='${img}' class='popupCenter'/>` + `<h3 style='text-align:center;'>${parkName}</h3>` + `<p>${snippet}</p>`)
+        ).bindPopup(
+          `<img src='${img}' class='popupCenter'/>` +
+            `<h3 style='text-align:center;'>${parkName}</h3>` +
+            `<p>${snippet}</p>`
+        );
         poiMarkers.addLayer(poi);
       }
       map.addLayer(poiMarkers);
@@ -343,6 +344,8 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
       console.log("no iso code found");
     },
   });
+
+ 
 });
 //Show Position Button
 var positionShowHide = L.easyButton({
@@ -370,11 +373,9 @@ var positionShowHide = L.easyButton({
 });
 positionShowHide.addTo(map);
 
-$("#selectCountry").change(()=>{
-  parkMarkersShowHide.state('hideBar')
-  cityMarkerShowHide.state('hideBar')
-  poiMarkers.state('hideBar')
-})
+// $("#selectCountry").change(()=>{
+
+// })
 
 /////////Buttons!!!/////////////////////
 var infoShowHide = L.easyButton({
