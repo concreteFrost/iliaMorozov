@@ -1,5 +1,5 @@
 <?php
-$url = 'https://www.triposo.com/api/20220104/location.json?countrycode='.$_REQUEST['iso'].'&token=8y2yrtv66bawcwgajp03ouu9r2xmw3dg&account=ZKT1O97R';
+$url = 'https://www.triposo.com/api/20220104/location.json?countrycode='.$_REQUEST['iso'].'&token=8y2yrtv66bawcwgajp03ouu9r2xmw3dg&account=ZKT1O97R&count=60';
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
