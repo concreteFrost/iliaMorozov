@@ -13,9 +13,6 @@
 }
 
 body {
-  grid-template-areas:
-    "nav nav"
-    "main main";
   margin: 0;
 }
 body::-webkit-scrollbar {
@@ -23,7 +20,6 @@ body::-webkit-scrollbar {
 }
 
 nav {
-  grid-area: nav;
   background-image: linear-gradient(rgb(86, 218, 233), rgb(0, 123, 255));
   border-radius: 3px;
   height: 70px;
@@ -31,6 +27,7 @@ nav {
   position: absolute;
   z-index: 500;
   overflow: none;
+  display: flex;
 }
 
 nav h2 {
@@ -39,17 +36,32 @@ nav h2 {
   color: rgb(255, 255, 255);
   margin: auto;
   padding-left: 10px;
-  text-align: left;
   margin-top: 10px;
 }
 
+.logo {
+  flex: 0.6;
+  order: 1;
+}
+
 .selectCountrySection {
-  text-align: center;
-  position: absolute;
-  left: 450px;
-  top: 30px;
+  flex: 1;
+  order: 2;
+  align-self: center;
+  margin-left: 0;
   color: white;
+}
+
+#currentCountry{
   text-align: center;
+}
+
+label{
+  display: block;
+}
+
+select {
+  font-size: 0.1em;
 }
 
 main {
@@ -93,11 +105,9 @@ main {
   font-style: oblique;
 }
 
-.weatherOverlay hr {
-  margin-bottom: 0;
-}
 .weatherToday {
   display: flex;
+  line-height: 5px;
 }
 
 #todayWeatherGeneral {
@@ -108,38 +118,44 @@ main {
 #todayCondition {
   padding-top: 10px;
   padding-bottom: 10px;
-  margin-bottom: 0;
 }
 #todayWeatherAside {
   flex: 1.5;
   order: 2;
 }
 
-#weatherOverlay{
+#weatherOverlay {
   line-height: 13px;
   font-size: 0.8em;
 }
 
-#weatherOverlay h5{
- text-align: center;
+#weatherOverlay h5 {
+
+  margin-left: auto;
+  margin-right: auto;
 }
 .weatherOtherDays {
   display: flex;
   background-color: rgb(158, 210, 243);
   margin-top: 0;
-  border-top: 1px solid rgb(159, 159, 159);
+  border: 0.5px solid rgb(180, 180, 180);
 }
 
 #tomorrowWeather {
   flex: 1;
   order: 1;
-  border-right: 1px solid rgb(154, 154, 154);
+  border-right: 1px solid rgb(180, 180, 180);
   text-align: center;
 }
 #afterTomorrowWeather {
   flex: 1;
   order: 2;
   text-align: center;
+}
+
+#todayCondition {
+  margin-top: 0;
+  padding: auto;
 }
 
 .leaflet-top {
@@ -179,13 +195,6 @@ main {
     left: 250px;
     top: 0px;
     padding-right: 20px;
-    
-  }
-
-  #helpButton {
-    flex: 2;
-    order: 3;
-    align-self: flex-end;
   }
 
   .leaflet-top {

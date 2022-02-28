@@ -149,7 +149,7 @@ $("#selectCountry").change(() => {
             "<b>Temperature: </b>" + todayTemp + "°"
           );
           $("#windSpeed").html("<b>Wind Speed: </b>" + todayWindSpeed + " ms");
-          $("#todayCondition").html(todayCondition);
+          $("#todayCondition").html(`<b>${todayCondition}</b>`);
 
           $("#sunrise").html("<b>Sunrise: </b>" + sunrise);
           $("#sunset").html("<b>Sunset: </b>" + sunset);

@@ -5455,7 +5455,7 @@ textarea.form-control-lg {
 .modal {
   position: fixed;
   top: 100px;
-  left: 80vh;
+  left: 70vh;
   z-index: 1055;
   display: none;
   width:300px;
@@ -5471,8 +5471,8 @@ textarea.form-control-lg {
 @media screen and (max-width: 828px) {
 
   .modal {  
-    top: 165px;
-    left: 30%;
+    top: 300px;
+    left: 28%;
     min-width:220px;
     max-height: 80%;
     font-size: 0.8em;
@@ -5563,6 +5563,7 @@ textarea.form-control-lg {
   border-bottom: 1px solid #dee2e6;
   border-top-left-radius: calc(0.3rem - 1px);
   border-top-right-radius: calc(0.3rem - 1px);
+  background-color: lightblue;
 }
 .modal-header .btn-close {
   padding: 0.5rem 0.5rem;

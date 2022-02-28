@@ -20,7 +20,9 @@
   </head>
   <body>
     <nav>
-      <h2>GAZETTEER</h2>
+      <div class="logo">
+        <h2>GAZETTEER</h2>
+      </div>
       <div class="selectCountrySection">
         <label for="selectCountry">Select country</label>
         <select name="selectCountry" id="selectCountry"></select>
@@ -106,7 +108,9 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-body">
-              <h5>Weather Forecast</h5>
+              <div class="modal-header">
+                <h5>Weather Forecast</h5>
+              </div>
               <h3 id="todayDate"></h3>
               <div class="weatherToday">
                 <div id="todayWeatherGeneral">
@@ -115,10 +119,10 @@
                 </div>
 
                 <div id="todayWeatherAside">
+                  <p id="todayCondition"></p>
                   <p id="windSpeed"></p>
                   <p id="sunrise"></p>
                   <p id="sunset"></p>
-                  <p id="todayCondition"></p>
                 </div>
               </div>
 
