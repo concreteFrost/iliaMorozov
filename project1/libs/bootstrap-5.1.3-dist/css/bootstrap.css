@@ -5471,8 +5471,8 @@ textarea.form-control-lg {
 @media screen and (max-width: 828px) {
 
   .modal {  
-    top: 50px;
-    left: 35%;
+    top: 165px;
+    left: 30%;
     min-width:220px;
     max-height: 80%;
     font-size: 0.8em;
