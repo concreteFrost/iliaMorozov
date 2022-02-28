@@ -35,7 +35,6 @@ $(document).ready(() => {
     });
   });
 });
-//Get Weather
 
 //Fill up country list
 $(document).ready(() => {
@@ -160,7 +159,7 @@ $("#selectCountry").change(() => {
 
           $("#tomorrowDate").html(r["data"][1]["date"]);
           $("#tomorrowWeatherIcon").html(
-            `<img src="https://${tomorrowIcon}" />`
+            `<img src="https://${tomorrowIcon}" width=48px />`
           );
           $("#tomorrowWeatherTemperature").html(
             "<b>Temperature: </b>" + tomorrowTemp + "°"
@@ -171,7 +170,7 @@ $("#selectCountry").change(() => {
 
           $("#afterTomorrowDate").html(r["data"][2]["date"]);
           $("#afterTomorrowWeatherIcon").html(
-            `<img src="https://${dayAfterIcon}" />`
+            `<img src="https://${dayAfterIcon}" width=48px/>`
           );
           $("#afterTomorrowWeatherTemperature").html(
             "<b>Temperature: </b>" + dayAfterTemp + "°"
@@ -373,9 +372,6 @@ var positionShowHide = L.easyButton({
 });
 positionShowHide.addTo(map);
 
-// $("#selectCountry").change(()=>{
-
-// })
 
 /////////Buttons!!!/////////////////////
 var infoShowHide = L.easyButton({
@@ -385,7 +381,7 @@ var infoShowHide = L.easyButton({
       icon: '<img src="libs/vendors/leaflet/images/icons/info_on.png " width=18 />',
       title: "hide info",
       onClick: function (control) {
-        $("#overlay").show();
+        $("#countryInfo").show();
         control.state("showBar");
         weatherShowHide.state("hideBar");
         covidShowHide.state("hideBar");
@@ -398,7 +394,7 @@ var infoShowHide = L.easyButton({
       icon: '<img src="libs/vendors/leaflet/images/icons/info_off.png" width=18 />',
       title: "show info",
       onClick: function (control) {
-        $("#overlay").hide();
+        $("#countryInfo").hide();
         control.state("hideBar");
       },
     },
@@ -442,7 +438,7 @@ var weatherShowHide = L.easyButton({
       icon: '<img src="libs/vendors/leaflet/images/icons/weather-on.png " width=18 />',
       title: "hide info",
       onClick: function (control) {
-        $(".weatherOverlay").show();
+        $("#weatherOverlay").show();
         control.state("showBar");
         covidShowHide.state("hideBar");
         infoShowHide.state("hideBar");
@@ -455,7 +451,7 @@ var weatherShowHide = L.easyButton({
       icon: '<img src="libs/vendors/leaflet/images/icons/weather-off.png" width=18 />',
       title: "show info",
       onClick: function (control) {
-        $(".weatherOverlay").hide();
+        $("#weatherOverlay").hide();
         control.state("hideBar");
       },
     },
@@ -536,3 +532,17 @@ var poiShowHide = L.easyButton({
   ],
 });
 poiShowHide.addTo(map);
+
+//Bootstrap
+$("#countryInfoButton").on('click',()=>{
+  $("#countryInfo").hide();
+  infoShowHide.state('hideBar')
+});
+$("#covidInfoButton").on('click',()=>{
+  $("#covidOverlay").hide();
+  covidShowHide.state('hideBar')
+});
+$("#weatherInfoButton").on('click',()=>{
+  $("#weatherOverlay").hide();
+  weatherShowHide.state('hideBar')
+});
