@@ -1,3 +1,8 @@
+window.addEventListener('load',()=>{
+  setTimeout(()=>{$('#loader').hide();},1500)
+
+});
+
 const map = L.map("map").setView([0, -0.09], 13);
 const OpenStreetMap_Mapnik = L.tileLayer(
   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",

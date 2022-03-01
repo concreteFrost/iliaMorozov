@@ -1,3 +1,29 @@
+@keyframes fadeOut {
+  from { opacity: 0.9; }
+  to   { opacity: 0; }
+}
+
+.fadeOutClass{
+animation-name: fadeOut;
+ animation-duration: 3s;
+}
+#loader{
+  background-color: rgb(0, 187, 255);
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  z-index: 2000;
+  opacity: 0.9;
+  display: flex;
+}
+#loader img{
+  width: 64px;
+  height: 64px;
+  align-self: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 @font-face {
   font-family: Hatcher;
   src: url("../fonts/Hatcher.otf");
@@ -27,41 +53,32 @@ nav {
   position: absolute;
   z-index: 500;
   overflow: none;
-  display: flex;
 }
 
-nav h2 {
+
+.logo {
+  flex: 1;
   font-family: Hatcher, Times, serif;
-  font-size: 2.5em;
+  font-size: 3em;
   color: rgb(255, 255, 255);
   margin: auto;
   padding-left: 10px;
   margin-top: 10px;
 }
 
-.logo {
-  flex: 0.6;
-  order: 1;
+.selectCountrySection {
+  font-size: 0.8em;
+  flex: 2;
+  color: white;
+  align-self: flex-end;
 }
 
-.selectCountrySection {
-  flex: 1;
-  order: 2;
-  align-self: center;
-  margin-left: 0;
-  color: white;
+label{
+  font-size: 1.2em;
 }
 
 #currentCountry{
   text-align: center;
-}
-
-label{
-  display: block;
-}
-
-select {
-  font-size: 0.1em;
 }
 
 main {
