@@ -1,6 +1,5 @@
 window.addEventListener('load',()=>{
   setTimeout(()=>{$('#loader').hide();},1500)
-
 });
 
 const map = L.map("map").setView([0, -0.09], 13);
@@ -69,27 +68,49 @@ $(document).ready(() => {
 let countryShape;
 $("#selectCountry").change(() => {
   //Get Shape
-  $.ajax({
-    url: "libs/php/getCountryBounds.php",
-    success: function (res) {
-      $("#selectCity").find("option").remove().end();
-      for (let i = 0; i < res["data"].length; i++) {
-        if ($("#selectCountry").val() == res["data"][i]["iso"]) {
-          if (map.hasLayer(countryShape)) {
-            map.removeLayer(countryShape);
-          }
-          let currentBound = res["data"][i]["bounds"];
-          countryShape = L.geoJSON(currentBound).addTo(map);
-          map.addLayer(countryShape);
-          map.fitBounds(countryShape.getBounds());
-          break;
+//   $.ajax({
+//     url: "libs/php/getCountryBounds.php",
+//     success: function (res) {
+//       $("#selectCity").find("option").remove().end();
+//       for (let i = 0; i < res["data"].length; i++) {
+//         if ($("#selectCountry").val() == res["data"][i]["iso"]) {
+//           if (map.hasLayer(countryShape)) {
+//             map.removeLayer(countryShape);
+//           }
+//           let currentBound = res["data"][i]["bounds"];
+//           countryShape = L.geoJSON(currentBound).addTo(map);
+//           map.addLayer(countryShape);
+//           map.fitBounds(countryShape.getBounds());
+//           break;
+//         }
+//       }
+//     },
+//     error: function (err) {
+//       console.log(err);
+//     },
+//   });
+// });
+$.ajax({
+  url: "libs/php/getCountryBounds.php",
+  data:{
+    iso: $('#selectCountry').val()
+  },
+  success: function (res) {
+    console.log($('#selectCountry').val())
+    console.log(res)
+
+        if (map.hasLayer(countryShape)) {
+          map.removeLayer(countryShape);
         }
-      }
-    },
-    error: function (err) {
-      console.log(err);
-    },
-  });
+        let currentBound = res['geometry'];
+        countryShape = L.geoJSON(currentBound).addTo(map);
+        map.addLayer(countryShape);
+        map.fitBounds(countryShape.getBounds()); 
+  },
+  error: function (err) {
+    console.log(err);
+  },
+});
 });
 //weather location array
 var latLon = [];
