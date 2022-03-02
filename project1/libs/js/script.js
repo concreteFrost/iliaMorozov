@@ -68,41 +68,18 @@ $(document).ready(() => {
 let countryShape;
 $("#selectCountry").change(() => {
   //Get Shape
-//   $.ajax({
-//     url: "libs/php/getCountryBounds.php",
-//     success: function (res) {
-//       $("#selectCity").find("option").remove().end();
-//       for (let i = 0; i < res["data"].length; i++) {
-//         if ($("#selectCountry").val() == res["data"][i]["iso"]) {
-//           if (map.hasLayer(countryShape)) {
-//             map.removeLayer(countryShape);
-//           }
-//           let currentBound = res["data"][i]["bounds"];
-//           countryShape = L.geoJSON(currentBound).addTo(map);
-//           map.addLayer(countryShape);
-//           map.fitBounds(countryShape.getBounds());
-//           break;
-//         }
-//       }
-//     },
-//     error: function (err) {
-//       console.log(err);
-//     },
-//   });
-// });
+
 $.ajax({
   url: "libs/php/getCountryBounds.php",
   data:{
     iso: $('#selectCountry').val()
   },
   success: function (res) {
-    console.log($('#selectCountry').val())
-    console.log(res)
-
+   
         if (map.hasLayer(countryShape)) {
           map.removeLayer(countryShape);
         }
-        let currentBound = res['geometry'];
+        let currentBound = res['data']['bounds'];
         countryShape = L.geoJSON(currentBound).addTo(map);
         map.addLayer(countryShape);
         map.fitBounds(countryShape.getBounds()); 
@@ -136,7 +113,7 @@ $("#selectCountry").change(() => {
       } else {
         iso2 = result["alpha2Code"];
       }
-      $("#currentCountry").html(result["nativeName"]);
+      $("#currentCountry").html(result["name"]);
       $("#currentCapital").html("Capital: " + result["capital"]);
       $("#currentFlag").html(
         `<img src=${result["flag"]} alt='no image' style='width :70px'/>`
@@ -256,121 +233,121 @@ let cityMarkers;
 let parksMarkers;
 let poiMarkers;
 //Get Cities/////////////////
-// $("#currentCountry").on("DOMSubtreeModified", () => {
-//   $.ajax({
-//     url: "libs/php/getCities.php",
-//     data: {
-//       iso: iso2,
-//     },
-//     success: function (result) {
-//       if (cityMarkers) {
-//         map.removeLayer(cityMarkers);
-//       }
-//       cityMarkers = L.markerClusterGroup();
-//       const cityIcon = L.icon({
-//         iconUrl: "libs/vendors/leaflet/images/icons/hotel_on.png",
-//         iconSize: [30, 30],
-//       });
-//       const r = result["data"]["results"];
-//       for (let i = 0; i < r.length; i++) {
-//         const img = r[i]["images"][0]["sizes"]["thumbnail"]["url"];
-//         const cityName = r[i]["name"];
-//         const snippet = r[i]["snippet"];
+$("#currentCountry").on("DOMSubtreeModified", () => {
+  $.ajax({
+    url: "libs/php/getCities.php",
+    data: {
+      iso: iso2,
+    },
+    success: function (result) {
+      if (cityMarkers) {
+        map.removeLayer(cityMarkers);
+      }
+      cityMarkers = L.markerClusterGroup();
+      const cityIcon = L.icon({
+        iconUrl: "libs/vendors/leaflet/images/icons/hotel_on.png",
+        iconSize: [30, 30],
+      });
+      const r = result["data"]["results"];
+      for (let i = 0; i < r.length; i++) {
+        const img = r[i]["images"][0]["sizes"]["thumbnail"]["url"];
+        const cityName = r[i]["name"];
+        const snippet = r[i]["snippet"];
 
-//         let city = L.marker(
-//           [r[i]["coordinates"]["latitude"], r[i]["coordinates"]["longitude"]],
-//           { icon: cityIcon }
-//         ).bindPopup(
-//           `<img src='${img}' class='popupCenter'/>` +
-//             `<h3 style='text-align:center;'>${cityName}</h3>` +
-//             `<p>${snippet}</p>`
-//         );
-//         cityMarkers.addLayer(city);
-//       }
-//       map.addLayer(cityMarkers);
-//     },
-//     error: function (err) {
-//       console.log("no iso code found");
-//     },
-//   });
-//   //Get Parks
-//   $.ajax({
-//     url: "libs/php/getParks.php",
-//     data: {
-//       iso: iso2,
-//     },
-//     success: function (result) {
-//       if (parksMarkers) {
-//         map.removeLayer(parksMarkers);
-//       }
-//       parksMarkers = L.markerClusterGroup();
-//       const cityIcon = L.icon({
-//         iconUrl: "libs/vendors/leaflet/images/icons/park_on.png",
-//         iconSize: [30, 30],
-//       });
-//       const r = result["data"]["results"];
-//       for (let i = 0; i < r.length; i++) {
-//         const img = r[i]["images"][0]["sizes"]["thumbnail"]["url"];
-//         const parkName = r[i]["name"];
-//         const snippet = r[i]["snippet"];
+        let city = L.marker(
+          [r[i]["coordinates"]["latitude"], r[i]["coordinates"]["longitude"]],
+          { icon: cityIcon }
+        ).bindPopup(
+          `<img src='${img}' class='popupCenter'/>` +
+            `<h3 style='text-align:center;'>${cityName}</h3>` +
+            `<p>${snippet}</p>`
+        );
+        cityMarkers.addLayer(city);
+      }
+      map.addLayer(cityMarkers);
+    },
+    error: function (err) {
+      console.log("no iso code found");
+    },
+  });
+  //Get Parks
+  $.ajax({
+    url: "libs/php/getParks.php",
+    data: {
+      iso: iso2,
+    },
+    success: function (result) {
+      if (parksMarkers) {
+        map.removeLayer(parksMarkers);
+      }
+      parksMarkers = L.markerClusterGroup();
+      const cityIcon = L.icon({
+        iconUrl: "libs/vendors/leaflet/images/icons/park_on.png",
+        iconSize: [30, 30],
+      });
+      const r = result["data"]["results"];
+      for (let i = 0; i < r.length; i++) {
+        const img = r[i]["images"][0]["sizes"]["thumbnail"]["url"];
+        const parkName = r[i]["name"];
+        const snippet = r[i]["snippet"];
 
-//         let park = L.marker(
-//           [r[i]["coordinates"]["latitude"], r[i]["coordinates"]["longitude"]],
-//           { icon: cityIcon }
-//         ).bindPopup(
-//           `<img src='${img}' class='popupCenter'/>` +
-//             `<h3 style='text-align:center;'>${parkName}</h3>` +
-//             `<p>${snippet}</p>`
-//         );
-//         parksMarkers.addLayer(park);
-//       }
-//       map.addLayer(parksMarkers);
-//     },
-//     error: function (err) {
-//       console.log("no iso code found");
-//     },
-//   });
-//   //Get POI
-//   $.ajax({
-//     url: "libs/php/getPOI.php",
-//     data: {
-//       iso: iso2.toLowerCase(),
-//     },
-//     success: function (result) {
-//       if (poiMarkers) {
-//         map.removeLayer(poiMarkers);
-//       }
-//       poiMarkers = L.markerClusterGroup();
-//       const poiIcon = L.icon({
-//         iconUrl: "libs/vendors/leaflet/images/icons/poi_on.png",
-//         iconSize: [30, 30],
-//       });
-//       console.log(iso2);
-//       console.log(result);
-//       const r = result["data"]["results"];
-//       for (let i = 0; i < r.length; i++) {
-//         const img = r[i]["images"][0]["sizes"]["thumbnail"]["url"];
-//         const parkName = r[i]["name"];
-//         const snippet = r[i]["snippet"];
+        let park = L.marker(
+          [r[i]["coordinates"]["latitude"], r[i]["coordinates"]["longitude"]],
+          { icon: cityIcon }
+        ).bindPopup(
+          `<img src='${img}' class='popupCenter'/>` +
+            `<h3 style='text-align:center;'>${parkName}</h3>` +
+            `<p>${snippet}</p>`
+        );
+        parksMarkers.addLayer(park);
+      }
+      map.addLayer(parksMarkers);
+    },
+    error: function (err) {
+      console.log("no iso code found");
+    },
+  });
+  //Get POI
+  $.ajax({
+    url: "libs/php/getPOI.php",
+    data: {
+      iso: iso2.toLowerCase(),
+    },
+    success: function (result) {
+      if (poiMarkers) {
+        map.removeLayer(poiMarkers);
+      }
+      poiMarkers = L.markerClusterGroup();
+      const poiIcon = L.icon({
+        iconUrl: "libs/vendors/leaflet/images/icons/poi_on.png",
+        iconSize: [30, 30],
+      });
+      console.log(iso2);
+      console.log(result);
+      const r = result["data"]["results"];
+      for (let i = 0; i < r.length; i++) {
+        const img = r[i]["images"][0]["sizes"]["thumbnail"]["url"];
+        const parkName = r[i]["name"];
+        const snippet = r[i]["snippet"];
 
-//         let poi = L.marker(
-//           [r[i]["coordinates"]["latitude"], r[i]["coordinates"]["longitude"]],
-//           { icon: poiIcon }
-//         ).bindPopup(
-//           `<img src='${img}' class='popupCenter'/>` +
-//             `<h3 style='text-align:center;'>${parkName}</h3>` +
-//             `<p>${snippet}</p>`
-//         );
-//         poiMarkers.addLayer(poi);
-//       }
-//       map.addLayer(poiMarkers);
-//     },
-//     error: function (err) {
-//       console.log("no iso code found");
-//     },
-//   });
+        let poi = L.marker(
+          [r[i]["coordinates"]["latitude"], r[i]["coordinates"]["longitude"]],
+          { icon: poiIcon }
+        ).bindPopup(
+          `<img src='${img}' class='popupCenter'/>` +
+            `<h3 style='text-align:center;'>${parkName}</h3>` +
+            `<p>${snippet}</p>`
+        );
+        poiMarkers.addLayer(poi);
+      }
+      map.addLayer(poiMarkers);
+    },
+    error: function (err) {
+      console.log("no iso code found");
+    },
+  });
 
-// });
+});
 //Show Position Button
 var positionShowHide = L.easyButton({
   states: [
