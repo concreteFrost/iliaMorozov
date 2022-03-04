@@ -10,7 +10,7 @@
   text-align: center;
   text-decoration: none;
   color: black;
-  border: 3px solid rgb(176, 204, 215);
+  border: 0px solid rgb(176, 204, 215);
   
   
 }
@@ -30,15 +30,15 @@
 }
 
 .leaflet-bar button:first-of-type {
-  border-top-left-radius: 50px;
-  border-top-right-radius: 50px;
+  border-top-left-radius:100px;
+  border-top-right-radius: 100px;
   
 
 }
 
 .leaflet-bar button:last-of-type {
-  border-bottom-left-radius: 50px;
-  border-bottom-right-radius: 50px;
+  border-bottom-left-radius: 100px;
+  border-bottom-right-radius: 100px;
   border-bottom: none;
  
 }

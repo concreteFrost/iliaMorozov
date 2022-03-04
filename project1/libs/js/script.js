@@ -1,6 +1,3 @@
-window.addEventListener('load',()=>{
-  setTimeout(()=>{$('#loader').hide();},1500)
-});
 
 const map = L.map("map").setView([0, -0.09], 13);
 const OpenStreetMap_Mapnik = L.tileLayer(
@@ -28,10 +25,7 @@ $(document).ready(() => {
       success: function (res) {
         map.setView([pos.coords.latitude, pos.coords.longitude], 13);
         $("#selectCountry").val(res["data"]["countryCode"]).change();
-        marker = L.marker([pos.coords.latitude, pos.coords.longitude]).addTo(
-          map
-        );
-        marker.bindPopup("You are here");
+       
       },
       error: function (err) {
         console.log(err);
@@ -80,7 +74,7 @@ $.ajax({
           map.removeLayer(countryShape);
         }
         let currentBound = res['data']['bounds'];
-        countryShape = L.geoJSON(currentBound).addTo(map);
+        countryShape = L.geoJSON(currentBound,{style:{color: '#00cc00', weight: 2, dashOffset: '0' } }).addTo(map);
         map.addLayer(countryShape);
         map.fitBounds(countryShape.getBounds()); 
   },
@@ -88,6 +82,11 @@ $.ajax({
     console.log(err);
   },
 });
+});
+
+   
+window.addEventListener('load',()=>{
+  setTimeout(()=>{$('#loader').hide();},1500)
 });
 //weather location array
 var latLon = [];
@@ -122,67 +121,7 @@ $("#selectCountry").change(() => {
         "Currency: " + result["currencies"][0]["name"]
       );
       $("#currentPopulation").html("Population: " + result["population"]);
-      // Get Weather
-      $.ajax({
-        url: "libs/php/getWeather.php",
-        dataType: "json",
-        data: {
-          lat: latLon[1],
-          lon: latLon[0],
-        },
-        success: function (r) {
-          var options = {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          };
-          var today = new Date(r["data"][0]["date"]);
-          let todayDate = today.toLocaleDateString("en-US", options);
-          let todayIcon = r["data"][0]["day"]["condition"]["icon"];
-          let todayTemp = r["data"][0]["day"]["avgtemp_c"];
-          let todayWindSpeed = r["data"][0]["day"]["maxwind_kph"];
-          let todayCondition = r["data"][0]["day"]["condition"]["text"];
-          let sunrise = r["data"][0]["astro"]["sunrise"];
-          let sunset = r["data"][0]["astro"]["sunset"];
 
-          $("#todayDate").html(todayDate);
-          $("#todayWeatherIcon").html(`<img src="https://${todayIcon}" />`);
-          $("#currentTemperature").html(
-            "<b>Temperature: </b>" + todayTemp + "°"
-          );
-          $("#windSpeed").html("<b>Wind Speed: </b>" + todayWindSpeed + " ms");
-          $("#todayCondition").html(`<b>${todayCondition}</b>`);
-
-          $("#sunrise").html("<b>Sunrise: </b>" + sunrise);
-          $("#sunset").html("<b>Sunset: </b>" + sunset);
-
-          let tomorrowIcon = r["data"][1]["day"]["condition"]["icon"];
-          let tomorrowTemp = r["data"][1]["day"]["avgtemp_c"];
-
-          $("#tomorrowDate").html(r["data"][1]["date"]);
-          $("#tomorrowWeatherIcon").html(
-            `<img src="https://${tomorrowIcon}" width=48px />`
-          );
-          $("#tomorrowWeatherTemperature").html(
-            "<b>Temperature: </b>" + tomorrowTemp + "°"
-          );
-
-          let dayAfterIcon = r["data"][2]["day"]["condition"]["icon"];
-          let dayAfterTemp = r["data"][2]["day"]["avgtemp_c"];
-
-          $("#afterTomorrowDate").html(r["data"][2]["date"]);
-          $("#afterTomorrowWeatherIcon").html(
-            `<img src="https://${dayAfterIcon}" width=48px/>`
-          );
-          $("#afterTomorrowWeatherTemperature").html(
-            "<b>Temperature: </b>" + dayAfterTemp + "°"
-          );
-        },
-        error: function (err) {
-          console.log(err);
-        },
-      });
     },
     error: function (err) {
       console.log("err");
@@ -210,18 +149,63 @@ $("#selectCountry").change(() => {
 //Get Wiki
 $("#currentCountry").on("DOMSubtreeModified", () => {
   $.ajax({
-    url: "libs/php/getWiki.php",
+    url: "libs/php/getWeather.php",
+    dataType: "json",
     data: {
-      country: $("#currentCountry").html().replace(" ", "_").toLowerCase(),
+      lat: latLon[1],
+      lon: latLon[0],
     },
-    success(res) {
-      let wiki = res["data"]["geonames"][0]["wikipediaUrl"];
-      $("#wikiPage").html(
-        `<a href="https://${wiki}" target='_blank'>Wikipedia</a>`
+    success: function (r) {
+      var options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      };
+      var today = new Date(r["data"][0]["date"]);
+      let todayDate = today.toLocaleDateString("en-US", options);
+      let todayIcon = r["data"][0]["day"]["condition"]["icon"];
+      let todayTemp = r["data"][0]["day"]["avgtemp_c"];
+      let todayWindSpeed = r["data"][0]["day"]["maxwind_kph"];
+      let todayCondition = r["data"][0]["day"]["condition"]["text"];
+      let sunrise = r["data"][0]["astro"]["sunrise"];
+      let sunset = r["data"][0]["astro"]["sunset"];
+
+      $("#todayDate").html(todayDate);
+      $("#todayWeatherIcon").html(`<img src="https://${todayIcon}" />`);
+      $("#currentTemperature").html(
+        "<b>Temperature: </b>" + todayTemp + "°"
+      );
+      $("#windSpeed").html("<b>Wind Speed: </b>" + todayWindSpeed + " ms");
+      $("#todayCondition").html(`<b>${todayCondition}</b>`);
+
+      $("#sunrise").html("<b>Sunrise: </b>" + sunrise);
+      $("#sunset").html("<b>Sunset: </b>" + sunset);
+
+      let tomorrowIcon = r["data"][1]["day"]["condition"]["icon"];
+      let tomorrowTemp = r["data"][1]["day"]["avgtemp_c"];
+
+      $("#tomorrowDate").html(r["data"][1]["date"]);
+      $("#tomorrowWeatherIcon").html(
+        `<img src="https://${tomorrowIcon}" width=48px />`
+      );
+      $("#tomorrowWeatherTemperature").html(
+        "<b>Temperature: </b>" + tomorrowTemp + "°"
+      );
+
+      let dayAfterIcon = r["data"][2]["day"]["condition"]["icon"];
+      let dayAfterTemp = r["data"][2]["day"]["avgtemp_c"];
+
+      $("#afterTomorrowDate").html(r["data"][2]["date"]);
+      $("#afterTomorrowWeatherIcon").html(
+        `<img src="https://${dayAfterIcon}" width=48px/>`
+      );
+      $("#afterTomorrowWeatherTemperature").html(
+        "<b>Temperature: </b>" + dayAfterTemp + "°"
       );
     },
-    error(err) {
-      console.log("error");
+    error: function (err) {
+      console.log(err);
     },
   });
 });
@@ -244,10 +228,12 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
         map.removeLayer(cityMarkers);
       }
       cityMarkers = L.markerClusterGroup();
-      const cityIcon = L.icon({
-        iconUrl: "libs/vendors/leaflet/images/icons/hotel_on.png",
-        iconSize: [30, 30],
-      });
+      let awsMarker = L.AwesomeMarkers.icon({
+        icon: 'fa-regular fa-city',
+        shape: 'square',
+        markerColor: 'blue',
+        prefix: 'fa'
+      })
       const r = result["data"]["results"];
       for (let i = 0; i < r.length; i++) {
         const img = r[i]["images"][0]["sizes"]["thumbnail"]["url"];
@@ -256,7 +242,7 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
 
         let city = L.marker(
           [r[i]["coordinates"]["latitude"], r[i]["coordinates"]["longitude"]],
-          { icon: cityIcon }
+          { icon: awsMarker }
         ).bindPopup(
           `<img src='${img}' class='popupCenter'/>` +
             `<h3 style='text-align:center;'>${cityName}</h3>` +
@@ -281,10 +267,12 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
         map.removeLayer(parksMarkers);
       }
       parksMarkers = L.markerClusterGroup();
-      const cityIcon = L.icon({
-        iconUrl: "libs/vendors/leaflet/images/icons/park_on.png",
-        iconSize: [30, 30],
-      });
+      let awsMarker = L.AwesomeMarkers.icon({
+        icon: 'fa-regular fa-tree',
+        shape: 'square',
+        markerColor: 'orange',
+        prefix: 'fa'
+      })
       const r = result["data"]["results"];
       for (let i = 0; i < r.length; i++) {
         const img = r[i]["images"][0]["sizes"]["thumbnail"]["url"];
@@ -293,7 +281,7 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
 
         let park = L.marker(
           [r[i]["coordinates"]["latitude"], r[i]["coordinates"]["longitude"]],
-          { icon: cityIcon }
+          { icon: awsMarker }
         ).bindPopup(
           `<img src='${img}' class='popupCenter'/>` +
             `<h3 style='text-align:center;'>${parkName}</h3>` +
@@ -307,7 +295,7 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
       console.log("no iso code found");
     },
   });
-  //Get POI
+//   //Get POI
   $.ajax({
     url: "libs/php/getPOI.php",
     data: {
@@ -318,21 +306,21 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
         map.removeLayer(poiMarkers);
       }
       poiMarkers = L.markerClusterGroup();
-      const poiIcon = L.icon({
-        iconUrl: "libs/vendors/leaflet/images/icons/poi_on.png",
-        iconSize: [30, 30],
-      });
-      console.log(iso2);
-      console.log(result);
+      let awsMarker = L.AwesomeMarkers.icon({
+        icon: 'fa-regular fa-camera',
+        shape: 'square',
+        markerColor: 'red',
+        prefix: 'fa'
+      })
       const r = result["data"]["results"];
       for (let i = 0; i < r.length; i++) {
         const img = r[i]["images"][0]["sizes"]["thumbnail"]["url"];
         const parkName = r[i]["name"];
         const snippet = r[i]["snippet"];
-
+        
         let poi = L.marker(
           [r[i]["coordinates"]["latitude"], r[i]["coordinates"]["longitude"]],
-          { icon: poiIcon }
+          { icon: awsMarker }
         ).bindPopup(
           `<img src='${img}' class='popupCenter'/>` +
             `<h3 style='text-align:center;'>${parkName}</h3>` +
@@ -349,124 +337,78 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
 
 });
 //Show Position Button
-var positionShowHide = L.easyButton({
-  states: [
-    {
-      stateName: "hideBar",
-      icon: '<img src="libs/vendors/leaflet/images/icons/position_on.png " width=18 />',
-      title: "hide info",
-      onClick: function (control) {
-        map.removeLayer(marker);
-        control.state("showBar");
-      },
-    },
-    {
-      stateName: "showBar",
-      icon: '<img src="libs/vendors/leaflet/images/icons/position_off.png" width=18 />',
-      title: "show info",
-      onClick: function (control) {
-        map.addLayer(marker);
-        map.setView(marker.getLatLng(), 5);
-        control.state("hideBar");
-      },
-    },
-  ],
-});
-positionShowHide.addTo(map);
 
 /////////Buttons!!!/////////////////////
 var infoShowHide = L.easyButton({
+  id:'esButtonInfo',
   states: [
     {
       stateName: "hideBar",
-      icon: '<img src="libs/vendors/leaflet/images/icons/info_on.png " width=18 />',
+      icon: 'fa-regular fa-circle-info',
       title: "hide info",
       onClick: function (control) {
         $("#countryInfo").modal("show");
-
         control.state("showBar");
         weatherShowHide.state("hideBar");
         covidShowHide.state("hideBar");
       },
     },
-    {
-      stateName: "showBar",
-      icon: '<img src="libs/vendors/leaflet/images/icons/info_off.png" width=18 />',
-      title: "show info",
-      onClick: function (control) {
-        $("#countryInfo").hide();
-        control.state("hideBar");
-      },
-    },
+
   ],
 });
 infoShowHide.addTo(map);
 
 //Show Covid Button
 var covidShowHide = L.easyButton({
+  id: 'esButtonCovid',
   states: [
-    {
+    {   
       stateName: "hideBar",
-      icon: '<img src="libs/vendors/leaflet/images/icons/covid_on.png " width=18 />',
+      icon: 'fa-solid fa-virus',
+      height: '50px',
       title: "hide info",
       onClick: function (control) {
         $("#covidOverlay").modal("show");
         control.state("showBar");
       },
-    },
-    {
-      stateName: "showBar",
-      icon: '<img src="libs/vendors/leaflet/images/icons/covid_off.png" width=18 />',
-      title: "show info",
-      onClick: function (control) {
-        $("#covidOverlay").hide();
-        control.state("hideBar");
-      },
-    },
+    }
   ],
 });
 covidShowHide.addTo(map);
 
 var weatherShowHide = L.easyButton({
+  id:'esButtonWeather',
   states: [
     {
       stateName: "hideBar",
-      icon: '<img src="libs/vendors/leaflet/images/icons/weather-on.png " width=18 />',
+      icon: 'fa-solid fa-sun',
       title: "hide info",
       onClick: function (control) {
         $("#weatherOverlay").modal("show");
         control.state("showBar");
       },
-    },
-    {
-      stateName: "showBar",
-      icon: '<img src="libs/vendors/leaflet/images/icons/weather-off.png" width=18 />',
-      title: "show info",
-      onClick: function (control) {
-        $("#weatherOverlay").hide();
-        control.state("hideBar");
-      },
-    },
+    }
   ],
 });
 weatherShowHide.addTo(map);
 
 //Show Cities Button
 var cityMarkerShowHide = L.easyButton({
+  id:'esButtonBuilding',
   states: [
     {
       stateName: "hideBar",
-      icon: '<img src="libs/vendors/leaflet/images/icons/hotel_on.png " width=18 />',
+      icon: 'fa-regular fa-city',
       title: "hide info",
       onClick: function (control) {
         map.removeLayer(cityMarkers);
-
         control.state("showBar");
       },
+      
     },
     {
       stateName: "showBar",
-      icon: '<img src="libs/vendors/leaflet/images/icons/hotel_off.png" width=18 />',
+      icon: 'fa-light fa-city',
       title: "show info",
       onClick: function (control) {
         map.addLayer(cityMarkers);
@@ -478,10 +420,11 @@ var cityMarkerShowHide = L.easyButton({
 cityMarkerShowHide.addTo(map);
 
 var parkMarkersShowHide = L.easyButton({
+  id:'esButtonTree',
   states: [
     {
       stateName: "hideBar",
-      icon: '<img src="libs/vendors/leaflet/images/icons/park_on.png " width=18 />',
+      icon: 'fa-regular fa-tree',
       title: "hide info",
       onClick: function (control) {
         map.removeLayer(parksMarkers);
@@ -490,22 +433,24 @@ var parkMarkersShowHide = L.easyButton({
     },
     {
       stateName: "showBar",
-      icon: '<img src="libs/vendors/leaflet/images/icons/park_off.png" width=18 />',
+      icon: 'fa-light fa-tree',
       title: "show info",
       onClick: function (control) {
         map.addLayer(parksMarkers);
         control.state("hideBar");
       },
     },
+    
   ],
 });
 parkMarkersShowHide.addTo(map);
 
 var poiShowHide = L.easyButton({
+  id:'esButtonCamera',
   states: [
     {
       stateName: "hideBar",
-      icon: '<img src="libs/vendors/leaflet/images/icons/poi_on.png " width=18 />',
+      icon: 'fa-regular fa-camera',
       title: "hide info",
       onClick: function (control) {
         map.removeLayer(poiMarkers);
@@ -514,7 +459,7 @@ var poiShowHide = L.easyButton({
     },
     {
       stateName: "showBar",
-      icon: '<img src="libs/vendors/leaflet/images/icons/poi_off.png" width=18 />',
+      icon: 'fa-light fa-camera',
       title: "show info",
       onClick: function (control) {
         map.addLayer(poiMarkers);
