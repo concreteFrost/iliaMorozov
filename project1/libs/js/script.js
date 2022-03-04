@@ -320,7 +320,8 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
       })
       const r = result["data"]["results"];
       for (let i = 0; i < r.length; i++) {
-        const img = r[i]["images"][0]["sizes"]["thumbnail"]["url"];
+    try{
+        const img = r[i]["images"][0]["sizes"]["medium"]["url"];
         const parkName = r[i]["name"];
         const snippet = r[i]["snippet"];
         
@@ -333,6 +334,10 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
             `<p>${snippet}</p>`
         );
         poiMarkers.addLayer(poi);
+    }
+    catch(e){
+      
+    }
       }
       map.addLayer(poiMarkers);
     },
