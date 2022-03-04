@@ -108,6 +108,13 @@ main {
 
   font-style: oblique;
 }
+#todayDate{
+  text-align: center;
+}
+
+#todayWeatherIcon, #currentTemperature{
+  text-align: center;
+}
 
 .weatherToday {
   display: flex;
@@ -162,14 +169,14 @@ main {
 }
 
 .leaflet-top {
-  top: 70px;
+  top: 50px;
 }
 
 .popupCenter {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 50%;
+  width: 60%;
   background-color: black;
 }
 

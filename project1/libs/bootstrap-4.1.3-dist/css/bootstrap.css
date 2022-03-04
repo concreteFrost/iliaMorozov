@@ -7372,7 +7372,7 @@ button.bg-dark:focus {
 }
 
 .shadow {
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.50) !important;
 }
 
 .shadow-lg {
@@ -7567,7 +7567,7 @@ button.bg-dark:focus {
 
 .mb-5,
 .my-5 {
-  margin-bottom: 3rem !important;
+  margin-bottom: 1rem !important;
 }
 
 .ml-5,

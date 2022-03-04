@@ -120,8 +120,9 @@ $("#selectCountry").change(() => {
       $("#currentCurrency").html(
         "Currency: " + result["currencies"][0]["name"]
       );
-      $("#currentPopulation").html("Population: " + result["population"]);
 
+      let populationFormatted = numeral(result['population']).format('0,0');
+      $("#currentPopulation").html("Population: " + populationFormatted);
     },
     error: function (err) {
       console.log("err");
@@ -146,7 +147,7 @@ $("#selectCountry").change(() => {
     },
   });
 });
-//Get Wiki
+//Get Weather
 $("#currentCountry").on("DOMSubtreeModified", () => {
   $.ajax({
     url: "libs/php/getWeather.php",
@@ -184,8 +185,9 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
 
       let tomorrowIcon = r["data"][1]["day"]["condition"]["icon"];
       let tomorrowTemp = r["data"][1]["day"]["avgtemp_c"];
-
-      $("#tomorrowDate").html(r["data"][1]["date"]);
+      let date2 = new Date(r["data"][1]["date"]);
+      let date2Formatted =date2.toLocaleDateString('en-US',options);
+      $("#tomorrowDate").html(date2Formatted);
       $("#tomorrowWeatherIcon").html(
         `<img src="https://${tomorrowIcon}" width=48px />`
       );
@@ -195,8 +197,10 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
 
       let dayAfterIcon = r["data"][2]["day"]["condition"]["icon"];
       let dayAfterTemp = r["data"][2]["day"]["avgtemp_c"];
+      let date3 = new Date(r["data"][1]["date"]);
+      let date3Formatted =date3.toLocaleDateString('en-US',options);
 
-      $("#afterTomorrowDate").html(r["data"][2]["date"]);
+      $("#afterTomorrowDate").html(date3Formatted);
       $("#afterTomorrowWeatherIcon").html(
         `<img src="https://${dayAfterIcon}" width=48px/>`
       );
@@ -217,6 +221,8 @@ let cityMarkers;
 let parksMarkers;
 let poiMarkers;
 //Get Cities/////////////////
+
+
 $("#currentCountry").on("DOMSubtreeModified", () => {
   $.ajax({
     url: "libs/php/getCities.php",
@@ -244,7 +250,7 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
           [r[i]["coordinates"]["latitude"], r[i]["coordinates"]["longitude"]],
           { icon: awsMarker }
         ).bindPopup(
-          `<img src='${img}' class='popupCenter'/>` +
+          `<img src='${img}' class='popupCenter shadow mb-5  rounded'/>` +
             `<h3 style='text-align:center;'>${cityName}</h3>` +
             `<p>${snippet}</p>`
         );
@@ -283,7 +289,7 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
           [r[i]["coordinates"]["latitude"], r[i]["coordinates"]["longitude"]],
           { icon: awsMarker }
         ).bindPopup(
-          `<img src='${img}' class='popupCenter'/>` +
+          `<img src='${img}' class='popupCenter shadow mb-5  rounded'/>` +
             `<h3 style='text-align:center;'>${parkName}</h3>` +
             `<p>${snippet}</p>`
         );
@@ -322,7 +328,7 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
           [r[i]["coordinates"]["latitude"], r[i]["coordinates"]["longitude"]],
           { icon: awsMarker }
         ).bindPopup(
-          `<img src='${img}' class='popupCenter'/>` +
+          `<img src='${img}' class='popupCenter shadow mb-5  rounded'/>` +
             `<h3 style='text-align:center;'>${parkName}</h3>` +
             `<p>${snippet}</p>`
         );
