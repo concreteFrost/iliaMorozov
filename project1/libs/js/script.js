@@ -148,7 +148,7 @@ $("#selectCountry").change(() => {
   });
 });
 //Get Weather
-$("#currentCountry").on("DOMSubtreeModified", () => {
+$("#currentCapital").on("DOMSubtreeModified", () => {
   $.ajax({
     url: "libs/php/getWeather.php",
     dataType: "json",
@@ -163,11 +163,12 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
         month: "long",
         day: "numeric",
       };
+    
       var today = new Date(r["data"][0]["date"]);
       let todayDate = today.toLocaleDateString("en-US", options);
       let todayIcon = r["data"][0]["day"]["condition"]["icon"];
       let todayTemp = r["data"][0]["day"]["avgtemp_c"];
-      let todayWindSpeed = r["data"][0]["day"]["maxwind_kph"];
+      let todayWindSpeed = Math.ceil(r["data"][0]["day"]["maxwind_mph"]);
       let todayCondition = r["data"][0]["day"]["condition"]["text"];
       let sunrise = r["data"][0]["astro"]["sunrise"];
       let sunset = r["data"][0]["astro"]["sunset"];
@@ -177,7 +178,7 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
       $("#currentTemperature").html(
         "<b>Temperature: </b>" + todayTemp + "°"
       );
-      $("#windSpeed").html("<b>Wind Speed: </b>" + todayWindSpeed + " ms");
+      $("#windSpeed").html("<b>Wind Speed: </b>" + todayWindSpeed + " mph");
       $("#todayCondition").html(`<b>${todayCondition}</b>`);
 
       $("#sunrise").html("<b>Sunrise: </b>" + sunrise);
@@ -242,6 +243,7 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
       })
       const r = result["data"]["results"];
       for (let i = 0; i < r.length; i++) {
+        try{
         const img = r[i]["images"][0]["sizes"]["thumbnail"]["url"];
         const cityName = r[i]["name"];
         const snippet = r[i]["snippet"];
@@ -255,6 +257,10 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
             `<p>${snippet}</p>`
         );
         cityMarkers.addLayer(city);
+        }
+        catch{
+
+        }
       }
       map.addLayer(cityMarkers);
     },
@@ -281,6 +287,7 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
       })
       const r = result["data"]["results"];
       for (let i = 0; i < r.length; i++) {
+        try{
         const img = r[i]["images"][0]["sizes"]["thumbnail"]["url"];
         const parkName = r[i]["name"];
         const snippet = r[i]["snippet"];
@@ -294,6 +301,10 @@ $("#currentCountry").on("DOMSubtreeModified", () => {
             `<p>${snippet}</p>`
         );
         parksMarkers.addLayer(park);
+        }
+        catch{
+
+        }
       }
       map.addLayer(parksMarkers);
     },
