@@ -136,11 +136,15 @@ $("#selectCountry").change(() => {
     },
     success: function (res) {
       r = res["data"];
+      let confirmed = numeral(r['confirmed']).format('0,0');
+      let deaths = numeral(r['deaths']).format('0,0');
+      let recovered = numeral(r['recovered']).format('0,0');
+      let active = numeral(r['active']).format('0,0');
       $("#covidCountry").html(r["country"]);
-      $("#confirmed").html(r["confirmed"]);
-      $("#deaths").html(r["deaths"]);
-      $("#recovered").html(r["recovered"]);
-      $("#active").html(r["active"]);
+      $("#confirmed").html(confirmed);
+      $("#deaths").html(deaths);
+      $("#recovered").html(recovered);
+      $("#active").html(active);
     },
     error: function (er) {
       console.log(err);
