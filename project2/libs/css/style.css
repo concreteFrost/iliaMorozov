@@ -1,4 +1,12 @@
 thead{
     background-color: rgb(73, 150, 10);
     color: white;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
 }
+
+table{
+    border-collapse: collapse;
+    overflow-y: auto;
+}
+
