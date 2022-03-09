@@ -8,9 +8,7 @@ $(document).ready(() => {
     },
     success(res) {
       const r = res["data"];
-      function changeName() {
-        console.log("aaaaaaaa");
-      }
+
       for (let i = 0; i < r.length; i++) {
         const buttonName = r[i]["firstName"] +" " + r[i]['lastName'];
         $("#companyTable").append("<tr>");
@@ -32,6 +30,9 @@ $(document).ready(() => {
         $(b).on('click',()=>{
           $('#workerName').html(buttonName)
           $('#job').val(r[i]["jobTitle"])
+          $('#fName').val(r[i]["firstName"])
+          $('#sName').val(r[i]["lastName"])
+          $('#email').val(r[i]['email'])
           employeeId =r[i]['id']
         })
         $("#companyTable").append(b)
@@ -53,8 +54,11 @@ $(document).ready(() => {
 $('#submitForm').submit(function(e){
  
   $.ajax({
-    url:'libs/php/setJob.php',
+    url:'libs/php/setDetails.php',
     data:{
+      fName: $("#fName").val(),
+      sName: $("#sName").val(),
+      email: $("#email").val(),
       jobTitle:  $("#job").val(),
       id:employeeId,
     },

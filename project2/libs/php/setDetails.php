@@ -33,11 +33,14 @@
 	}	
 
 	// SQL does not accept parameters and so is not prepared
+	$fName = $_REQUEST['fName'];
+	$sName = $_REQUEST['sName'];
+	$email = $_REQUEST['email'];
 	$newJob =  $_REQUEST['jobTitle'];
 	
-	$query = $conn->prepare('UPDATE personnel SET jobTitle=? WHERE id=?');
+	$query = $conn->prepare('UPDATE personnel SET firstName=?,lastName=?,email=?, jobTitle=? WHERE id=?');
 
-    $query->bind_param("si",$newJob, $_REQUEST['id']);
+    $query->bind_param("ssssi",$fName,$sName,$email,$newJob, $_REQUEST['id']);
 
     $query->execute();
 	

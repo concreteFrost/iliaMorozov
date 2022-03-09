@@ -46,9 +46,17 @@
           </button>
         </div>
         <div class="modal-body">
-          <form class='form' id="submitForm" method="POST">
-              <label for="job">New Role</label>
-              <input type="text" name="job" id="job">
+          <form id="submitForm" method="POST">
+              <div class="form-group">     
+              <label for="fName">Name</label>
+              <input type="text" name="fName" id="fName" class='form-control' required>
+              <label for="sName">Second Name</label>
+              <input type="text" name="sName" id="sName" class='form-control' required>
+              <label for="job">Role</label>
+              <input type="text" name="job" id="job" class='form-control'>
+              <label for="email">Email</label>
+              <input type="email" name="email" id="email" class='form-control' required>
+            </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save changes</button>
