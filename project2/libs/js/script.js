@@ -1,13 +1,11 @@
 //Get All Data
-let employeeId;
-$(document).ready(() => {
+
+function refreshData(){
   $.ajax({
     url: "libs/php/getAll.php",
-    data: {
-      id: 1,
-    },
     success(res) {
       const r = res["data"];
+      $('#companyTable').children().remove().end()
       for (let i = 0; i < r.length; i++) {
         const buttonName = r[i]["firstName"] + " " + r[i]["lastName"];
         $("#companyTable").append("<tr>");
@@ -54,7 +52,7 @@ $(document).ready(() => {
               console.log(err);
             },
           });
-          //Get Location
+
        
         });
         $("#companyTable").append(b);
@@ -67,10 +65,14 @@ $(document).ready(() => {
       console.log(e["responseText"]);
     },
   });
+}
+let employeeId;
+$(document).ready(() => {
+ refreshData();
 });
 
 //Submit Changes
-$("#submitForm").submit(function (e) {
+$("#editDetailsButton").on('click',function (e) {
   $.ajax({
     url: "libs/php/setDetails.php",
     data: {
@@ -80,23 +82,20 @@ $("#submitForm").submit(function (e) {
       jobTitle: $("#job").val(),
       id: employeeId,
       department: $("#department").val(),
-    
     },
     success: function (res) {
-      console.log("submitted");
+      
+      refreshData();
     },
     error: function (e) {
       console.log(e);
     },
   });
-
   
-
   $("#changeJobModal").modal("hide");
 });
 
 //Add Employee
-
 $('#addEmployee').on('shown.bs.modal',()=>{
   $.ajax({
     url: "libs/php/getAllDepartments.php",
@@ -117,7 +116,7 @@ $('#addEmployee').on('shown.bs.modal',()=>{
     },
   });
 })
-$("#newEmployeeForm").submit(function (e) {
+$("#addEmployeeButton").on('click',function (e) {
 
   $.ajax({
     url: "libs/php/addEmployee.php",
@@ -129,7 +128,7 @@ $("#newEmployeeForm").submit(function (e) {
       department: $("#department2").val(),  
     },
     success: function (res) {
-      console.log("submitted");
+     refreshData();
     },
     error: function (e) {
       console.log(e);
