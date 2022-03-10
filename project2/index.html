@@ -9,13 +9,23 @@
     <link rel="stylesheet" href="./libs/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="./libs/fontawesome/css/fontawesome.min.css">
     <script src="./libs/js/jquery.js"></script>
+    <script src="./libs/bootstrap/js/popper.js"></script>
     <script src="./libs/bootstrap/js/bootstrap.js"></script>
+   
 
     <title>Document</title>
   </head>
   <body>
     <div class="container mt-5">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#addEmployee">Add Employee</button>
+      <div class="btn-group">
+        <button class="btn btn-secondary" data-toggle="modal" data-target="#addEmployee">Add Employee</button>
+        <button type="button" id="dropdown" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+         Filter By Department
+        </button>
+        <div class="dropdown-menu">
+      
+        </div>
+      </div>
       <table class="table table-light">
         <thead class="thead-dark">
           <th>ID</th>
@@ -105,6 +115,7 @@
 
 
     <script src="./libs/js/script.js"></script>
+  
    
   </body>
 </html>

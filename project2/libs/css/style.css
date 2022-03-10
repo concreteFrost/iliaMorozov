@@ -10,3 +10,10 @@ table{
     overflow-y: auto;
 }
 
+.btn-group button{
+    border: 1px solid rgb(90, 90, 90);
+}
+
+.btn-group :nth-child(1){
+    border-bottom-left-radius: 0px;
+}
