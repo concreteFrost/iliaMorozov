@@ -38,11 +38,10 @@
 	$email = $_REQUEST['email'];
 	$newJob =  $_REQUEST['jobTitle'];
 	$department = $_REQUEST['department'];
-
 	
-	$query = $conn->prepare('UPDATE personnel SET firstName=?,lastName=?,email=?, jobTitle=?, departmentID=? WHERE id=?');
+	$query = $conn->prepare('INSERT INTO personnel (firstName,lastName,jobTitle,email,departmentID) VALUES(?,?,?,?,?)');
 
-    $query->bind_param("sssssi",$fName,$sName,$email,$newJob,$department, $_REQUEST['id']);
+    $query->bind_param("sssss",$fName,$sName,$email,$newJob,$department);
 
     $query->execute();
 	
