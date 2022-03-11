@@ -45,7 +45,7 @@
 	$checkEmail->store_result();
 	$res = $checkEmail->num_rows;
 
-	if($res>0){
+	if($res>0 ){
 		$er = '*Email already exists';
 		echo $er;
 		exit;

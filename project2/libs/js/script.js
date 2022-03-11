@@ -29,7 +29,7 @@ function refreshData(set_url, set_id) {
           class: "btn btn-success fa-solid fa-square-check",
         });
         $(b).on("click", () => {
-          console.log(r[i]);
+  
           $("#workerName").html(buttonName);
           $("#job").val(r[i]["jobTitle"]);
           $("#fName").val(r[i]["firstName"]);
@@ -76,6 +76,20 @@ function onChangesSaved(message){
     }, 2400);
 });
 }
+
+function errorMessage(response,insertBefore){
+  if($('#er').length<1){
+    $(`<p id='er'></p>`).insertBefore(insertBefore)
+   }
+   $('#er').text(response)
+}
+
+$(document).on('hidden.bs.modal', function () {
+  if($('#er').length>0){
+   $('#er').remove() 
+  }
+})
+
 let employeeId;
 $(document).ready(() => {
   refreshData("libs/php/getAll.php");
@@ -95,14 +109,16 @@ $("#editDetailsButton").on("click", function (e) {
     },
     success: function (res) {
       onChangesSaved('Changes were saved successfully!');
-      refreshData("libs/php/getAll.php");
+      refreshData("libs/php/getAll.php");    
+      $("#changeJobModal").modal("hide");
     },
     error: function (e) {
-      $("#onChangesError").modal("show")
+      const response = e['responseText'];
+      errorMessage(response,'#workerName')
     },
+    
   });
 
-  $("#changeJobModal").modal("hide");
 });
 
 //Add Employee
@@ -144,11 +160,7 @@ $("#addEmployeeButton").on("click", function (e) {
     error: function (e) {
       const response = e['responseText'];
       console.log(response)
-     if($('#er').length<1){
-      $(`<p id='er'></p>`).insertBefore('#addNewEmployee')
-    
-     }
-     $('#er').text(response)
+      errorMessage(response,'#addNewEmployee')
     },
   });
   
@@ -186,3 +198,5 @@ $("#dropdown").on("click", function (e) {
     },
   });
 });
+
+

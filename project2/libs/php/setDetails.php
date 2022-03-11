@@ -33,18 +33,45 @@
 	}	
 
 	// SQL does not accept parameters and so is not prepared
+	$email = $_REQUEST['email'];
+	
+
+	if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+		$err = '*Invalid Email Format';
+		echo $err;
+		exit;
+	}
+
+	$checkEmail = $conn->prepare('SELECT email FROM personnel WHERE email=?  AND id !=?');
+	$checkEmail->bind_param('si',$email,$_REQUEST['id']);
+	$checkEmail->execute();
+	$checkEmail->store_result();
+	$res = $checkEmail->num_rows;
+
+	if($res>0){
+		$er = '*Email already exists';
+		echo $er;
+		exit;
+	}
+	
+	// SQL does not accept parameters and so is not prepared
 	$fName = $_REQUEST['fName'];
 	$sName = $_REQUEST['sName'];
-	$email = $_REQUEST['email'];
 	$newJob =  $_REQUEST['jobTitle'];
-	$department = $_REQUEST['department'];
+	$department = $_REQUEST['department'];	
 
-	
+	if(empty($fName) || empty($sName) || empty($email)){
+		$err = '*Please fill all required fields';
+		echo $err;
+		exit;
+	}
 	$query = $conn->prepare('UPDATE personnel SET firstName=?,lastName=?,email=?, jobTitle=?, departmentID=? WHERE id=?');
 
     $query->bind_param("sssssi",$fName,$sName,$email,$newJob,$department, $_REQUEST['id']);
 
     $query->execute();
+
+
 	
 	if (false === $query) {
 
