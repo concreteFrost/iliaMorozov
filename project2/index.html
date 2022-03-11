@@ -4,27 +4,37 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./libs/css/style.css">
+    <link rel="stylesheet" href="./libs/css/style.css" />
     <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="./libs/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="./libs/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="./libs/fontawesome/css/all.min.css" />
+    <link rel="stylesheet" href="./libs/fontawesome/css/fontawesome.min.css" />
     <script src="./libs/js/jquery.js"></script>
     <script src="./libs/bootstrap/js/popper.js"></script>
     <script src="./libs/bootstrap/js/bootstrap.js"></script>
-   
 
     <title>Document</title>
   </head>
   <body>
     <div class="container mt-5">
       <div class="btn-group">
-        <button class="btn btn-secondary" data-toggle="modal" data-target="#addEmployee">Add Employee</button>
-        <button type="button" id="dropdown" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-         Filter By Department
+        <button
+          class="btn btn-secondary"
+          data-toggle="modal"
+          data-target="#addEmployee"
+        >
+          Add Employee
         </button>
-        <div class="dropdown-menu">
-      
-        </div>
+        <button
+          type="button"
+          id="dropdown"
+          class="btn btn-secondary dropdown-toggle"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Filter By Department
+        </button>
+        <div class="dropdown-menu"></div>
       </div>
       <table class="table table-light">
         <thead class="thead-dark">
@@ -35,87 +45,214 @@
           <th>Department</th>
           <th>Location</th>
           <th>Address</th>
-          <th>Edit</th>
+          <th>Edit/Delete</th>
         </thead>
-        <tbody class="tbody-light" id="companyTable">    
-        </tbody>
+        <tbody class="tbody-light" id="companyTable"></tbody>
       </table>
     </div>
     <!-- Button trigger modal -->
-  <!-- Edit Details Modal -->
-  <div class="modal fade" id="changeJobModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Change details for <span id='workerName'></span></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div id="editDetails"></div>
-              <div class="form-group">     
+    <!-- Edit Details Modal -->
+    <div
+      class="modal fade"
+      id="changeJobModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Change details for <span id="workerName"></span>
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="editDetails"></div>
+            <div class="form-group">
               <label for="fName">Name</label>
-              <input type="text" name="fName" id="fName" class='form-control' required>
+              <input
+                type="text"
+                name="fName"
+                id="fName"
+                class="form-control"
+                required
+              />
               <label for="sName">Second Name</label>
-              <input type="text" name="sName" id="sName" class='form-control' required>
+              <input
+                type="text"
+                name="sName"
+                id="sName"
+                class="form-control"
+                required
+              />
               <label for="job">Role</label>
-              <input type="text" name="job" id="job" class='form-control'>
+              <input type="text" name="job" id="job" class="form-control" />
               <label for="email">Email</label>
-              <input type="email" name="email" id="email" class='form-control' required>
-               <label for="department">Department</label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                class="form-control"
+                required
+              />
+              <label for="department">Department</label>
               <select class="form-control" id="department"></select>
             </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="editDetailsButton">Save changes</button>
-              </div>
-          
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                id="editDetailsButton"
+              >
+                Save changes
+              </button>
+            </div>
+          </div>
         </div>
-        
+      </div>
+    </div>
+    <!-- Add new Employee -->
+    <div
+      class="modal fade"
+      id="addEmployee"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" >
+              New employee details 
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="addNewEmployee">
+              <div class="form-group">
+                <label for="fName2">Name <i>(required)</i>  </label>
+                <input
+                  type="text"
+                  name="fName2"
+                  id="fName2"
+                  class="form-control"
+                  required
+                />
+                <label for="sName2">Second Name <i>(required)</i> </label>
+                <input
+                  type="text"
+                  name="sName2"
+                  id="sName2"
+                  class="form-control"
+                  required
+                />
+                <label for="job2">Role</label>
+                <input type="text" name="job2" id="job2" class="form-control" />
+                <label for="email2">Email <i>(required)</i> </label>
+                <input
+                  type="email"
+                  name="email2"
+                  id="email2"
+                  class="form-control"
+                  required
+                />
+                
+                <label for="department2">Department</label>
+                <select class="form-control" id="department2"></select>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  id="addEmployeeButton"
+                >
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- On Changes Success -->
+
+<!-- Modal -->
+<div class="modal fade" id="onChangesSaved" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-center ">
+        <h3 id="successBodyText"></h3>
+        </div>
+
+        <div class="d-flex justify-content-center mt-5 mb-5"><i class="fa-solid fa-circle-check fa-2xl fa-beat success-icon"></i></div>
       </div>
     </div>
   </div>
-  <!-- Add new Employee -->
-  <div class="modal fade" id="addEmployee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Change details for <span id='workerName'></span></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+</div>
+
+<div class="modal fade" id="onChangesError" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" >Error!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-center ">
+        <h3>Can`t complete the operation</h3>
         </div>
-        <div class="modal-body">
-         <div id="addNewEmployee">
-              <div class="form-group">     
-              <label for="fName2">Name</label>
-              <input type="text" name="fName2" id="fName2" class='form-control' required>
-              <label for="sName2">Second Name</label>
-              <input type="text" name="sName2" id="sName2" class='form-control' required>
-              <label for="job2">Role</label>
-              <input type="text" name="job2" id="job2" class='form-control'>
-              <label for="email2">Email</label>
-              <input type="email" name="email2" id="email2" class='form-control' required>
-               <label for="department2">Department</label>
-              <select class="form-control" id="department2"></select>
-            </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="addEmployeeButton">Save changes</button>
-              </div>
-            </div>
-        </div>
-        
+
+        <div class="d-flex justify-content-center mt-5 mb-5"><i class="fa-solid fa-circle-xmark fa-2xl error-icon "></i></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      
       </div>
     </div>
   </div>
-
-
-
+</div>
 
     <script src="./libs/js/script.js"></script>
-  
-   
   </body>
 </html>

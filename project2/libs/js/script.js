@@ -1,5 +1,6 @@
 //Get All Data
 
+
 function refreshData(set_url, set_id) {
   $.ajax({
     url: set_url,
@@ -66,6 +67,15 @@ function refreshData(set_url, set_id) {
     },
   });
 }
+
+function onChangesSaved(message){
+  $('#successBodyText').html(message)
+  $("#onChangesSaved").modal("show").on("shown.bs.modal", function () {
+    window.setTimeout(function () {
+        $("#onChangesSaved").modal("hide");
+    }, 2400);
+});
+}
 let employeeId;
 $(document).ready(() => {
   refreshData("libs/php/getAll.php");
@@ -84,10 +94,11 @@ $("#editDetailsButton").on("click", function (e) {
       department: $("#department").val(),
     },
     success: function (res) {
+      onChangesSaved('Changes were saved successfully!');
       refreshData("libs/php/getAll.php");
     },
     error: function (e) {
-      console.log(e);
+      $("#onChangesError").modal("show")
     },
   });
 
@@ -125,13 +136,22 @@ $("#addEmployeeButton").on("click", function (e) {
       department: $("#department2").val(),
     },
     success: function (res) {
+      
+      onChangesSaved('New employee were added successfully!')
       refreshData("libs/php/getAll.php");
+      $("#addEmployee").modal("hide");
     },
     error: function (e) {
-      console.log(e);
+      const response = e['responseText'];
+      console.log(response)
+     if($('#er').length<1){
+      $(`<p id='er'></p>`).insertBefore('#addNewEmployee')
+    
+     }
+     $('#er').text(response)
     },
   });
-  $("#addEmployee").modal("hide");
+  
 });
 
 //Filtering

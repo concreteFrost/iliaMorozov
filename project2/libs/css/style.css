@@ -1,19 +1,37 @@
-thead{
-    background-color: rgb(73, 150, 10);
-    color: white;
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
+thead {
+  background-color: rgb(73, 150, 10);
+  color: white;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
 }
 
-table{
-    border-collapse: collapse;
-    overflow-y: auto;
+table {
+  border-collapse: collapse;
+  overflow-y: auto;
 }
 
-.btn-group button{
-    border: 1px solid rgb(90, 90, 90);
+.btn-group button {
+  border: 1px solid rgb(90, 90, 90);
 }
 
-.btn-group :nth-child(1){
-    border-bottom-left-radius: 0px;
+.btn-group :nth-child(1) {
+  border-bottom-left-radius: 0px;
+}
+
+.success-icon {
+  color: green;
+}
+
+.error-icon {
+  color: red;
+}
+
+@keyframes blinker {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+
+#er {
+  color: red;
+  animation: blinker 0.5s linear;
 }
