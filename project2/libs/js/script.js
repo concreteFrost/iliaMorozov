@@ -1,6 +1,5 @@
 //Get All Data
 
-
 function refreshData(set_url, set_id) {
   $.ajax({
     url: set_url,
@@ -12,14 +11,16 @@ function refreshData(set_url, set_id) {
       $("#companyTable").children().remove().end();
       for (let i = 0; i < r.length; i++) {
         const buttonName = r[i]["firstName"] + " " + r[i]["lastName"];
-        $("#companyTable").append("<tr>");
-        $("#companyTable").append("<td>" + r[i]["id"] + "</td>");
-        $("#companyTable").append("<td>" + r[i]["firstName"] + "</td>");
-        $("#companyTable").append("<td>" + r[i]["lastName"] + "</td>");
-        $("#companyTable").append("<td>" + r[i]["jobTitle"] + "</td>");
-        $("#companyTable").append("<td>" + r[i]["department"] + "</td>");
-        $("#companyTable").append("<td>" + r[i]["location"] + "</td>");
-        $("#companyTable").append("<td>" + r[i]["email"] + "</td>");
+       
+        // $("#companyTable").append("<tr/>");
+        var tr= $('<tr>');
+        $("#companyTable").append(tr);
+        $(tr).append("<td>" + (i+1) + "</td>");
+        $(tr).append("<td>" + r[i]["firstName"] + "</td>");
+        $(tr).append("<td>" + r[i]["lastName"] + "</td>");
+        $(tr).append("<td>" + r[i]["department"] + "</td>");
+        var container = $("<td>");
+        $(tr).append(container);
 
         var b = $("<button/>").attr({
           "data-target": "#changeJobModal",
@@ -29,7 +30,6 @@ function refreshData(set_url, set_id) {
           class: "btn btn-success fa-solid fa-square-check",
         });
         $(b).on("click", () => {
-  
           $("#workerName").html(buttonName);
           $("#job").val(r[i]["jobTitle"]);
           $("#fName").val(r[i]["firstName"]);
@@ -56,11 +56,38 @@ function refreshData(set_url, set_id) {
             },
           });
         });
-        $("#companyTable").append(b);
-        $(b).wrap("<td>", "</td>");
+        var deleteButton = $("<button/>").attr({
+          "data-target": "#confirmEmployeeDeletion",
+          "data-toggle": "modal",
+          type: "button",
+
+          class: "btn btn-danger fa-solid fa-square-xmark",
+        });
+
+        $(deleteButton).on("click", () => {
+          $('#emplpoyeeToDelete').html(`${r[i]["firstName"]} ${r[i]["lastName"]}`)
+          
+          $('#confirmEmployeeDeletionButton').on('click',()=>{
+             $.ajax({
+            url: "libs/php/deleteEmployee.php",
+            data: {
+              id: r[i]["id"],
+            },
+            success: function (res) {
+              console.log("success");
+              refreshData("libs/php/getAll.php");
+            },
+            error: function (err) {},
+          });
+          })
+         
+        });
+        $(container).append(b);
+        $(container).append(deleteButton);
 
         $("#companyTable").append("</tr>");
       }
+      $("tr:odd").css('background-color','#e8e8e8')
     },
     error(e) {
       console.log(e["responseText"]);
@@ -68,31 +95,34 @@ function refreshData(set_url, set_id) {
   });
 }
 
-function onChangesSaved(message){
-  $('#successBodyText').html(message)
-  $("#onChangesSaved").modal("show").on("shown.bs.modal", function () {
-    window.setTimeout(function () {
+function onChangesSaved(message) {
+  $("#successBodyText").html(message);
+  $("#onChangesSaved")
+    .modal("show")
+    .on("shown.bs.modal", function () {
+      window.setTimeout(function () {
         $("#onChangesSaved").modal("hide");
-    }, 2400);
-});
+      }, 2400);
+    });
 }
 
-function errorMessage(response,insertBefore){
-  if($('#er').length<1){
-    $(`<p id='er'></p>`).insertBefore(insertBefore)
-   }
-   $('#er').text(response)
-}
-
-$(document).on('hidden.bs.modal', function () {
-  if($('#er').length>0){
-   $('#er').remove() 
+function errorMessage(response, insertBefore) {
+  if ($("#er").length < 1) {
+    $(`<p id='er'></p>`).insertBefore(insertBefore);
   }
-})
+  $("#er").text(response);
+}
+
+$(document).on("hidden.bs.modal", function () {
+  if ($("#er").length > 0) {
+    $("#er").remove();
+  }
+});
 
 let employeeId;
 $(document).ready(() => {
   refreshData("libs/php/getAll.php");
+  
 });
 
 //Submit Changes
@@ -108,17 +138,15 @@ $("#editDetailsButton").on("click", function (e) {
       department: $("#department").val(),
     },
     success: function (res) {
-      onChangesSaved('Changes were saved successfully!');
-      refreshData("libs/php/getAll.php");    
+      onChangesSaved("Changes were saved successfully!");
+      refreshData("libs/php/getAll.php");
       $("#changeJobModal").modal("hide");
     },
     error: function (e) {
-      const response = e['responseText'];
-      errorMessage(response,'#workerName')
+      const response = e["responseText"];
+      errorMessage(response, "#workerName");
     },
-    
   });
-
 });
 
 //Add Employee
@@ -152,18 +180,16 @@ $("#addEmployeeButton").on("click", function (e) {
       department: $("#department2").val(),
     },
     success: function (res) {
-      
-      onChangesSaved('New employee were added successfully!')
+      onChangesSaved("New employee were added successfully!");
       refreshData("libs/php/getAll.php");
       $("#addEmployee").modal("hide");
     },
     error: function (e) {
-      const response = e['responseText'];
-      console.log(response)
-      errorMessage(response,'#addNewEmployee')
+      const response = e["responseText"];
+      console.log(response);
+      errorMessage(response, "#addNewEmployee");
     },
   });
-  
 });
 
 //Filtering
@@ -189,14 +215,12 @@ $("#dropdown").on("click", function (e) {
         });
       });
 
-      $("#showAll").on('click',()=>{
-        refreshData('libs/php/getAll.php')
-      })
+      $("#showAll").on("click", () => {
+        refreshData("libs/php/getAll.php");
+      });
     },
     error: function (err) {
       console.log(err);
     },
   });
 });
-
-

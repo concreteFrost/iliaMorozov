@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./libs/css/style.css" />
+   
     <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="./libs/css/style.css" />
     <link rel="stylesheet" href="./libs/fontawesome/css/all.min.css" />
     <link rel="stylesheet" href="./libs/fontawesome/css/fontawesome.min.css" />
     <script src="./libs/js/jquery.js"></script>
@@ -15,19 +16,30 @@
     <title>Document</title>
   </head>
   <body>
-    <div class="container mt-5">
-      <div class="btn-group">
+    <div class="container mt-4">
+    <div class="row ">
+      <div class="col-xl-12 input-group justify-content-center mb-2 " id="search-bar" >
+        <div class="form-outline">
+          <input type="search" id="form1" class="form-control" placeholder="find an employee" />    
+        </div>       
+        <button type="button" class="btn btn-link  float-right">
+          <i class="fas fa-search"></i> 
+        </button>
+      </div>
+      <div class="col-sm-2 btn-group-vertical align-self-start">
         <button
-          class="btn btn-secondary"
+          class="btn btn-warning"
           data-toggle="modal"
           data-target="#addEmployee"
         >
+      
           Add Employee
+          <i class="fa-solid fa-plus"></i>
         </button>
         <button
           type="button"
           id="dropdown"
-          class="btn btn-secondary dropdown-toggle"
+          class="btn btn-warning dropdown-toggle"
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
@@ -36,20 +48,21 @@
         </button>
         <div class="dropdown-menu"></div>
       </div>
-      <table class="table table-light">
-        <thead class="thead-dark">
+      <table class="col-md-10 table">
+        <thead class="thead" >
           <th>ID</th>
           <th>First Name</th>
           <th>Last Name</th>
-          <th>Job Title</th>
+          <!-- <th>Job Title</th> -->
           <th>Department</th>
-          <th>Location</th>
-          <th>Address</th>
-          <th>Edit/Delete</th>
+          <!-- <th>Location</th>
+          <th>Address</th> -->
+          <th>Edit</th>
         </thead>
         <tbody class="tbody-light" id="companyTable"></tbody>
       </table>
     </div>
+  </div>
     <!-- Button trigger modal -->
     <!-- Edit Details Modal -->
     <div
@@ -208,7 +221,7 @@
 
     <!-- On Changes Success -->
 
-<!-- Modal -->
+<!-- Show Success on change -->
 <div class="modal fade" id="onChangesSaved" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -229,6 +242,7 @@
   </div>
 </div>
 
+<!-- Show Error on change -->
 <div class="modal fade" id="onChangesError" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -247,6 +261,31 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Ask for Deletion permit -->
+<div class="modal fade" id="confirmEmployeeDeletion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" >Warning!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-center mt-5 mb-5"><i class="fa-solid fa-circle-exclamation fa-2xl error-icon "></i></div>
+        <div class="d-flex justify-content-center ">       
+        <h4>Are you sure you want to delete <span id='emplpoyeeToDelete'></span> ?</h4>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal" id="confirmEmployeeDeletionButton">Yes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
       
       </div>
     </div>
