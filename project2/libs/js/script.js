@@ -9,6 +9,11 @@ function refreshData(set_url, set_id) {
     success(res) {
       const r = res["data"];
       $("#companyTable").children().remove().end();
+
+      if(r==''){
+        $("#errorMessage").html('No Results Found!')
+        $("#onChangesError").modal('show')
+      }
       for (let i = 0; i < r.length; i++) {
         const buttonName = r[i]["firstName"] + " " + r[i]["lastName"];
        
@@ -224,3 +229,9 @@ $("#dropdown").on("click", function (e) {
     },
   });
 });
+
+//Search
+$('#searchForm').on('change',function(){
+
+refreshData('libs/php/getEmployee.php',$('#searchForm').val())
+})
