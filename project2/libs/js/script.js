@@ -1,5 +1,3 @@
-//Get All Data
-
 function refreshData(set_url, set_id) {
   $.ajax({
     url: set_url,
@@ -10,20 +8,21 @@ function refreshData(set_url, set_id) {
       const r = res["data"];
       $("#companyTable").children().remove().end();
 
-      if(r==''){
-        $("#errorMessage").html('No Results Found!')
-        $("#onChangesError").modal('show')
+      if (r == "") {
+        $("#errorMessage").html("No Results Found!");
+        $("#onChangesError").modal("show");
       }
       for (let i = 0; i < r.length; i++) {
         const buttonName = r[i]["firstName"] + " " + r[i]["lastName"];
-       
+
         // $("#companyTable").append("<tr/>");
-        var tr= $('<tr>');
+        var tr = $("<tr>");
         $("#companyTable").append(tr);
-        $(tr).append("<td>" + (i+1) + "</td>");
+        $(tr).append("<td>" + (i + 1) + "</td>");
         $(tr).append("<td>" + r[i]["firstName"] + "</td>");
         $(tr).append("<td>" + r[i]["lastName"] + "</td>");
         $(tr).append("<td>" + r[i]["department"] + "</td>");
+        $(tr).append("<td>" + r[i]["location"] + "</td>");
         var container = $("<td>");
         $(tr).append(container);
 
@@ -46,7 +45,9 @@ function refreshData(set_url, set_id) {
             url: "libs/php/getAllDepartments.php",
             success: function (res2) {
               const r2 = res2["data"];
+              
               r2.forEach((e) => {
+                
                 $("#department").append(
                   $("<option>", {
                     value: e["id"],
@@ -70,36 +71,37 @@ function refreshData(set_url, set_id) {
         });
 
         $(deleteButton).on("click", () => {
-          $('#emplpoyeeToDelete').html(`${r[i]["firstName"]} ${r[i]["lastName"]}`)
-          
-          $('#confirmEmployeeDeletionButton').on('click',()=>{
-             $.ajax({
-            url: "libs/php/deleteEmployee.php",
-            data: {
-              id: r[i]["id"],
-            },
-            success: function (res) {
-              console.log("success");
-              refreshData("libs/php/getAll.php");
-            },
-            error: function (err) {},
+          $("#emplpoyeeToDelete").html(
+            `${r[i]["firstName"]} ${r[i]["lastName"]}`
+          );
+
+          $("#confirmEmployeeDeletionButton").on("click", () => {
+            $.ajax({
+              url: "libs/php/deleteEmployee.php",
+              data: {
+                id: r[i]["id"],
+              },
+              success: function (res) {
+                console.log("success");
+                refreshData("libs/php/getAll.php");
+              },
+              error: function (err) {},
+            });
           });
-          })
-         
         });
         $(container).append(b);
         $(container).append(deleteButton);
 
         $("#companyTable").append("</tr>");
       }
-      $("tr:odd").css('background-color','#e8e8e8')
+      $("tr:odd").css("background-color", "#e8e8e8");
     },
     error(e) {
       console.log(e["responseText"]);
     },
   });
 }
-
+//HIDE MODAL ON CHANGES SAVED
 function onChangesSaved(message) {
   $("#successBodyText").html(message);
   $("#onChangesSaved")
@@ -111,23 +113,26 @@ function onChangesSaved(message) {
     });
 }
 
+//CREATE ERROR MESSAGE
 function errorMessage(response, insertBefore) {
   if ($("#er").length < 1) {
     $(`<p id='er'></p>`).insertBefore(insertBefore);
   }
   $("#er").text(response);
 }
-
+//REMOVE ERROR MESSAGE ON MODAL CLOSE
 $(document).on("hidden.bs.modal", function () {
   if ($("#er").length > 0) {
     $("#er").remove();
   }
+
+  $('select').empty()
 });
 
 let employeeId;
+//GET ALL
 $(document).ready(() => {
   refreshData("libs/php/getAll.php");
-  
 });
 
 //Submit Changes
@@ -160,6 +165,7 @@ $("#addEmployee").on("shown.bs.modal", () => {
     url: "libs/php/getAllDepartments.php",
     success: function (res2) {
       const r2 = res2["data"];
+      
       r2.forEach((e) => {
         $("#department2").append(
           $("<option>", {
@@ -174,6 +180,7 @@ $("#addEmployee").on("shown.bs.modal", () => {
     },
   });
 });
+
 $("#addEmployeeButton").on("click", function (e) {
   $.ajax({
     url: "libs/php/addEmployee.php",
@@ -230,8 +237,115 @@ $("#dropdown").on("click", function (e) {
   });
 });
 
-//Search
-$('#searchForm').on('change',function(){
+//Edit department
+$("#department-dropdown").on("click", () => {
+  $("#edit-department").toggle();
+});
 
-refreshData('libs/php/getEmployee.php',$('#searchForm').val())
+//EMPLOYEE SEARCH
+$("#searchForm").on("change", function () {
+  refreshData("libs/php/getEmployee.php", $("#searchForm").val());
+});
+
+function fillDepartmentLocations(res, toFill) {
+  $(toFill).children().remove().end();
+  res["data"].forEach((e) => {
+    $(toFill).append(
+      $("<option>", {
+        value: e['id'],
+        text: e["name"],
+      })
+    );
+  });
+}
+//ADD DEPARTMENT / FILL SELECT SECTION
+$("#addNewDepartmentModal").on("shown.bs.modal", () => {
+  $.ajax({
+    url: "libs/php/getAllLocations.php",
+    success: function (res) {
+      fillDepartmentLocations(res, "#DepartmentLocation");
+    },
+  });
+});
+
+
+//ADD DEPARTMENT/ SUBMIT
+$("#submitNewDepartment").on("click", () => {
+  $.ajax({
+    url: "libs/php/addDepartment.php",
+    data: {
+      department: $("#DepartmentName").val(),
+      location: $("#DepartmentLocation").val(),
+    },
+    success: function (res) {
+      $("#addNewDepartmentModal").modal("hide");
+      onChangesSaved("New department was added successfully!");
+      refreshData("libs/php/getAll.php");
+    },
+    error: function (err) {
+      const response = err["responseText"];
+      console.log(response);
+      errorMessage(response, "#DepartmentName");
+    },
+  });
+});
+
+
+//EDIT DEPARTMENT/ FILL FORM
+$("#editDepartmentModal").on("shown.bs.modal", () => {
+  $.ajax({
+    url: "libs/php/getAllDepartments.php",
+    success: function (res) {
+      fillDepartmentLocations(res, "#editDepartmentName");
+      $('#changeDepartmentName').val($('#editDepartmentName option:selected').text())
+    },
+  });
+
+  $.ajax({
+    url: "libs/php/getAllLocations.php",
+    success: function (res) {
+      fillDepartmentLocations(res, "#editDepartmentLocation");
+     
+    },
+  });
+});
+
+$('#editDepartmentName').on('change',()=>{
+  $('#changeDepartmentName').val($('#editDepartmentName option:selected').text())
+})
+
+//EDIT DEPARTMENT/ CHANGE NAME
+$("#submitEditDepartment").on('click',()=>{
+  $.ajax({
+    url:'libs/php/setDepartmentName.php',
+    data:{
+      name:  $('#changeDepartmentName').val(),
+      id: $('#editDepartmentName').val()
+    },
+    success:function(res){
+      onChangesSaved("Changes were saved successfully!");
+      refreshData("libs/php/getAll.php");
+      $("#editDepartmentModal").modal("hide");
+    },
+    error:function(e){
+    errorMessage(e['responseText'],'#editDepartmentName')
+    }
+  })
+})
+
+//Delete Department
+$("#deleteDepartment").on('click',()=>{
+  $.ajax({
+    url:'libs/php/deleteDepartmentByID.php',
+    data:{
+      id: $('#editDepartmentName').val()
+    },
+    success:function(res){
+      refreshData("libs/php/getAll.php");
+      $("#editDepartmentModal").modal("hide");
+    },
+    error:function(e){
+    errorMessage(e['responseText'],'#editDepartmentName')
+    }
+  })
 })

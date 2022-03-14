@@ -1,8 +1,7 @@
 <?php
 
 	// example use from browser
-	// use insertDepartment.php first to create new dummy record and then specify it's id in the command below
-	// http://localhost/companydirectory/libs/php/deleteDepartmentByID.php?id=<id>
+	// http://localhost/companydirectory/libs/php/getAll.php
 
 	// remove next two lines for production
 	
@@ -14,7 +13,9 @@
 	include("config.php");
 
 	header('Content-Type: application/json; charset=UTF-8');
+
 	$conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);
+
 	if (mysqli_connect_errno()) {
 		
 		$output['status']['code'] = "300";
@@ -30,42 +31,43 @@
 		exit;
 
 	}	
-
-	// SQL statement accepts parameters and so is prepared to avoid SQL injection.
-	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
-	$id = $_REQUEST['id'];
-
-	$checkID = $conn->prepare('SELECT departmentID FROM personnel WHERE departmentID=?');
-	$checkID->bind_param('i',$id);
-	$checkID->execute();
-	$checkID->store_result();
-	$res = $checkID->num_rows;
-
-	if($res>0 ){
-		$er = 'Unable to delete department. '.$res.' dependencies found.';
-		echo $er;
+	// SQL does not accept parameters and so is not prepared
+	
+    $name = $_REQUEST['department'];
+    $locationID = $_REQUEST['location'];
+	if(empty($name)){
+		$err = '*Please fill all required fields';
+		echo $err;
 		exit;
 	}
 
+    $checkName = $conn->prepare('SELECT name FROM department WHERE name=?');
+	$checkName->bind_param('s',$name);
+	$checkName->execute();
+	$checkName->store_result();
 
-	$query = $conn->prepare('DELETE FROM department WHERE id = ?');
-	$query->bind_param("i", $_REQUEST['id']);
+    $res = $checkName->num_rows;
 
-	$query->execute();
+    if($res>0){
+        $err='*Department already exists';
+        echo $err;
+        exit;
+    }
+	
+	$query = $conn->prepare('INSERT INTO department (name,locationID) VALUES(?,?)');
+
+    $query->bind_param("si",$name,$locationID);
+
+    $query->execute();
 	
 	if (false === $query) {
-
 		$output['status']['code'] = "400";
 		$output['status']['name'] = "executed";
 		$output['status']['description'] = "query failed";	
 		$output['data'] = [];
-
 		mysqli_close($conn);
-
 		echo json_encode($output); 
-
 		exit;
-
 	}
 
 	$output['status']['code'] = "200";

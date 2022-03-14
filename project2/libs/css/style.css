@@ -9,8 +9,37 @@ thead th:nth-child(1)
 
 }
 
+.btn-group-vertical .btn{
+
+  font-size: 0.9em;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
 .table thead th{
   border: none;
+}
+
+#edit-department{
+  display:none;
+
+}
+
+
+.dropdown-buttons{
+  background-color: rgb(194, 194, 194);
+  width: 100%;
+ 
+ 
+}
+.dropdown-buttons:hover{
+  background-color: rgb(117, 115, 115);
+}
+
+.btn-group-vertical .btn{
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 #search-bar{
