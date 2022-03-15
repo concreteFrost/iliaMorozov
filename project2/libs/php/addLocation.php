@@ -31,38 +31,42 @@
 		exit;
 
 	}	
-
-
 	// SQL does not accept parameters and so is not prepared
-	$name=$_REQUEST['name'];
-	$location=$_REQUEST['location'];
-    $id=$_REQUEST['id'];
+	
+    $name = $_REQUEST['name'];
 	if(empty($name)){
 		$err = '*Please fill all required fields';
 		echo $err;
 		exit;
 	}
-	$query = $conn->prepare('UPDATE department SET name=? ,locationID = ? WHERE id=?');
 
-    $query->bind_param("ssi",$name,$location,$id);
+    $checkName = $conn->prepare('SELECT name FROM location WHERE name=?');
+	$checkName->bind_param('s',$name);
+	$checkName->execute();
+	$checkName->store_result();
+
+    $res = $checkName->num_rows;
+
+    if($res>0){
+        $err='*Location already exists';
+        echo $err;
+        exit;
+    }
+	
+	$query = $conn->prepare('INSERT INTO location (name) VALUES(?)');
+
+    $query->bind_param("s",$name);
 
     $query->execute();
-
-
 	
 	if (false === $query) {
-
 		$output['status']['code'] = "400";
 		$output['status']['name'] = "executed";
 		$output['status']['description'] = "query failed";	
 		$output['data'] = [];
-
 		mysqli_close($conn);
-
 		echo json_encode($output); 
-
 		exit;
-
 	}
 
 	$output['status']['code'] = "200";

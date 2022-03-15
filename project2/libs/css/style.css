@@ -42,14 +42,9 @@ thead th:nth-child(1)
   border-bottom-left-radius: 0;
 }
 
-#search-bar{
-  background-color: rgb(255, 255, 255);
-}
-
 table{
   table-layout: fixed;
 }
-
 
 .success-icon {
   color: green;

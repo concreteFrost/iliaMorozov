@@ -31,20 +31,17 @@
 		exit;
 
 	}	
-
-
 	// SQL does not accept parameters and so is not prepared
 	$name=$_REQUEST['name'];
-	$location=$_REQUEST['location'];
     $id=$_REQUEST['id'];
 	if(empty($name)){
 		$err = '*Please fill all required fields';
 		echo $err;
 		exit;
 	}
-	$query = $conn->prepare('UPDATE department SET name=? ,locationID = ? WHERE id=?');
+	$query = $conn->prepare('UPDATE location SET name=? WHERE id=?');
 
-    $query->bind_param("ssi",$name,$location,$id);
+    $query->bind_param("si",$name,$id);
 
     $query->execute();
 
