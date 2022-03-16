@@ -377,9 +377,7 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-danger" id="deleteDepartment">
-              Delete
-            </button>
+            
           </div>
         </div>
       </div>
@@ -435,9 +433,7 @@
            >
              Close
            </button>
-           <button type="button" class="btn btn-danger" id="deleteDepartment">
-             Delete
-           </button>
+         
          </div>
        </div>
      </div>
@@ -545,22 +541,26 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="d-flex justify-content-center mt-5 mb-5">
-              <i class="fa-solid fa-circle-exclamation fa-2xl error-icon"></i>
+       
+            <div class="d-flex justify-content-center  mb-5">
+              <div id="appendDelete"></div>
+             
             </div>
             <div class="d-flex justify-content-center">
-              <h4>
+             
+              <h6>
                 Are you sure you want to delete
                 <span id="dataToDelete"></span> ?
-              </h4>
+              </h6>
+              
             </div>
           </div>
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-success"
-              data-dismiss="modal"
-              id="confirmItemDelete"
+              class="btn btn-success confirmDeleteButton"        
+              id="dell"
+              
             >
               Yes
             </button>
@@ -568,6 +568,7 @@
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
+              
             >
               No
             </button>

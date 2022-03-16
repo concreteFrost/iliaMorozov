@@ -35,24 +35,24 @@ function refreshData(table, url, dataVal) {
         var editButton = $("<button/>").attr({
           "data-toggle": "modal",
           type: "button",
-          class: "btn btn-success fa-solid fa-square-check",
+          class: "btn btn-success fa-solid fa-square-pen mr-1",
         });
         var deleteButton = $("<button/>").attr({
           "data-target": "#confirmDeleteModal",
           "data-toggle": "modal",
           type: "button",
-          class: "btn btn-danger fa-solid fa-square-check",
+          class: "btn btn-danger fa-solid fa-trash-can ",
         });
         switch (table) {
           case "personnel":
             {
-              
+             $('.confirmDeleteButton').attr('id','deletePersonnel')
               $("#navButton").text("Add Employee");
               $("#navButton").attr("data-target", "#addEmployee");
               head =
-                "<th>ID</th><th>First Name</th><th>Last Name</th><th>Department</th><th>Location</th><th>Edit/Remove</th>";
+                "<th>ID</th><th>First Name</th><th>Last Name</th><th>Department</th><th>Job</th><th>Location</th><th>Edit/Remove</th>";
               body = `<td>${i + 1}</td><td>${r[i]["firstName"]}</td>
-            <td>${r[i]["lastName"]}</td><td>${r[i]["department"]}</td><td>${
+            <td>${r[i]["lastName"]}</td><td>${r[i]["department"]}</td><td>${r[i]['jobTitle']}</td><td>${
                 r[i]["location"]
               }
             </td>`;
@@ -63,7 +63,6 @@ function refreshData(table, url, dataVal) {
                 $("#sName").val(r[i]["lastName"]);
                 $("#email").val(r[i]["email"]);
                 employeeId = r[i]["id"];
-               
 
                 //Get Department
                 $.ajax({
@@ -87,10 +86,14 @@ function refreshData(table, url, dataVal) {
                   },
                 });
               });
+              $(deleteButton).on('click',()=>{
+                employeeId=r[i]['id']
+              })
             }
             break;
           case "department":
             {
+              $('.confirmDeleteButton').attr('id','deleteDepartment')
               $("#navButton").text("Add Department");
               $("#navButton").attr("data-target", "#addNewDepartmentModal");
               head =
@@ -99,11 +102,10 @@ function refreshData(table, url, dataVal) {
                 r[i]["location"]
               }</td>`;
 
-
               $(editButton).attr("data-target", "#editDepartmentModal");
               $(editButton).on("click", () => {
-                $("#editDepartmentName").val(r[i]["name"]); 
-                departmentID = r[i]['id']           
+                $("#editDepartmentName").val(r[i]["name"]);
+                departmentID = r[i]["id"];
                 //Get Department
                 $.ajax({
                   url: "libs/php/getAllLocations.php",
@@ -117,7 +119,7 @@ function refreshData(table, url, dataVal) {
                         })
                       );
                     });
-                   
+
                     $("#editDepartmentLocation").val(r[i]["lID"]);
                   },
                   error: function (err) {
@@ -125,10 +127,14 @@ function refreshData(table, url, dataVal) {
                   },
                 });
               });
+              $(deleteButton).on('click',()=>{
+                departmentID=r[i]['id']
+              })
             }
             break;
           case "location":
             {
+              $('.confirmDeleteButton').attr('id','deleteLocation')
               $("#navButton").text("Add Location");
               $("#navButton").attr("data-target", "#addNewLocationModal");
               head = "<th>ID</th><th>Name</th><th>Edit/Remove</th>";
@@ -136,8 +142,8 @@ function refreshData(table, url, dataVal) {
 
               $(editButton).attr("data-target", "#editLocationModal");
               $(editButton).on("click", () => {
-                $("#editLocationName").val(r[i]["name"]); 
-                locationID = r[i]['id']           
+                $("#editLocationName").val(r[i]["name"]);
+                locationID = r[i]["id"];
                 //Get Department
                 $.ajax({
                   url: "libs/php/getAllLocations.php",
@@ -151,7 +157,7 @@ function refreshData(table, url, dataVal) {
                         })
                       );
                     });
-                   
+
                     $("#editDepartmentLocation").val(r[i]["lID"]);
                   },
                   error: function (err) {
@@ -159,11 +165,13 @@ function refreshData(table, url, dataVal) {
                   },
                 });
               });
+              $(deleteButton).on('click',()=>{
+                locationID=r[i]['id']
+              })
             }
             break;
-            
         }
-       
+
         var tr = $("<tr></tr>");
         var container = $("<td>");
         $("#tableBody").append(tr);
@@ -171,15 +179,13 @@ function refreshData(table, url, dataVal) {
         $(container).append(editButton);
         $(container).append(deleteButton);
         $(tr).append(container);
-        $(deleteButton).on('click',()=>{
-          if(r[i]['firstName']!=null){
-            dataToDelete = r[i]['firstName'] + ' ' + r[i]['lastName']
+        $(deleteButton).on("click", () => {
+          if (r[i]["firstName"] != null) {
+            dataToDelete = r[i]["firstName"] + " " + r[i]["lastName"];
+          } else {
+            dataToDelete = r[i]["name"];
           }
-          else{
-            dataToDelete = r[i]['name']
-          }
-         
-        })
+        });
       }
 
       $("#tableHead").append(head);
@@ -258,10 +264,10 @@ $("#addEmployee").on("shown.bs.modal", () => {
   });
 });
 
-$('#confirmDeleteModal').on('shown.bs.modal',()=>{
-  $('#dataToDelete').html(dataToDelete)
-  console.log(dataToDelete)
-})
+$("#confirmDeleteModal").on("shown.bs.modal", () => {
+  $("#dataToDelete").html(dataToDelete);
+
+});
 
 $("#addEmployeeButton").on("click", function (e) {
   $.ajax({
@@ -275,7 +281,7 @@ $("#addEmployeeButton").on("click", function (e) {
     },
     success: function (res) {
       onChangesSaved("New employee were added successfully!");
-      refreshData('personnel',"libs/php/getAll.php");
+      refreshData("personnel", "libs/php/getAll.php");
       $("#addEmployee").modal("hide");
     },
     error: function (e) {
@@ -285,7 +291,6 @@ $("#addEmployeeButton").on("click", function (e) {
     },
   });
 });
-
 
 $("#editDetailsButton").on("click", function (e) {
   $.ajax({
@@ -315,36 +320,35 @@ $("#searchForm").on("change", function () {
   refreshData("personnel", "libs/php/getEmployee.php", $("#searchForm").val());
 });
 
-
-  //EDIT DEPARTMENT/ CHANGE NAME
-$("#submitEditDepartment").on('click',()=>{
-    $.ajax({
-      url:'libs/php/setDepartmentName.php',
-      data:{
-        name:  $('#editDepartmentName').val(),
-        id: departmentID,
-        location: $('#editDepartmentLocation').val()
-      },
-      success:function(res){
-        onChangesSaved("Changes were saved successfully!");
-        refreshData('department',"libs/php/getAllDepartments.php");
-        $("#editDepartmentModal").modal("hide");
-      },
-      error:function(e){
-      errorMessage(e['responseText'],'#editDepartmentName')
-      }
-    })
-  })
- //ADD DEPARTMENT / FILL SELECT SECTION
- $("#addNewDepartmentModal").on("shown.bs.modal", () => {
+//EDIT DEPARTMENT/ CHANGE NAME
+$("#submitEditDepartment").on("click", () => {
+  $.ajax({
+    url: "libs/php/setDepartmentName.php",
+    data: {
+      name: $("#editDepartmentName").val(),
+      id: departmentID,
+      location: $("#editDepartmentLocation").val(),
+    },
+    success: function (res) {
+      onChangesSaved("Changes were saved successfully!");
+      refreshData("department", "libs/php/getAllDepartments.php");
+      $("#editDepartmentModal").modal("hide");
+    },
+    error: function (e) {
+      errorMessage(e["responseText"], "#editDepartmentName");
+    },
+  });
+});
+//ADD DEPARTMENT / FILL SELECT SECTION
+$("#addNewDepartmentModal").on("shown.bs.modal", () => {
   $.ajax({
     url: "libs/php/getAllLocations.php",
     success: function (res) {
       fillDepartmentLocations(res, "#DepartmentLocation");
     },
-    error:function(err){
-      console.log(err)
-    }
+    error: function (err) {
+      console.log(err);
+    },
   });
 });
 //ADD DEPARTMENT/ SUBMIT
@@ -353,7 +357,7 @@ function fillDepartmentLocations(res, toFill) {
   res["data"].forEach((e) => {
     $(toFill).append(
       $("<option>", {
-        value: e['id'],
+        value: e["id"],
         text: e["name"],
       })
     );
@@ -369,7 +373,7 @@ $("#submitNewDepartment").on("click", () => {
     success: function (res) {
       $("#addNewDepartmentModal").modal("hide");
       onChangesSaved("New department was added successfully!");
-      refreshData('department',"libs/php/getAllDepartments.php");
+      refreshData("department", "libs/php/getAllDepartments.php");
     },
     error: function (err) {
       const response = err["responseText"];
@@ -384,12 +388,11 @@ $("#submitNewLocation").on("click", () => {
     url: "libs/php/addLocation.php",
     data: {
       name: $("#LocationName").val(),
-    
     },
     success: function (res) {
       $("#addNewLocationModal").modal("hide");
       onChangesSaved("New location was added successfully!");
-      refreshData('location',"libs/php/getAllLocations.php");
+      refreshData("location", "libs/php/getAllLocations.php");
     },
     error: function (err) {
       const response = err["responseText"];
@@ -400,21 +403,80 @@ $("#submitNewLocation").on("click", () => {
 });
 
 //EDIT LOCATION
-$("#submitEditLocation").on('click',()=>{
+$("#submitEditLocation").on("click", () => {
   $.ajax({
-    url:'libs/php/setLocationName.php',
-    data:{
-      name:  $('#editLocationName').val(),
+    url: "libs/php/setLocationName.php",
+    data: {
+      name: $("#editLocationName").val(),
       id: locationID,
-
     },
-    success:function(res){
+    success: function (res) {
       onChangesSaved("Changes were saved successfully!");
-      refreshData('location',"libs/php/getAllLocations.php");
+      refreshData("location", "libs/php/getAllLocations.php");
       $("#editLocationModal").modal("hide");
     },
-    error:function(e){
-    errorMessage(e['responseText'],'#editLocationName')
+    error: function (e) {
+      errorMessage(e["responseText"], "#editLocationName");
+    },
+  });
+});
+
+//Delete Employee
+$('.confirmDeleteButton').on('click',()=>{
+  switch($('.confirmDeleteButton').attr('id')){
+    case 'deletePersonnel':{
+      $.ajax({
+        url: "libs/php/deleteEmployee.php",
+        data: {
+          id: employeeId,
+        },
+        success: function (res) {
+          $('#confirmDeleteModal').modal('hide')
+          onChangesSaved("Changes were saved successfully!");
+          refreshData('personnel',"libs/php/getAll.php");
+        },
+        error: function (err) {},
+      });
     }
-  })
+    break;
+    case 'deleteDepartment':{
+      $.ajax({
+        url: "libs/php/deleteDepartmentByID.php",
+        data: {
+          id: departmentID
+        },
+        success: function (res) {
+          $('#confirmDeleteModal').modal('hide')
+          onChangesSaved("Changes were saved successfully!");
+          refreshData('department',"libs/php/getAllDepartments.php");
+         
+        },
+        error: function (e) {
+          console.log(e['responseText'])
+          errorMessage(e["responseText"], "#appendDelete");
+        },
+      });
+    }
+    break;
+    case 'deleteLocation':{
+      $.ajax({
+        url: "libs/php/deleteLocationByID.php",
+        data: {
+          id: locationID
+        },
+        success: function (res) {
+          $('#confirmDeleteModal').modal('hide')
+          onChangesSaved("Changes were saved successfully!");
+          refreshData('location',"libs/php/getAllLocations.php");
+         
+        },
+        error: function (e) {
+          console.log(e['responseText'])
+          errorMessage(e["responseText"], "#appendDelete");
+        },
+      });
+    }
+    break;
+  }
 })
+
