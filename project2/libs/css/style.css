@@ -4,45 +4,39 @@ thead {
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
 }
-thead th:nth-child(1)
-{ width: 6%;
-
+thead th:nth-child(1) {
+  width: 6%;
 }
 
-.btn-group-vertical .btn{
-
+.btn-group-vertical .btn {
   font-size: 0.9em;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
 }
 
-.table thead th{
+.table thead th {
   border: none;
 }
 
-#edit-department{
-  display:none;
-
+#edit-department {
+  display: none;
 }
 
-
-.dropdown-buttons{
+.dropdown-buttons {
   background-color: rgb(194, 194, 194);
   width: 100%;
- 
- 
 }
-.dropdown-buttons:hover{
+.dropdown-buttons:hover {
   background-color: rgb(117, 115, 115);
 }
 
-.btn-group-vertical .btn{
+.btn-group-vertical .btn {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-table{
+table {
   table-layout: fixed;
 }
 
@@ -54,13 +48,27 @@ table{
   color: red;
 }
 
+table {
+  overflow: hidden;
+}
 
 @keyframes blinker {
-    0% {opacity:0;}
-    100% {opacity:1;}
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 #er {
   color: red;
   animation: blinker 0.5s linear;
+}
+@media only screen and (max-width: 768px){
+thead, tbody{
+  font-size: 0.7em;
+  text-align: left;
+}
+
 }

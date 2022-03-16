@@ -50,7 +50,7 @@ function refreshData(table, url, dataVal) {
               $("#navButton").text("Add Employee");
               $("#navButton").attr("data-target", "#addEmployee");
               head =
-                "<th>ID</th><th>First Name</th><th>Last Name</th><th>Department</th><th>Job</th><th>Location</th><th>Edit/Remove</th>";
+                "<th>ID</th><th>First Name</th><th>Last Name</th><th>Department</th><th>Job</th><th>Location</th><th>Edit</th>";
               body = `<td>${i + 1}</td><td>${r[i]["firstName"]}</td>
             <td>${r[i]["lastName"]}</td><td>${r[i]["department"]}</td><td>${r[i]['jobTitle']}</td><td>${
                 r[i]["location"]
@@ -97,7 +97,7 @@ function refreshData(table, url, dataVal) {
               $("#navButton").text("Add Department");
               $("#navButton").attr("data-target", "#addNewDepartmentModal");
               head =
-                "<th>ID</th><th>Name</th><th>Location</th><th>Edit/Remove</th>";
+                "<th>ID</th><th>Name</th><th>Location</th><th>Edit</th>";
               body = `<td>${i + 1}</td><td>${r[i]["name"]}</td><td>${
                 r[i]["location"]
               }</td>`;
@@ -137,7 +137,7 @@ function refreshData(table, url, dataVal) {
               $('.confirmDeleteButton').attr('id','deleteLocation')
               $("#navButton").text("Add Location");
               $("#navButton").attr("data-target", "#addNewLocationModal");
-              head = "<th>ID</th><th>Name</th><th>Edit/Remove</th>";
+              head = "<th>ID</th><th>Name</th><th>Edit</th>";
               body = `<td>${i + 1}</td><td>${r[i]["name"]}</td>`;
 
               $(editButton).attr("data-target", "#editLocationModal");
@@ -192,8 +192,7 @@ function refreshData(table, url, dataVal) {
       $("tr:odd").css("background-color", "#e8e8e8");
     },
     error: function (e) {
-      const response = e["responseText"];
-      console.log("sho");
+   
       errorMessage(response, "#DepartmentName");
     },
   });
