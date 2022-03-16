@@ -66,9 +66,16 @@ table {
   animation: blinker 0.5s linear;
 }
 @media only screen and (max-width: 768px){
-thead, tbody{
-  font-size: 0.7em;
-  text-align: left;
-}
-
-}
+  thead, tbody{
+    font-size: 0.7em;
+    text-align: left;
+  }
+  
+  }
+  
+  @media (max-width: 992px) {
+    .container {
+       width: 100%;
+       max-width: none;
+    }
+  }
