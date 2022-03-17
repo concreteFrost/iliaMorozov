@@ -38,7 +38,6 @@ function refreshData(table, url, dataVal) {
           class: "btn btn-success fa-solid fa-square-pen mr-1",
         });
         var deleteButton = $("<button/>").attr({
-          "data-target": "#confirmDeleteModal",
           "data-toggle": "modal",
           type: "button",
           class: "btn btn-danger fa-solid fa-trash-can ",
@@ -46,11 +45,15 @@ function refreshData(table, url, dataVal) {
         switch (table) {
           case "personnel":
             {
+              $('.navbar-nav').children('li').eq(0).attr('class','active')
+              $('.navbar-nav').children('li').eq(1).removeClass('active')
+              $('.navbar-nav').children('li').eq(2).removeClass('active')
+              $('#search-bar').show()
              $('.confirmDeleteButton').attr('id','deletePersonnel')
               $("#navButton").text("Add Employee");
               $("#navButton").attr("data-target", "#addEmployee");
               head =
-                "<th>ID</th><th>First Name</th><th>Last Name</th><th>Department</th><th>Job</th><th>Location</th><th>Edit</th>";
+                "<th>ID</th><th>First Name</th><th>Last Name</th><th>Department</th><th>Job</th><th>Location</th><th>Action</th>";
               body = `<td>${i + 1}</td><td>${r[i]["firstName"]}</td>
             <td>${r[i]["lastName"]}</td><td>${r[i]["department"]}</td><td>${r[i]['jobTitle']}</td><td>${
                 r[i]["location"]
@@ -88,16 +91,21 @@ function refreshData(table, url, dataVal) {
               });
               $(deleteButton).on('click',()=>{
                 employeeId=r[i]['id']
+                $('#confirmDeleteModal').modal('show')
               })
             }
             break;
           case "department":
             {
-              $('.confirmDeleteButton').attr('id','deleteDepartment')
+              $('.navbar-nav').children('li').eq(1).attr('class','active')
+              $('.navbar-nav').children('li').eq(0).removeClass('active')
+              $('.navbar-nav').children('li').eq(2).removeClass('active')
+              $('#search-bar').hide()
+      
               $("#navButton").text("Add Department");
               $("#navButton").attr("data-target", "#addNewDepartmentModal");
               head =
-                "<th>ID</th><th>Name</th><th>Location</th><th>Edit</th>";
+                "<th>ID</th><th>Name</th><th>Location</th><th>Action</th>";
               body = `<td>${i + 1}</td><td>${r[i]["name"]}</td><td>${
                 r[i]["location"]
               }</td>`;
@@ -128,16 +136,35 @@ function refreshData(table, url, dataVal) {
                 });
               });
               $(deleteButton).on('click',()=>{
-                departmentID=r[i]['id']
+                $.ajax({
+                  url: "libs/php/checkDepartmentDependencies.php",
+                  data: {
+                    id: r[i]['id']
+                  },
+                  success: function (res) {
+                    $('.confirmDeleteButton').attr('id','deleteDepartment')
+                    $('#confirmDeleteModal').modal('show')
+                    departmentID=r[i]['id']
+                  },
+                  error: function (e) {
+                    $('#unableToDelete').modal('show')
+                    $("#dataToDelete2").html(r[i]['name'])
+                    errorMessage(e["responseText"], "#appendUnable");
+                  },
+                });
               })
             }
             break;
           case "location":
             {
+              $('.navbar-nav').children('li').eq(2).attr('class','active')
+              $('.navbar-nav').children('li').eq(0).removeClass('active')
+              $('.navbar-nav').children('li').eq(1).removeClass('active')
+              $('#search-bar').hide()
               $('.confirmDeleteButton').attr('id','deleteLocation')
               $("#navButton").text("Add Location");
               $("#navButton").attr("data-target", "#addNewLocationModal");
-              head = "<th>ID</th><th>Name</th><th>Edit</th>";
+              head = "<th>ID</th><th>Name</th><th>Action</th>";
               body = `<td>${i + 1}</td><td>${r[i]["name"]}</td>`;
 
               $(editButton).attr("data-target", "#editLocationModal");
@@ -166,7 +193,22 @@ function refreshData(table, url, dataVal) {
                 });
               });
               $(deleteButton).on('click',()=>{
-                locationID=r[i]['id']
+                $.ajax({
+                  url: "libs/php/checkLocationDependencies.php",
+                  data: {
+                    id: r[i]['id']
+                  },
+                  success: function (res) {
+                    $('.confirmDeleteButton').attr('id','deleteLocation')
+                    $('#confirmDeleteModal').modal('show')
+                    locationID=r[i]['id']
+                  },
+                  error: function (e) {
+                    $('#unableToDelete').modal('show')
+                    $("#dataToDelete2").html(r[i]['name'])
+                    errorMessage(e["responseText"], "#appendUnable");
+                  },
+                });
               })
             }
             break;
@@ -192,7 +234,6 @@ function refreshData(table, url, dataVal) {
       $("tr:odd").css("background-color", "#e8e8e8");
     },
     error: function (e) {
-   
       errorMessage(response, "#DepartmentName");
     },
   });
@@ -420,7 +461,7 @@ $("#submitEditLocation").on("click", () => {
   });
 });
 
-//Delete Employee
+//Delete Data
 $('.confirmDeleteButton').on('click',()=>{
   switch($('.confirmDeleteButton').attr('id')){
     case 'deletePersonnel':{

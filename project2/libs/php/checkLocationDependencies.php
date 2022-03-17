@@ -35,25 +35,18 @@
 	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
 	$id = $_REQUEST['id'];
 
-	$query = $conn->prepare('DELETE FROM department WHERE id = ?');
-	$query->bind_param("i", $_REQUEST['id']);
+	$checkID = $conn->prepare('SELECT locationID FROM department WHERE locationID=?');
+	$checkID->bind_param('i',$id);
+	$checkID->execute();
+	$checkID->store_result();
+	$res = $checkID->num_rows;
 
-	$query->execute();
-	
-	if (false === $query) {
-
-		$output['status']['code'] = "400";
-		$output['status']['name'] = "executed";
-		$output['status']['description'] = "query failed";	
-		$output['data'] = [];
-
-		mysqli_close($conn);
-
-		echo json_encode($output); 
-
+	if($res>0 ){
+		$er = 'Unable to delete location. '.$res.' dependencies found.';
+		echo $er;
 		exit;
-
 	}
+	
 
 	$output['status']['code'] = "200";
 	$output['status']['name'] = "ok";

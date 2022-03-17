@@ -35,18 +35,6 @@
 	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
 	$id = $_REQUEST['id'];
 
-	$checkID = $conn->prepare('SELECT locationID FROM department WHERE locationID=?');
-	$checkID->bind_param('i',$id);
-	$checkID->execute();
-	$checkID->store_result();
-	$res = $checkID->num_rows;
-
-	if($res>0 ){
-		$er = 'Unable to delete location. '.$res.' dependencies found.';
-		echo $er;
-		exit;
-	}
-
 
 	$query = $conn->prepare('DELETE FROM location WHERE id = ?');
 	$query->bind_param("i", $_REQUEST['id']);

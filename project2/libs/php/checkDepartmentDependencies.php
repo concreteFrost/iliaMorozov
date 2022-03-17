@@ -35,34 +35,28 @@
 	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
 	$id = $_REQUEST['id'];
 
-	$query = $conn->prepare('DELETE FROM department WHERE id = ?');
-	$query->bind_param("i", $_REQUEST['id']);
+	$checkID = $conn->prepare('SELECT departmentID FROM personnel WHERE departmentID=?');
+	$checkID->bind_param('i',$id);
+	$checkID->execute();
+	$checkID->store_result();
+	$res = $checkID->num_rows;
 
-	$query->execute();
-	
-	if (false === $query) {
-
-		$output['status']['code'] = "400";
-		$output['status']['name'] = "executed";
-		$output['status']['description'] = "query failed";	
-		$output['data'] = [];
-
-		mysqli_close($conn);
-
-		echo json_encode($output); 
-
+	if($res>0 ){
+		$er = 'Unable to delete department. '.$res.' dependencies found.';
+		echo $er;
 		exit;
-
 	}
+    else{
+        $output['status']['code'] = "200";
+        $output['status']['name'] = "ok";
+        $output['status']['description'] = "success";
+        $output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
+        
+        
+        mysqli_close($conn);
+    
+        echo json_encode($output); 
+    }
 
-	$output['status']['code'] = "200";
-	$output['status']['name'] = "ok";
-	$output['status']['description'] = "success";
-	$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-	$output['data'] = [];
-	
-	mysqli_close($conn);
-
-	echo json_encode($output); 
 
 ?>

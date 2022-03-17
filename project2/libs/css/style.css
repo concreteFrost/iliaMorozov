@@ -65,17 +65,20 @@ table {
   color: red;
   animation: blinker 0.5s linear;
 }
+
+.add-button button{
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: none;
+}
 @media only screen and (max-width: 768px){
   thead, tbody{
     font-size: 0.7em;
     text-align: left;
   }
   
-  }
-  
-  @media (max-width: 992px) {
-    .container {
-       width: 100%;
-       max-width: none;
-    }
   }
