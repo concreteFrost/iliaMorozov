@@ -1,3 +1,7 @@
+window.addEventListener('load',()=>{
+  setTimeout(()=>{$('#loader').hide();},1500)
+});
+
 $(document).ready(() => {
   refreshData("personnel", "libs/php/getAll.php");
 });
@@ -8,6 +12,8 @@ $(document).on("hidden.bs.modal", function () {
   }
   $("select").empty();
 });
+
+
 
 let employeeId;
 let departmentID;
