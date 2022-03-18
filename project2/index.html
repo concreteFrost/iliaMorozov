@@ -21,22 +21,17 @@
   </head>
   <body>
     <div id="loader">
-      <img src="./libs/loader/spinner.gif" alt="loading">
+      <img src="./libs/loader/spinner.gif" alt="loading" />
     </div>
     <div class="container">
-      
       <div class="row">
         <nav
           class="col-12 mb-sm-5 navbar navbar-expand-lg navbar-dark bg-dark fixed-top"
         >
+          <button class="btn btn-success" id="navButton" data-toggle="modal">
+            <i class="fa-solid fa-square-plus"></i>
+          </button>
 
-        
-          <button
-            class="btn btn-success"
-            id="navButton"
-            data-toggle="modal"
-          ><i class="fa-solid fa-square-plus"></i></button>
-      
           <button
             class="navbar-toggler mr-auto ml-2"
             type="button"
@@ -63,8 +58,6 @@
             </ul>
           </div>
 
-         
-          
           <div class="form-inline my-2 my-lg-0" id="search-bar">
             <input
               type="search"
@@ -77,8 +70,6 @@
             </button>
           </div>
         </nav>
-
-      
 
         <table class="col-12 table mt-sm-7">
           <thead class="thead" id="tableHead"></thead>
@@ -119,6 +110,8 @@
                 class="form-control"
                 required
               />
+            </div>
+            <div class="form-group">
               <label for="sName">Second Name</label>
               <input
                 type="text"
@@ -127,8 +120,12 @@
                 class="form-control"
                 required
               />
+            </div>
+            <div class="form-group">
               <label for="job">Role</label>
               <input type="text" name="job" id="job" class="form-control" />
+              </div>
+              <div class="form-group">
               <label for="email">Email</label>
               <input
                 type="email"
@@ -137,25 +134,22 @@
                 class="form-control"
                 required
               />
+            </div>
+            <div class="form-group">
               <label for="employeeDepartment">Department</label>
               <select class="form-control" id="employeeDepartment"></select>
             </div>
             <div class="modal-footer">
-          
               <button
                 type="button"
                 class="btn btn-success"
                 id="editDetailsButton"
               >
-              <i class="fa-solid fa-square-check"></i>
+                <i class="fa-solid fa-square-check"></i>
               </button>
-              <button
-              type="button"
-              class="btn btn-danger"
-              data-dismiss="modal"
-            >
-            <i class="fa-solid fa-rectangle-xmark"></i>
-            </button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">
+                <i class="fa-solid fa-rectangle-xmark"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -194,6 +188,8 @@
                   class="form-control"
                   required
                 />
+              </div>
+              <div class="form-group">
                 <label for="sName2">Second Name <i>(required)</i> </label>
                 <input
                   type="text"
@@ -202,8 +198,12 @@
                   class="form-control"
                   required
                 />
+              </div>
+              <div class="form-group">
                 <label for="job2">Role</label>
                 <input type="text" name="job2" id="job2" class="form-control" />
+              </div>
+                <div class="form-group">
                 <label for="email2">Email <i>(required)</i> </label>
                 <input
                   type="email"
@@ -212,26 +212,26 @@
                   class="form-control"
                   required
                 />
-
+              </div>
+              <div class="form-group">
                 <label for="department2">Department</label>
                 <select class="form-control" id="department2"></select>
               </div>
               <div class="modal-footer">
                 <button
-                type="button"
-                class="btn btn-success"
-                id="addEmployeeButton"
-              >
-              <i class="fa-solid fa-square-plus"></i>
-              </button>
+                  type="button"
+                  class="btn btn-success"
+                  id="addEmployeeButton"
+                >
+                  <i class="fa-solid fa-square-plus"></i>
+                </button>
                 <button
                   type="button"
                   class="btn btn-secondary"
                   data-dismiss="modal"
                 >
-                <i class="fa-solid fa-rectangle-xmark"></i>
+                  <i class="fa-solid fa-rectangle-xmark"></i>
                 </button>
-               
               </div>
             </div>
           </div>
@@ -272,7 +272,8 @@
                 name="DepartmentName"
                 class="form-control"
               />
-              <br />
+            </div>
+            <div class="form-group">
               <label for="DepartmentLocation">Location</label>
               <select
                 name="DepartmentLocation"
@@ -287,17 +288,16 @@
               class="btn btn-success"
               id="submitNewDepartment"
             >
-            <i class="fa-solid fa-square-plus"></i>
+              <i class="fa-solid fa-square-plus"></i>
             </button>
-        
+
             <button
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
             >
-            <i class="fa-solid fa-rectangle-xmark"></i>
+              <i class="fa-solid fa-rectangle-xmark"></i>
             </button>
-        
           </div>
         </div>
       </div>
@@ -339,21 +339,20 @@
             </div>
           </div>
           <div class="modal-footer" id="#editDepartmentFooter">
-    
             <button
               type="button"
               class="btn btn-success"
               id="submitNewLocation"
             >
-            <i class="fa-solid fa-square-plus"></i>
+              <i class="fa-solid fa-square-plus"></i>
             </button>
             <button
-            type="button"
-            class="btn btn-secondary"
-            data-dismiss="modal"
-          >
-          <i class="fa-solid fa-rectangle-xmark"></i>
-          </button>
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              <i class="fa-solid fa-rectangle-xmark"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -391,6 +390,8 @@
                 id="editDepartmentName"
                 class="form-control"
               />
+            </div>
+            <div class="form-group">
               <label for="editDepartmentLocation">New location</label>
               <select
                 name="editDepartmentLocation"
@@ -405,14 +406,10 @@
               class="btn btn-success"
               id="submitEditDepartment"
             >
-            <i class="fa-solid fa-square-plus"></i>
+              <i class="fa-solid fa-square-plus"></i>
             </button>
-            <button
-              type="button"
-              class="btn btn-danger"
-              data-dismiss="modal"
-            >
-            <i class="fa-solid fa-rectangle-xmark"></i>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+              <i class="fa-solid fa-rectangle-xmark"></i>
             </button>
           </div>
         </div>
@@ -459,14 +456,10 @@
               class="btn btn-success"
               id="submitEditLocation"
             >
-            <i class="fa-solid fa-square-plus"></i>
+              <i class="fa-solid fa-square-plus"></i>
             </button>
-            <button
-              type="button"
-              class="btn btn-danger"
-              data-dismiss="modal"
-            >
-            <i class="fa-solid fa-rectangle-xmark"></i>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+              <i class="fa-solid fa-rectangle-xmark"></i>
             </button>
           </div>
         </div>
@@ -540,12 +533,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-success"
-              data-dismiss="modal"
-            >
-            <i class="fa-solid fa-square-check"></i>
+            <button type="button" class="btn btn-success" data-dismiss="modal">
+              <i class="fa-solid fa-square-check"></i>
             </button>
           </div>
         </div>
@@ -591,14 +580,10 @@
               class="btn btn-success confirmDeleteButton"
               id="dell"
             >
-            <i class="fa-solid fa-square-check"></i>
+              <i class="fa-solid fa-square-check"></i>
             </button>
-            <button
-              type="button"
-              class="btn btn-danger"
-              data-dismiss="modal"
-            >
-            <i class="fa-solid fa-rectangle-xmark"></i>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+              <i class="fa-solid fa-rectangle-xmark"></i>
             </button>
           </div>
         </div>
