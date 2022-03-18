@@ -41,7 +41,7 @@ function refreshData(table, url, dataVal) {
         var editButton = $("<button/>").attr({
           "data-toggle": "modal",
           type: "button",
-          class: "btn btn-success fa-solid fa-square-pen mr-1",
+          class: "btn btn-success fa-solid fa-square-pen mr-1 ",
         });
         var deleteButton = $("<button/>").attr({
           "data-toggle": "modal",
@@ -56,12 +56,11 @@ function refreshData(table, url, dataVal) {
               $('.navbar-nav').children('li').eq(2).removeClass('active')
               $('#search-bar').show()
              $('.confirmDeleteButton').attr('id','deletePersonnel')
-              $("#navButton").text("Add Employee");
+            
               $("#navButton").attr("data-target", "#addEmployee");
-              head =
-                "<th>ID</th><th>First Name</th><th>Last Name</th><th>Department</th><th>Job</th><th>Location</th><th>Action</th>";
-              body = `<td>${i + 1}</td><td>${r[i]["firstName"]}</td>
-            <td>${r[i]["lastName"]}</td><td>${r[i]["department"]}</td><td>${r[i]['jobTitle']}</td><td>${
+           
+              body = `<td>${r[i]["lastName"]}, ${r[i]["firstName"]}</td>
+            <td>${r[i]["department"]}</td><td class="d-none d-sm-block">${
                 r[i]["location"]
               }
             </td>`;
@@ -88,7 +87,7 @@ function refreshData(table, url, dataVal) {
                       );
                     });
 
-                    $("#employeeDepartment").val(r[i]["id"]);
+                    $("#employeeDepartment").val(r[i]["departmentID"]);
                   },
                   error: function (err) {
                     console.log(err);
@@ -108,11 +107,10 @@ function refreshData(table, url, dataVal) {
               $('.navbar-nav').children('li').eq(2).removeClass('active')
               $('#search-bar').hide()
       
-              $("#navButton").text("Add Department");
+              
               $("#navButton").attr("data-target", "#addNewDepartmentModal");
-              head =
-                "<th>ID</th><th>Name</th><th>Location</th><th>Action</th>";
-              body = `<td>${i + 1}</td><td>${r[i]["name"]}</td><td>${
+            
+              body = `<td>${r[i]["name"]}</td><td>${
                 r[i]["location"]
               }</td>`;
 
@@ -168,10 +166,10 @@ function refreshData(table, url, dataVal) {
               $('.navbar-nav').children('li').eq(1).removeClass('active')
               $('#search-bar').hide()
               $('.confirmDeleteButton').attr('id','deleteLocation')
-              $("#navButton").text("Add Location");
+         
               $("#navButton").attr("data-target", "#addNewLocationModal");
-              head = "<th>ID</th><th>Name</th><th>Action</th>";
-              body = `<td>${i + 1}</td><td>${r[i]["name"]}</td>`;
+             
+              body = `<td>${r[i]["name"]}</td>`;
 
               $(editButton).attr("data-target", "#editLocationModal");
               $(editButton).on("click", () => {
@@ -221,7 +219,7 @@ function refreshData(table, url, dataVal) {
         }
 
         var tr = $("<tr></tr>");
-        var container = $("<td>");
+        var container = $("<td  class='text-nowrap'>");
         $("#tableBody").append(tr);
         $(tr).append(body);
         $(container).append(editButton);

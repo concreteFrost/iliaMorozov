@@ -1,61 +1,59 @@
 <?php
 
-	// example use from browser
-	// use insertDepartment.php first to create new dummy record and then specify it's id in the command below
-	// http://localhost/companydirectory/libs/php/deleteDepartmentByID.php?id=<id>
+// example use from browser
+// use insertDepartment.php first to create new dummy record and then specify it's id in the command below
+// http://localhost/companydirectory/libs/php/deleteDepartmentByID.php?id=<id>
 
-	// remove next two lines for production
-	
-	ini_set('display_errors', 'On');
-	error_reporting(E_ALL);
+// remove next two lines for production
 
-	$executionStartTime = microtime(true);
+ini_set('display_errors', 'On');
+error_reporting(E_ALL);
 
-	include("config.php");
+$executionStartTime = microtime(true);
 
-	header('Content-Type: application/json; charset=UTF-8');
-	$conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);
-	if (mysqli_connect_errno()) {
-		
-		$output['status']['code'] = "300";
-		$output['status']['name'] = "failure";
-		$output['status']['description'] = "database unavailable";
-		$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-		$output['data'] = [];
+include("config.php");
 
-		mysqli_close($conn);
+header('Content-Type: application/json; charset=UTF-8');
+$conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);
+if (mysqli_connect_errno()) {
 
-		echo json_encode($output);
-
-		exit;
-
-	}	
-
-	// SQL statement accepts parameters and so is prepared to avoid SQL injection.
-	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
-	$id = $_REQUEST['id'];
-
-	$checkID = $conn->prepare('SELECT locationID FROM department WHERE locationID=?');
-	$checkID->bind_param('i',$id);
-	$checkID->execute();
-	$checkID->store_result();
-	$res = $checkID->num_rows;
-
-	if($res>0 ){
-		$er = 'Unable to delete location. '.$res.' dependencies found.';
-		echo $er;
-		exit;
-	}
-	
-
-	$output['status']['code'] = "200";
-	$output['status']['name'] = "ok";
-	$output['status']['description'] = "success";
+	$output['status']['code'] = "300";
+	$output['status']['name'] = "failure";
+	$output['status']['description'] = "database unavailable";
 	$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
 	$output['data'] = [];
-	
+
 	mysqli_close($conn);
 
-	echo json_encode($output); 
+	echo json_encode($output);
 
-?>
+	exit;
+}
+
+// SQL statement accepts parameters and so is prepared to avoid SQL injection.
+// $_REQUEST used for development / debugging. Remember to change to $_POST for production
+
+// SELECT locationID FROM department WHERE locationID=?
+$id = $_REQUEST['id'];
+
+$sql = "SELECT count(id) as dp FROM department WHERE locationID = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param('i', $id);
+$stmt->execute();
+$rdv_verif = $stmt->get_result()->fetch_row()[0];
+
+if ($rdv_verif > 0) {
+	$er = 'Unable to delete location. ' . $rdv_verif . ' dependencies found.';
+	echo $er;
+	exit;
+}
+
+$output['status']['code'] = "200";
+$output['status']['name'] = "ok";
+$output['status']['description'] = "success";
+$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
+$output['data'] = [];
+
+mysqli_close($conn);
+
+echo json_encode($output);

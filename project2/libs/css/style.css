@@ -83,7 +83,7 @@ table {
   animation: blinker 0.5s linear;
 }
 
-.add-button button{
+.add-button button {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
@@ -100,16 +100,26 @@ table {
 .mt-6 {
   margin-top: 4rem;
 }
-@media only screen and (max-width: 768px){
-  thead, tbody{
-    font-size: 0.7em;
-    text-align: left;
+
+@media only screen and (max-width: 992px) {
+  .mt-6 {
+    margin-top: 6rem;
   }
 
-  @media only screen and (max-width: 992px){
-    .mt-6 {
-      margin-top: 6rem;
-    }
-  
+  table {
+    margin-top: 10px;
+  }
+}
+
+@media only screen and (max-width: 575px) {
+  table {
+    margin-top: 20px;
+  }
+}
+
+@media only screen and (max-width: 368px) {
+
+  table {
+    margin-top: 70px;
   }
 }
