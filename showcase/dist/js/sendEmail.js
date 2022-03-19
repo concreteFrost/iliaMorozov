@@ -1,6 +1,6 @@
 $('#sendEmail').on('click',()=>{
     $.ajax({
-        url:'php/sendMail.php',
+        url:'showcase/dist/php/sendMail.php',
         data:{
             userName: $('#userName').val(),
             userEmail: $('#userEmail').val(),
@@ -8,10 +8,26 @@ $('#sendEmail').on('click',()=>{
             userMessage: $('#userMessage').val()
         },
         success:function(res){
-            console.log(res)
+          
+        $('#emailSent').modal('show');
+
+        $('#userName').val('')
+        $('#userEmail').val(''),
+        $('#userSubject').val(''),
+        $('#userMessage').val('')
+          
+        $('#errorMessage').html('')
+        
         },
         error:function(e){
-            console.log('eee');
-        }
+           
+            $('#errorMessage').html(e['responseText'])
+        },
     })
 })
+
+$("#emailSent").on('show.bs.modal',()=>{
+   
+    setTimeout(function() { $('#emailSent').modal('hide'); }, 2400);
+})
+
